@@ -33,7 +33,6 @@ export default function Startup({ navigation }) {
           <Text style={styles.lightText}>Neighbor</Text>
         </Text>
       </View>
-      <View style={{ height: Dimensions.get("screen").width * 0.1 }}></View>
       <View style={styles.fixToText}>
         <Pressable
           style={styles.loginButton}
@@ -48,7 +47,6 @@ export default function Startup({ navigation }) {
         >
           <Text style={styles.signupButtonText}>Sign Up</Text>
         </Pressable>
-        <View style={{ height: Dimensions.get("screen").width * 0.03 }}></View>
       </View>
     </View>
   );
@@ -94,8 +92,8 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     width: Dimensions.get("screen").width * 0.8,
     borderRadius: 15,
-    marginBottom: 20,
-    marginTop: 30,
+    marginBottom: 15,
+    marginTop: 65,
   },
   loginButtonText: {
     color: "white",
