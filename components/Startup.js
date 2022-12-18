@@ -1,9 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
   View,
+  StatusBar,
   Pressable,
-  Button,
   Dimensions,
   StyleSheet,
   Text,
@@ -26,7 +25,7 @@ export default function Startup({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
       <View style={styles.curve}>
         <Text style={styles.boldText}>
           Good

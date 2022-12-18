@@ -12,14 +12,40 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Startup" component={Startup} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ title: "Welcome" }}
+          name="Startup"
+          component={Startup}
+          options={{
+            title: "",
+            headerStyle: {
+              backgroundColor: "#212121",
+            },
+            headerTintColor: "#fff",
+          }}
         />
+        <Stack.Screen
+          name="Signup"
+          component={Signup}
+          options={{
+            title: "",
+            headerStyle: {
+              backgroundColor: "#212121",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen
+          name="Signin"
+          component={Signin}
+          options={{
+            title: "",
+            headerStyle: {
+              backgroundColor: "#000000",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
   );
