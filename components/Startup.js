@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     width: Dimensions.get("screen").width * 0.8,
     borderRadius: 15,
-    marginBottom: 60,
+    marginBottom: 70,
   },
   signupButtonText: {
     color: "#C88D36",

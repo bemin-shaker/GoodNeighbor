@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_700Bold",
     fontSize: 20,
     color: "#FFFFFF",
-    marginBottom: 6,
+    marginBottom: 10,
     marginTop: 20,
   },
   headerTextSmall: {
