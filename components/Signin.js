@@ -13,6 +13,7 @@ import {
   Montserrat_400Regular,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { logInWithEmail } from "../backend/firebase";
 
 export default function Signin({ navigation }) {
   const [email, setEmail] = useState("");
@@ -59,7 +60,12 @@ export default function Signin({ navigation }) {
 
               <Pressable
                 style={styles.signupButton}
-                onPress={() => navigation.navigate("Home", { firstName: "hi" })}
+                onPress={async () => {
+                  let result = await logInWithEmail(email, password);
+                  if (result === "success") {
+                    navigation.navigate("Home");
+                  }
+                }}
               >
                 <Text style={styles.signupButtonText}>Login</Text>
               </Pressable>
