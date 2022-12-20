@@ -1,10 +1,13 @@
 import * as React from "react";
-import { StyleSheet, Dimensions, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
+import MyCommunities from "./MyCommunities";
+import NearbyCommunities from "./NearbyCommunities";
 
-export default function SubmitPost() {
+export default function HomeFeed() {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Submit Post</Text>
+      <MyCommunities />
+      <NearbyCommunities />
     </View>
   );
 }

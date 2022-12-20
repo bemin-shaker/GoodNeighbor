@@ -48,6 +48,13 @@ const storage = getStorage(app);
 // AUTHENTICATION // ---------------------------------------------------------
 let user = auth.currentUser;
 
+//check if user is logged in
+export const checkUser = () => {
+  user = auth.currentUser;
+  console.log(user);
+  return user;
+};
+
 export const signUpWithEmail = async (
   fName: string,
   email: string,

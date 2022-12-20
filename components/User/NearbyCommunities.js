@@ -1,10 +1,10 @@
 import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function PostDetails() {
+export default function NearbyCommunities() {
   return (
     <View>
-      <Text style={styles.header}>Post Details</Text>
+      <Text style={styles.header}>Nearby Communities</Text>
     </View>
   );
 }

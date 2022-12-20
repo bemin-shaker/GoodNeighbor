@@ -93,7 +93,9 @@ const styles = StyleSheet.create({
   textInput: {
     width: Dimensions.get("screen").width * 0.8,
     marginBottom: 10,
+    color: "white",
     backgroundColor: "transparent",
+    opacity: 1,
   },
   signupButton: {
     backgroundColor: "#C88D36",
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("screen").width * 0.8,
     borderRadius: 15,
     marginBottom: 15,
-    marginTop: 35,
+    marginTop: 30,
   },
   signupButtonText: {
     color: "white",
