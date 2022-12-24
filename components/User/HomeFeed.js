@@ -6,8 +6,8 @@ import NearbyCommunities from "./NearbyCommunities";
 export default function HomeFeed() {
   return (
     <View style={styles.container}>
-      <MyCommunities />
       <NearbyCommunities />
+      <MyCommunities />
     </View>
   );
 }
