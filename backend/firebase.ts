@@ -117,3 +117,25 @@ const addNewUser = async (fName: string, email: string) => {
     console.log(e);
   }
 };
+
+export const getCommunities = async () =>  {
+  let communities: Object[] = [];
+  try {
+      const q = query(
+          collection(firestore, "Communities")
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          communities.push({
+              id: doc.id,
+              name: data['name'],
+          });
+
+      });
+      
+  } catch (e) {
+      console.log(e);
+  }
+  return communities;
+}
