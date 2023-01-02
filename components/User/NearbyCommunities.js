@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function NearbyCommunities() {
   const [loading, setLoading] = useState(true);
-  const [shows, setShowData] = useState([undefined]);
+  const [communities, setCommunityData] = useState([undefined]);
   const navigation = useNavigation();
 
   let [fontsLoaded] = useFonts({
@@ -25,8 +25,7 @@ export default function NearbyCommunities() {
     async function fetchData() {
       try {
         const data = await getCommunities();
-        setShowData(data);
-
+        setCommunityData(data);
         setLoading(false);
       } catch (e) {
         console.log(e);
@@ -47,12 +46,17 @@ export default function NearbyCommunities() {
       <View>
         <Text style={styles.header}>Nearby Communities</Text>
         <List.Section>
-          {shows &&
-            shows.map((show) => {
+          {communities &&
+            communities.map((community) => {
               return (
-                <Pressable onPress={() => navigation.navigate("CommunityFeed")}>
+                <Pressable
+                  id={community.id}
+                  onPress={() =>
+                    navigation.navigate("CommunityFeed", { id: community.id })
+                  }
+                >
                   <List.Item
-                    title={show.name}
+                    title={community.name}
                     titleStyle={{
                       color: "white",
                       fontSize: 15,
