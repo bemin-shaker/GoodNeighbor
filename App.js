@@ -6,6 +6,7 @@ import Startup from "./components/Startup";
 import Signup from "./components/Signup";
 import Signin from "./components/Signin";
 import Home from "./components/Home";
+import CommunityFeed from "./components/User/CommunityFeed/CommunityFeed";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -48,6 +49,13 @@ const App = () => {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CommunityFeed"
+          component={CommunityFeed}
           options={{
             headerShown: false,
           }}

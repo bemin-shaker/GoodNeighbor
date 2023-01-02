@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -7,10 +7,12 @@ import {
 } from "@expo-google-fonts/montserrat";
 import { getCommunities } from "../../backend/firebase";
 import { List } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 export default function NearbyCommunities() {
   const [loading, setLoading] = useState(true);
   const [shows, setShowData] = useState([undefined]);
+  const navigation = useNavigation();
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -48,30 +50,32 @@ export default function NearbyCommunities() {
           {shows &&
             shows.map((show) => {
               return (
-                <List.Item
-                  title={show.name}
-                  titleStyle={{
-                    color: "white",
-                    fontSize: 15,
-                    fontFamily: "Montserrat_700Bold",
-                  }}
-                  style={{
-                    backgroundColor: "#323232",
-                    padding: 10,
-                    marginBottom: 15,
-                  }}
-                  left={() => (
-                    <List.Icon
-                      color={"#323232"}
-                      style={{
-                        backgroundColor: "#F5F5F9",
-                        borderRadius: 50,
-                        padding: 7,
-                      }}
-                      icon="city"
-                    />
-                  )}
-                />
+                <Pressable onPress={() => navigation.navigate("CommunityFeed")}>
+                  <List.Item
+                    title={show.name}
+                    titleStyle={{
+                      color: "white",
+                      fontSize: 15,
+                      fontFamily: "Montserrat_700Bold",
+                    }}
+                    style={{
+                      backgroundColor: "#323232",
+                      padding: 10,
+                      marginBottom: 15,
+                    }}
+                    left={() => (
+                      <List.Icon
+                        color={"#323232"}
+                        style={{
+                          backgroundColor: "#F5F5F9",
+                          borderRadius: 50,
+                          padding: 7,
+                        }}
+                        icon="city"
+                      />
+                    )}
+                  />
+                </Pressable>
               );
             })}
         </List.Section>
