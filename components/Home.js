@@ -16,7 +16,7 @@ export default function Home() {
           tabBarIcon: ({ color, size }) => {
             let iconName;
 
-            if (route.name === "Home") {
+            if (route.name === "Feed") {
               iconName = "ios-home";
             } else if (route.name === "Submit") {
               iconName = "ios-add";
@@ -35,7 +35,7 @@ export default function Home() {
           },
         })}
       >
-        <Tab.Screen name="Home" component={HomeFeed} />
+        <Tab.Screen name="Feed" component={HomeFeed} />
         <Tab.Screen name="Submit" component={SubmitPost} />
       </Tab.Navigator>
     </View>

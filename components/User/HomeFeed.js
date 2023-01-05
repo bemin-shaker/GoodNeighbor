@@ -7,7 +7,6 @@ export default function HomeFeed() {
   return (
     <View style={styles.container}>
       <NearbyCommunities />
-      <MyCommunities />
     </View>
   );
 }

@@ -7,7 +7,7 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { TextInput } from "react-native-paper";
+import { TextInput, Snackbar, Button } from "react-native-paper";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -15,9 +15,16 @@ import {
 } from "@expo-google-fonts/montserrat";
 import { logInWithEmail } from "../backend/firebase";
 
+/* TO DO:
+1. DISPLAY ERROR MESSAGE IF LOGIN FAILS
+ */
+
 export default function Signin({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [visible, setVisible] = React.useState(false);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -64,6 +71,10 @@ export default function Signin({ navigation }) {
                   let result = await logInWithEmail(email, password);
                   if (result === "success") {
                     navigation.navigate("Home");
+                  } else {
+                    {
+                      setVisible(!visible);
+                    }
                   }
                 }}
               >
@@ -75,6 +86,20 @@ export default function Signin({ navigation }) {
                   <Text style={styles.loginButtonHighlight}>Sign up</Text>
                 </Text>
               </Pressable>
+              <Snackbar
+                style={styles.snackbar}
+                visible={visible}
+                onDismiss={onDismissSnackBar}
+                action={{
+                  label: "Dismiss",
+                  labelStyle: { color: "#C88D36" },
+                  onPress: () => {
+                    // Do something
+                  },
+                }}
+              >
+                <Text style={styles.errorMsg}>Invalid Login Credentials</Text>
+              </Snackbar>
             </View>
           </View>
         </View>
@@ -149,5 +174,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 30,
     height: Dimensions.get("screen").height * 0.7,
+  },
+  errorMsg: {
+    color: "white",
+  },
+  snackbar: {
+    marginBottom: 40,
   },
 });

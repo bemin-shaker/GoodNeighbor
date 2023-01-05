@@ -50,13 +50,14 @@ export default function NearbyCommunities() {
             communities.map((community) => {
               return (
                 <Pressable
-                  id={community.id}
+                  key={community.id}
                   onPress={() =>
                     navigation.navigate("CommunityFeed", { id: community.id })
                   }
                 >
                   <List.Item
                     title={community.name}
+                    key={community.id}
                     titleStyle={{
                       color: "white",
                       fontSize: 15,
