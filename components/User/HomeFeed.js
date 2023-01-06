@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import MyCommunities from "./MyCommunities";
+//import MyCommunities from "./MyCommunities";
 import NearbyCommunities from "./NearbyCommunities";
 
 export default function HomeFeed() {

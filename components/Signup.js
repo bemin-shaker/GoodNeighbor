@@ -15,6 +15,11 @@ import {
 } from "@expo-google-fonts/montserrat";
 import { signUpWithEmail } from "../backend/firebase";
 
+/* TO DO
+1. Add input validation for name, email, password and display error message just like signin screen
+1.1 Email should be valid meaning it contains '@' and '.com' etc 
+*/
+
 export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
