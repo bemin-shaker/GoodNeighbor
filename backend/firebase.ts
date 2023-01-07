@@ -125,6 +125,7 @@ export const getCommunities = async () =>  {
           collection(firestore, "Communities")
       );
       const querySnapshot = await getDocs(q);
+      
       querySnapshot.forEach((doc) => {
           let data = doc.data();
           communities.push({
@@ -138,4 +139,29 @@ export const getCommunities = async () =>  {
       console.log(e);
   }
   return communities;
+}
+
+export const getPosts = async (id) =>  {
+  let posts: Object[] = [];
+  try{
+      const q = query(
+          collection(firestore, "Communities", id, "Posts")
+      );
+      const querySnapshot = await getDocs(q);
+      
+      querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          posts.push({
+              id: doc.id,
+              title: data['title'],
+              category: data['category'],
+              initialUpdate: data['initialUpdate'],
+          });
+
+      });
+      
+  } catch (e) {
+      console.log(e);
+  }
+  return posts;
 }
