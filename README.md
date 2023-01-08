@@ -6,7 +6,7 @@ Everyone deserves to feel safe, whether that be in their homes, schools, places 
 anywhere else that is vital to their quality of life. The app will also display alerts for missing pets, amber
 alerts, severe weather events, and much more. The problem with current community apps is that they
 are disorganized and full of misinformation. This app will improve the way people have access to
-vital information that matters to them. Information will be organized into separate “communities” and categories
+vital information. Information will be organized into separate “communities” and categories
 so that way users can subscribe to the content that is important to them. Additionally, during the
 initial signup process, users will need to verify their identity and proof of address to be able to
 enter a specific community.
