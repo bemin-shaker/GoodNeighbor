@@ -100,6 +100,27 @@ export const logOut = async () => {
   }
 };
 
+
+export const getEmail = async () => {
+  let email = user?.email;
+  let email_one = "this";
+
+  if (email == null) {
+      email_one = 'null'
+  }
+  else if (email == undefined) {
+      email_one = 'undefined'
+  }
+  else {
+      email_one = email;
+  }
+
+  console.log("EMAILLLL:" + email_one)
+
+  return email_one;
+}
+
+
 // FIRESTORE // --------------------------------------------------------------
 const addNewUser = async (fName: string, email: string) => {
   try {
@@ -164,4 +185,22 @@ export const getPosts = async (id) =>  {
       console.log(e);
   }
   return posts;
+}
+
+export const submitPost = async (title, category, initialUpdate, usersEmail) => {
+  try {
+      const post = {
+          title: title,
+          category: category,
+          initialUpdate: initialUpdate,
+          postedBy: usersEmail,
+      };
+      const docRef = await addDoc(collection(firestore, "Communities", 'e6G7JeaGgmdsUKcOqnaO', "Posts"), post);
+      await updateDoc(docRef, {
+          postID: docRef.id,
+      });
+      return docRef.id;
+  } catch (e) {
+      console.log(e);
+  }
 }

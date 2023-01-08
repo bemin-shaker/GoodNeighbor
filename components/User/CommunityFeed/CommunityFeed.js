@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import { getPosts } from "../../../backend/firebase";
-
 import Map from "./map";
 import ListItems from "./list";
+import { getPosts } from "../../../backend/firebase";
 
 export default function CommunityFeed({ route, navigation }) {
   const [loading, setLoading] = useState(true);
-  const [posts, setPostsData] = useState([undefined]);
+  const [postsData, setPostsData] = useState([undefined]);
+
   useEffect(() => {
     console.log("useEffect has been called");
 
@@ -15,7 +15,7 @@ export default function CommunityFeed({ route, navigation }) {
       try {
         const data = await getPosts(route.params.id);
         setPostsData(data);
-        console.log(posts);
+        console.log(postsData);
         setLoading(false);
       } catch (e) {
         console.log(e);
@@ -31,7 +31,11 @@ export default function CommunityFeed({ route, navigation }) {
       <Pressable onPress={() => navigation.navigate("Home")}>
         <Text>Back</Text>
       </Pressable>
-      <ListItems communityId={route.params.id} postsData={posts} />
+      <ListItems
+        communityId={route.params.id}
+        posts={postsData}
+        isLoading={loading}
+      />
     </View>
   );
 }
