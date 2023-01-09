@@ -7,7 +7,10 @@ export default function PostDetails({ route, navigation }) {
       <Text style={styles.header}>Post Details</Text>
       <Pressable
         onPress={() =>
-          navigation.navigate("CommunityFeed", { id: route.params.id })
+          navigation.navigate("CommunityFeed", {
+            id: route.params.id,
+            name: route.params.name,
+          })
         }
       >
         <Text>Back</Text>

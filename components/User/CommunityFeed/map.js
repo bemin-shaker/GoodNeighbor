@@ -16,6 +16,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: Dimensions.get("screen").height * 0.5,
+    height: Dimensions.get("screen").height * 0.55,
   },
 });

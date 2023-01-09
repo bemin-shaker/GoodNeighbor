@@ -15,13 +15,17 @@ const Stack = createNativeStackNavigator();
 /* TO DO:
 1. Add a check to see if a user is logged in, if so, redirect to Home
 2. After signing up, have user go through identity verification process
+3. Display posts on map using coordinates
+3.1 Have a way for users to indicate the address/approximate location of incident when posting
+4. Improve the navigation/flow of info like community id/name etc between screens
+5. Save the images to cloud storage and render it with the posts
 */
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Startup"
           component={Startup}
           options={{
@@ -53,7 +57,7 @@ const App = () => {
             },
             headerTintColor: "#fff",
           }}
-        /> */}
+        />
         <Stack.Screen
           name="Home"
           component={Home}
