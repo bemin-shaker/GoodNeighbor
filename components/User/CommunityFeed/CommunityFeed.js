@@ -7,6 +7,7 @@ import {
   useFonts,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
+  Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
 
 export default function CommunityFeed({ route, navigation }) {
@@ -16,6 +17,7 @@ export default function CommunityFeed({ route, navigation }) {
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
     Montserrat_600SemiBold,
+    Montserrat_400Regular,
   });
 
   useEffect(() => {
@@ -39,12 +41,15 @@ export default function CommunityFeed({ route, navigation }) {
       <Map />
       <View style={styles.listView}>
         <Text style={styles.header}>{route.params.name}</Text>
+        <Text style={styles.subHeader}>
+          {postsData.length} incidents in the past 24 hours
+        </Text>
         <Pressable onPress={() => navigation.navigate("Home")}>
-          <Text>Back</Text>
+          <Text style={{ color: "white" }}>Back</Text>
         </Pressable>
         <ListItems
           communityId={route.params.id}
-          communityName-={route.params.name}
+          communityName={route.params.name}
           posts={postsData}
           isLoading={loading}
         />
@@ -63,6 +68,14 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     fontSize: 25,
     fontFamily: "Montserrat_600SemiBold",
+  },
+  subHeader: {
+    color: "#FFFFFF",
+    marginTop: 4,
+    marginLeft: 30,
+    opacity: 0.7,
+    fontSize: 17,
+    fontFamily: "Montserrat_400Regular",
   },
   listView: {
     backgroundColor: "#000000",

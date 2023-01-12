@@ -8,11 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { TextInput, Snackbar, Button } from "react-native-paper";
-import {
-  useFonts,
-  Montserrat_400Regular,
-  Montserrat_700Bold,
-} from "@expo-google-fonts/montserrat";
+import { useFonts, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { logInWithEmail } from "../backend/firebase";
 
 /* TO DO:
@@ -28,7 +24,6 @@ export default function Signin({ navigation }) {
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
-    Montserrat_400Regular,
   });
 
   if (!fontsLoaded) {

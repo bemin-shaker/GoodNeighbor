@@ -42,6 +42,7 @@ export default function ListItems({
                 <Pressable
                   onPress={() =>
                     navigation.navigate("PostDetails", {
+                      postData: post,
                       id: communityId,
                       name: communityName,
                     })

@@ -15,6 +15,7 @@ export default function PostDetails({ route, navigation }) {
       >
         <Text>Back</Text>
       </Pressable>
+      <Text>{route.params.postData.title}</Text>
     </View>
   );
 }
