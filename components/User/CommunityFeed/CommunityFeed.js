@@ -7,7 +7,6 @@ import {
   useFonts,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
-  Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
 
 export default function CommunityFeed({ route, navigation }) {
@@ -17,7 +16,6 @@ export default function CommunityFeed({ route, navigation }) {
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
     Montserrat_600SemiBold,
-    Montserrat_400Regular,
   });
 
   useEffect(() => {
@@ -75,12 +73,11 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     opacity: 0.7,
     fontSize: 17,
-    fontFamily: "Montserrat_400Regular",
   },
   listView: {
     backgroundColor: "#000000",
-    borderTopStartRadius: 40,
-    borderTopEndRadius: 40,
+    borderTopStartRadius: 25,
+    borderTopEndRadius: 25,
     transform: [{ translateY: -40 }],
     zIndex: 1000,
   },
