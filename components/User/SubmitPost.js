@@ -112,6 +112,7 @@ export default function SubmitPost() {
             width: 100,
             height: 100,
             marginTop: 15,
+            opacity: 0.6,
             backgroundColor: "#ebebeb",
           }}
         />
@@ -163,6 +164,8 @@ const styles = StyleSheet.create({
   flexCont: {
     display: "flex",
     flexDirection: "row",
+    width: Dimensions.get("screen").width * 0.8,
+    justifyContent: "space-around",
   },
 
   signupButton: {

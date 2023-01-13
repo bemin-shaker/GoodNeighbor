@@ -1,6 +1,10 @@
 const communities = {
   id: "string",
   name: "string",
+  coordinates: {
+    latitude: "number",
+    longitude: "number",
+  },
   memberCount: "number",
   members: [
     {
@@ -12,6 +16,7 @@ const communities = {
     {
       id: "string",
       name: "string",
+      isAdmin: "boolean",
     },
   ],
   posts: [
@@ -20,6 +25,10 @@ const communities = {
       title: "string",
       category: "string",
       initialUpdate: "string",
+      coordinates: {
+        latitude: "number",
+        longitude: "number",
+      },
       postedBy: {
         id: "string",
         name: "string",
@@ -36,13 +45,13 @@ const communities = {
 };
 
 const users = {
-  id: "string",
-  name: "string",
+  userId: "string",
+  full_name: "string",
+  email: "string",
   joinedCommunities: [
     {
-      id: "string",
-      name: "string",
-      isAdmin: "boolean",
+      communityId: "string",
+      admin: "boolean",
     },
   ],
 };
