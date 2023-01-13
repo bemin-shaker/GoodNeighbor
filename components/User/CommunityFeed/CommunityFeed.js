@@ -36,7 +36,7 @@ export default function CommunityFeed({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Map />
+      <Map posts={postsData} isLoading={loading} />
       <View style={styles.listView}>
         <Text style={styles.header}>{route.params.name}</Text>
         <Text style={styles.subHeader}>

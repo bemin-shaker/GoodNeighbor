@@ -177,6 +177,7 @@ export const getPosts = async (id) =>  {
               title: data['title'],
               category: data['category'],
               initialUpdate: data['initialUpdate'],
+              location: data["location"],
           });
 
       });
@@ -187,13 +188,17 @@ export const getPosts = async (id) =>  {
   return posts;
 }
 
-export const submitPost = async (title, category, initialUpdate, usersEmail) => {
+export const submitPost = async (title, category, initialUpdate, usersEmail, location) => {
   try {
       const post = {
           title: title,
           category: category,
           initialUpdate: initialUpdate,
           postedBy: usersEmail,
+          location: {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+          }
       };
       const docRef = await addDoc(collection(firestore, "Communities", 'e6G7JeaGgmdsUKcOqnaO', "Posts"), post);
       await updateDoc(docRef, {

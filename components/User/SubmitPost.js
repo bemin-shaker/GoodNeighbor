@@ -18,11 +18,14 @@ import {
   Montserrat_600SemiBold,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import * as Location from "expo-location";
 
 export default function SubmitPost() {
   const [title, setTitle] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [initialUpdate, setInitialUpdate] = React.useState("");
+  const [location, setLocation] = React.useState(null);
+  const [errorMsg, setErrorMsg] = React.useState(null);
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -32,6 +35,30 @@ export default function SubmitPost() {
   const [image, setImage] = React.useState(
     Image.resolveAssetSource(defaultImage).uri
   );
+
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  if (errorMsg) {
+    setLocation({
+      coords: {
+        latitude: 40.745255,
+        longitude: -74.034775,
+      },
+    });
+  } else if (location) {
+    console.log(location);
+  }
 
   React.useEffect(() => {
     (async () => {
@@ -122,7 +149,7 @@ export default function SubmitPost() {
         style={styles.signupButton}
         onPress={async () => {
           let usersEmail = await getEmail();
-          submitPost(title, category, initialUpdate, usersEmail);
+          submitPost(title, category, initialUpdate, usersEmail, location);
         }}
       >
         <Text style={styles.signupButtonText}>Submit</Text>
