@@ -80,7 +80,7 @@ export default function ListItems({
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 25,
     paddingBottom: 400,
   },

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import { useNavigation } from "@react-navigation/native";
 
 const MapStyle = [
   {
@@ -180,7 +181,11 @@ const MapStyle = [
     ],
   },
 ];
-export default function Map({ posts, isLoading }) {
+
+export default function Map({ communityId, communityName, posts, isLoading }) {
+  const navigation = useNavigation();
+  console.log(posts);
+
   if (isLoading) {
     return (
       <View>
@@ -215,6 +220,14 @@ export default function Map({ posts, isLoading }) {
                   title={marker.title}
                   description={marker.initialUpdate}
                   image={require("../../../assets/marker.png")}
+                  tappable={true}
+                  onPress={() =>
+                    navigation.navigate("PostDetails", {
+                      postData: marker,
+                      id: communityId,
+                      name: communityName,
+                    })
+                  }
                 />
               );
             })}

@@ -20,7 +20,7 @@ import {
 } from "@expo-google-fonts/montserrat";
 import * as Location from "expo-location";
 
-export default function SubmitPost() {
+export default function SubmitPost({ route, navigation }) {
   const [title, setTitle] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [initialUpdate, setInitialUpdate] = React.useState("");
@@ -149,7 +149,19 @@ export default function SubmitPost() {
         style={styles.signupButton}
         onPress={async () => {
           let usersEmail = await getEmail();
-          submitPost(title, category, initialUpdate, usersEmail, location);
+          let submit = await submitPost(
+            title,
+            category,
+            initialUpdate,
+            usersEmail,
+            location
+          );
+          if (submit == "success") {
+            navigation.navigate("CommunityFeed", {
+              id: route.params.id,
+              name: route.params.name,
+            });
+          }
         }}
       >
         <Text style={styles.signupButtonText}>Submit</Text>

@@ -36,7 +36,12 @@ export default function CommunityFeed({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Map posts={postsData} isLoading={loading} />
+      <Map
+        communityId={route.params.id}
+        communityName={route.params.name}
+        posts={postsData}
+        isLoading={loading}
+      />
       <View style={styles.listView}>
         <Text style={styles.header}>{route.params.name}</Text>
         <Text style={styles.subHeader}>
@@ -44,6 +49,16 @@ export default function CommunityFeed({ route, navigation }) {
         </Text>
         <Pressable onPress={() => navigation.navigate("Home")}>
           <Text style={{ color: "white" }}>Back</Text>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate("SubmitPost", {
+              id: route.params.id,
+              name: route.params.name,
+            })
+          }
+        >
+          <Text style={{ color: "white" }}>Add</Text>
         </Pressable>
         <ListItems
           communityId={route.params.id}
@@ -62,15 +77,15 @@ const styles = StyleSheet.create({
   },
   header: {
     color: "white",
-    marginTop: 30,
-    marginLeft: 30,
+    marginTop: 20,
+    marginLeft: 20,
     fontSize: 25,
     fontFamily: "Montserrat_600SemiBold",
   },
   subHeader: {
     color: "#FFFFFF",
     marginTop: 4,
-    marginLeft: 30,
+    marginLeft: 20,
     opacity: 0.7,
     fontSize: 17,
   },

@@ -36,7 +36,7 @@ export default function Home() {
         })}
       >
         <Tab.Screen name="Feed" component={HomeFeed} />
-        <Tab.Screen name="Submit" component={SubmitPost} />
+        {/* <Tab.Screen name="Submit" component={SubmitPost} /> */}
       </Tab.Navigator>
     </View>
   );

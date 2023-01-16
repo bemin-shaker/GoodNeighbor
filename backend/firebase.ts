@@ -194,7 +194,9 @@ export const submitPost = async (title, category, initialUpdate, usersEmail, loc
           title: title,
           category: category,
           initialUpdate: initialUpdate,
-          postedBy: usersEmail,
+          postedBy: {
+            usersEmail: usersEmail
+          },
           location: {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
@@ -204,7 +206,7 @@ export const submitPost = async (title, category, initialUpdate, usersEmail, loc
       await updateDoc(docRef, {
           postID: docRef.id,
       });
-      return docRef.id;
+      return "success";
   } catch (e) {
       console.log(e);
   }

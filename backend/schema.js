@@ -25,13 +25,12 @@ const communities = {
       title: "string",
       category: "string",
       initialUpdate: "string",
-      coordinates: {
+      location: {
         latitude: "number",
         longitude: "number",
       },
       postedBy: {
-        id: "string",
-        name: "string",
+        usersEmail: "string",
       },
       updates: [
         {
