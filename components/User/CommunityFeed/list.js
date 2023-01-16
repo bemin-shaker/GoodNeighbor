@@ -34,8 +34,8 @@ export default function ListItems({
     );
   } else {
     return (
-      <ScrollView>
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView>
           {posts &&
             posts.map((post) => {
               return (
@@ -72,8 +72,9 @@ export default function ListItems({
                 </Pressable>
               );
             })}
-        </View>
-      </ScrollView>
+          <View style={{ height: 1000 }} />
+        </ScrollView>
+      </View>
     );
   }
 }

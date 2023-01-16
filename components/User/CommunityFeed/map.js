@@ -204,8 +204,8 @@ export default function Map({ communityId, communityName, posts, isLoading }) {
           initialRegion={{
             latitude: 40.745255,
             longitude: -74.034775,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.00522,
+            longitudeDelta: 0.02821,
           }}
         >
           {posts &&

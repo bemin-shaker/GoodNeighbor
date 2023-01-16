@@ -24,6 +24,7 @@ const Stack = createNativeStackNavigator();
 6. Add a way for users to report posts
 7. In the HomeFeed/nearbyCommunities component, display the communities within approx radius of the user (10 miles etc)
 8. Add a back button component
+9. Add a function that would delete the post after 24 hours since the most recent update
 */
 
 const App = () => {

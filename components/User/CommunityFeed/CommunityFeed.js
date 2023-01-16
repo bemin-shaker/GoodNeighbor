@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
+import { FAB } from "react-native-paper";
+
 import Map from "./map";
 import ListItems from "./list";
 import { getPosts } from "../../../backend/firebase";
@@ -43,23 +45,30 @@ export default function CommunityFeed({ route, navigation }) {
         isLoading={loading}
       />
       <View style={styles.listView}>
-        <Text style={styles.header}>{route.params.name}</Text>
-        <Text style={styles.subHeader}>
-          {postsData.length} incidents in the past 24 hours
-        </Text>
+        <View style={styles.flexCont}>
+          <View>
+            <Text style={styles.header}>{route.params.name}</Text>
+            <Text style={styles.subHeader}>
+              {postsData.length} incidents in the past 24 hours
+            </Text>
+          </View>
+
+          <FAB
+            icon="plus"
+            color="white"
+            style={styles.fab}
+            onPress={() =>
+              navigation.navigate("SubmitPost", {
+                id: route.params.id,
+                name: route.params.name,
+              })
+            }
+          />
+        </View>
         <Pressable onPress={() => navigation.navigate("Home")}>
           <Text style={{ color: "white" }}>Back</Text>
         </Pressable>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("SubmitPost", {
-              id: route.params.id,
-              name: route.params.name,
-            })
-          }
-        >
-          <Text style={{ color: "white" }}>Add</Text>
-        </Pressable>
+
         <ListItems
           communityId={route.params.id}
           communityName={route.params.name}
@@ -95,5 +104,17 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 25,
     transform: [{ translateY: -40 }],
     zIndex: 1000,
+  },
+  flexCont: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 0,
+  },
+  fab: {
+    backgroundColor: "#262626",
+    marginTop: 20,
+    marginRight: 20,
+    borderRadius: 50,
   },
 });

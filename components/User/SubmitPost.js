@@ -87,6 +87,16 @@ export default function SubmitPost({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <Pressable
+        onPress={() =>
+          navigation.navigate("CommunityFeed", {
+            id: route.params.id,
+            name: route.params.name,
+          })
+        }
+      >
+        <Text style={{ color: "white" }}>Back</Text>
+      </Pressable>
       <Text style={styles.title}>Post an Incident</Text>
 
       <TextInput
