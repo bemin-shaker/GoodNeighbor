@@ -179,6 +179,7 @@ export const getPosts = async (id) =>  {
               initialUpdate: data['initialUpdate'],
               location: data["location"],
               updates: data["updates"],
+              initialTimestamp: data["initialTimestamp"],
           });
 
       });

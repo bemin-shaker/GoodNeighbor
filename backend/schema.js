@@ -24,6 +24,7 @@ const communities = {
       id: "string",
       title: "string",
       category: "string",
+      image: "string",
       initialUpdate: "string",
       location: {
         latitude: "number",
@@ -38,6 +39,7 @@ const communities = {
           update: "string",
         },
       ],
+      initialTimestamp: "int",
       timeSinceLastUpdate: "int",
     },
   ],
