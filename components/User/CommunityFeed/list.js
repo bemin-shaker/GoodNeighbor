@@ -7,7 +7,9 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { List } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+import { List, FAB, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import {
   useFonts,
@@ -66,9 +68,29 @@ export default function ListItems({
                         source={{
                           uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
                         }}
+                        style={{
+                          borderRadius: 10,
+                        }}
                       />
                     )}
                   />
+                  <View style={{}}>
+                    <Chip
+                      icon={() => (
+                        <Icon
+                          name="comment-processing"
+                          size={16}
+                          color="white"
+                        />
+                      )}
+                      title={post.updates.length}
+                      style={styles.fab}
+                      textStyle={{ color: "white" }}
+                      onPress={() => console.log("Pressed")}
+                    >
+                      {post.updates.length}
+                    </Chip>
+                  </View>
                 </Pressable>
               );
             })}
@@ -84,5 +106,10 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 25,
     paddingBottom: 400,
+  },
+  fab: {
+    backgroundColor: "transparent",
+    margin: 0,
+    padding: 0,
   },
 });
