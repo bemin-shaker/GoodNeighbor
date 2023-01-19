@@ -24,6 +24,7 @@ import {
   DocumentReference,
   setDoc,
   arrayRemove,
+  Timestamp
 } from "firebase/firestore";
 import Constants from "expo-constants";
 import "firebase/auth";
@@ -190,6 +191,7 @@ export const getPosts = async (id) =>  {
   return posts;
 }
 
+
 export const submitPost = async (title, category, initialUpdate, usersEmail, location) => {
   try {
       const post = {
@@ -204,6 +206,8 @@ export const submitPost = async (title, category, initialUpdate, usersEmail, loc
               longitude: location.coords.longitude,
           },
           updates: [],
+          initialTimestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000)
+       
       };
       const docRef = await addDoc(collection(firestore, "Communities", 'e6G7JeaGgmdsUKcOqnaO', "Posts"), post);
       await updateDoc(docRef, {

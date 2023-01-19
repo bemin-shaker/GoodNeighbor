@@ -28,8 +28,9 @@ export default function PostDetails({ route, navigation }) {
     let seconds = Math.floor(new Date().getTime() / 1000);
     let initialSeconds = route.params.postData.initialTimestamp.seconds;
     let difference = seconds - initialSeconds;
-
-    if (difference < 3600) {
+    if (difference <= 60) {
+      return "Less than a minute ago";
+    } else if (difference < 3600 && difference > 60) {
       hours = Math.floor(difference / 60);
       return hours + " min ago";
     } else {
