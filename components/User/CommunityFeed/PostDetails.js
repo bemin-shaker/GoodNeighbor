@@ -8,25 +8,27 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { List, FAB, Chip } from "react-native-paper";
+import { List, FAB, Chip, Button, TextInput } from "react-native-paper";
+import * as ImagePicker from "expo-image-picker";
 import {
   useFonts,
   Montserrat_600SemiBold,
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Timestamp } from "firebase/firestore";
+import { makeUpdate, getEmail } from "../../../backend/firebase";
 
 export default function PostDetails({ route, navigation }) {
+  const [title, setTitle] = React.useState("");
   let [fontsLoaded] = useFonts({
     Montserrat_600SemiBold,
     Montserrat_400Regular,
   });
 
-  function returnElapsedTIme() {
+  function returnElapsedTIme(postTime) {
     let hours;
     let seconds = Math.floor(new Date().getTime() / 1000);
-    let initialSeconds = route.params.postData.initialTimestamp.seconds;
+    let initialSeconds = postTime;
     let difference = seconds - initialSeconds;
     if (difference <= 60) {
       return "Less than a minute ago";
@@ -39,6 +41,19 @@ export default function PostDetails({ route, navigation }) {
     }
   }
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <View>
       <Image
@@ -48,7 +63,6 @@ export default function PostDetails({ route, navigation }) {
           uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
         }}
       ></Image>
-
       <View style={styles.listView}>
         <Text style={styles.header}>{route.params.postData.title}</Text>
         <Chip
@@ -57,7 +71,7 @@ export default function PostDetails({ route, navigation }) {
           textStyle={{ color: "#BDBDBD", transform: [{ translateX: -3 }] }}
           onPress={() => console.log("Pressed")}
         >
-          {returnElapsedTIme()}
+          {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
         </Chip>
         <Pressable
           onPress={() =>
@@ -75,6 +89,19 @@ export default function PostDetails({ route, navigation }) {
             route.params.postData.updates.map((post, index) => {
               return (
                 <View style={styles.listItem}>
+                  <Chip
+                    icon={() => (
+                      <Icon name="clock-outline" size={16} color="#BDBDBD" />
+                    )}
+                    style={styles.fab2}
+                    textStyle={{
+                      color: "#BDBDBD",
+                      transform: [{ translateX: -3 }],
+                    }}
+                    onPress={() => console.log("Pressed")}
+                  >
+                    {returnElapsedTIme(post.timestamp.seconds)}
+                  </Chip>
                   <Text
                     key={index}
                     style={{
@@ -83,6 +110,7 @@ export default function PostDetails({ route, navigation }) {
                       fontSize: 16,
                       marginBottom: 10,
                       margin: 0,
+                      marginLeft: 20,
                     }}
                   >
                     {post.title}
@@ -97,8 +125,40 @@ export default function PostDetails({ route, navigation }) {
                 </View>
               );
             })}
-          <View style={{ height: 1000 }} />
         </ScrollView>
+      </View>
+      <View style={styles.bottomContainer}>
+        <TextInput
+          style={styles.textInput}
+          mode={"outlined"}
+          activeOutlineColor="#C88D36"
+          outlineColor="#999CAD"
+          textColor="#DADADA"
+          label="Title"
+          value={title}
+          onChangeText={(title) => setTitle(title)}
+          left={<TextInput.Icon icon="camera" onPress={pickImage} />}
+          right={
+            <TextInput.Icon
+              icon="send"
+              onPress={async () => {
+                let usersEmail = await getEmail();
+                let submit = await makeUpdate(
+                  title,
+                  usersEmail,
+                  route.params.postData.id,
+                  route.params.id
+                );
+                if (submit == "success") {
+                  navigation.navigate("CommunityFeed", {
+                    id: route.params.id,
+                    name: route.params.name,
+                  });
+                }
+              }}
+            />
+          }
+        />
       </View>
     </View>
   );
@@ -106,11 +166,12 @@ export default function PostDetails({ route, navigation }) {
 
 const styles = StyleSheet.create({
   img: {
-    height: Dimensions.get("window").height / 3,
+    height: Dimensions.get("window").height * 0.3,
   },
   updateImg: {
     height: Dimensions.get("window").height / 5,
     borderRadius: 10,
+    marginLeft: 20,
   },
   header: {
     color: "white",
@@ -124,6 +185,10 @@ const styles = StyleSheet.create({
     margin: 0,
     paddingTop: 5,
     paddingLeft: 10,
+  },
+  fab2: {
+    transform: [{ translateX: -10 }],
+    backgroundColor: "transparent",
   },
   subHeader: {
     color: "#C88D36",
@@ -139,13 +204,30 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 25,
     transform: [{ translateY: -40 }],
     zIndex: 1000,
+    height: Dimensions.get("window").height * 0.63,
   },
   listItem: {
     marginBottom: 30,
   },
   listContainer: {
     paddingLeft: 20,
-    paddingRight: 10,
+    paddingRight: 20,
     marginTop: 10,
+  },
+  textInput: {
+    height: Dimensions.get("window").height * 0.1,
+  },
+  textInput: {
+    width: Dimensions.get("screen").width * 0.9,
+    color: "#A32638",
+    backgroundColor: "#000000",
+  },
+  bottomContainer: {
+    height: Dimensions.get("window").height * 0.13,
+    transform: [{ translateY: -40 }],
+    alignItems: "center",
+    paddingTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#000000",
   },
 });

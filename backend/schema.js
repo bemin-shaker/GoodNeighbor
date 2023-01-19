@@ -37,6 +37,10 @@ const communities = {
         {
           id: "string",
           update: "string",
+          postedBy: {
+            usersEmail: "string",
+          },
+          image: "string",
         },
       ],
       initialTimestamp: "int",

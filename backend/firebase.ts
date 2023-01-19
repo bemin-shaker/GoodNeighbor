@@ -192,7 +192,7 @@ export const getPosts = async (id) =>  {
 }
 
 
-export const submitPost = async (title, category, initialUpdate, usersEmail, location) => {
+export const submitPost = async (communityId, title, category, initialUpdate, usersEmail, location) => {
   try {
       const post = {
           title: title,
@@ -209,7 +209,7 @@ export const submitPost = async (title, category, initialUpdate, usersEmail, loc
           initialTimestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000)
        
       };
-      const docRef = await addDoc(collection(firestore, "Communities", 'e6G7JeaGgmdsUKcOqnaO', "Posts"), post);
+      const docRef = await addDoc(collection(firestore, "Communities", communityId, "Posts"), post);
       await updateDoc(docRef, {
           postID: docRef.id,
       });
@@ -217,4 +217,31 @@ export const submitPost = async (title, category, initialUpdate, usersEmail, loc
   } catch (e) {
       console.log(e);
   }
+}
+
+
+export const makeUpdate = async (title, usersEmail, postId, communityId ) =>  {
+  let posts: Object[] = [];
+  try{
+    const update = {
+      title: title,
+      postedBy: {
+        usersEmail: usersEmail
+      },
+      timestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000)
+   
+    };
+      
+      const documentRef = doc(firestore,  "Communities", communityId, "Posts", postId);
+
+      await updateDoc(documentRef, {
+          updates: arrayUnion(update)
+      });
+      
+    return "success";
+      
+  } catch (e) {
+      console.log(e);
+  }
+  return posts;
 }

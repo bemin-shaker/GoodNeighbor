@@ -160,6 +160,7 @@ export default function SubmitPost({ route, navigation }) {
         onPress={async () => {
           let usersEmail = await getEmail();
           let submit = await submitPost(
+            route.params.id,
             title,
             category,
             initialUpdate,
