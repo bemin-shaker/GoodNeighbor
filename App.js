@@ -10,6 +10,7 @@ import CommunityFeed from "./components/User/CommunityFeed/CommunityFeed";
 import ListItems from "./components/User/CommunityFeed/list";
 import PostDetails from "./components/User/CommunityFeed/PostDetails";
 import SubmitPost from "./components/User/SubmitPost";
+import JoinCommunity from "./components/User/joinCommunity";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,6 +82,13 @@ const App = () => {
         <Stack.Screen
           name="SubmitPost"
           component={SubmitPost}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="JoinCommunity"
+          component={JoinCommunity}
           options={{
             headerShown: false,
           }}

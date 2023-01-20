@@ -52,9 +52,11 @@ export default function NearbyCommunities() {
                 <Pressable
                   key={community.id}
                   onPress={() =>
-                    navigation.navigate("CommunityFeed", {
+                    navigation.navigate("JoinCommunity", {
                       id: community.id,
                       name: community.name,
+                      count: community.members_list.length,
+                      type: community.type,
                     })
                   }
                 >

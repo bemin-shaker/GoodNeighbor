@@ -153,6 +153,8 @@ export const getCommunities = async () =>  {
           communities.push({
               id: doc.id,
               name: data['name'],
+              members_list: data['members_list'],
+              type: data['type'],
           });
 
       });
@@ -244,4 +246,22 @@ export const makeUpdate = async (title, usersEmail, postId, communityId ) =>  {
       console.log(e);
   }
   return posts;
+}
+
+
+export const joinCommunity = async (usersEmail, communityId ) =>  {
+  try{
+    const update = {
+      email: usersEmail,
+    };
+      const documentRef = doc(firestore,  "Communities", communityId);
+      await updateDoc(documentRef, {
+        members_list: arrayUnion(update)
+      });
+      
+    return "success";
+      
+  } catch (e) {
+      console.log(e);
+  }
 }
