@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 
 const MapStyle = [
@@ -217,18 +217,34 @@ export default function Map({ communityId, communityName, posts, isLoading }) {
                     latitude: marker.location.latitude,
                     longitude: marker.location.longitude,
                   }}
-                  title={marker.title}
-                  description={marker.initialUpdate}
                   image={require("../../../assets/marker.png")}
                   tappable={true}
-                  onPress={() =>
-                    navigation.navigate("PostDetails", {
-                      postData: marker,
-                      id: communityId,
-                      name: communityName,
-                    })
-                  }
-                />
+                  calloutAnchor={{ x: 2.8, y: 1 }}
+                >
+                  <Callout
+                    tooltip={true}
+                    style={{
+                      minWidth: 100,
+                      height: 40,
+                      backgroundColor: "#333235",
+                      borderRadius: 20,
+                      color: "white",
+                      alignItems: "center",
+                      paddingVertical: 12,
+                      paddingHorizontal: 20,
+                      opacity: 0.9,
+                    }}
+                    onPress={() =>
+                      navigation.navigate("PostDetails", {
+                        postData: marker,
+                        id: communityId,
+                        name: communityName,
+                      })
+                    }
+                  >
+                    <Text style={{ color: "white" }}>{marker.title}</Text>
+                  </Callout>
+                </Marker>
               );
             })}
         </MapView>
