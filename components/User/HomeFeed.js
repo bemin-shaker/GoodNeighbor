@@ -13,9 +13,13 @@ import {
 
 export default function HomeFeed() {
   let [fontsLoaded] = useFonts({
-    Montserrat_700Bold,
     Montserrat_400Regular,
+    Montserrat_700Bold,
   });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>

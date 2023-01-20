@@ -39,9 +39,10 @@ export default function ListItems({
       <View style={styles.container}>
         <ScrollView>
           {posts &&
-            posts.map((post) => {
+            posts.map((post, index) => {
               return (
                 <Pressable
+                  key={index}
                   onPress={() =>
                     navigation.navigate("PostDetails", {
                       postData: post,
@@ -74,7 +75,7 @@ export default function ListItems({
                       />
                     )}
                   />
-                  <View style={{}}>
+                  <View>
                     <Chip
                       icon={() => (
                         <Icon

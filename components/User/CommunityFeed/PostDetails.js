@@ -37,7 +37,16 @@ export default function PostDetails({ route, navigation }) {
       return hours + " min ago";
     } else {
       hours = Math.floor(difference / 3600);
-      return hours + " hr ago";
+      if (hours > 24) {
+        let days = Math.floor(hours / 24);
+        if ((days = 1)) {
+          return "1 day ago";
+        } else {
+          return days + " days ago";
+        }
+      } else {
+        return hours + " hr ago";
+      }
     }
   }
 
@@ -88,7 +97,7 @@ export default function PostDetails({ route, navigation }) {
           {route.params.postData.updates &&
             route.params.postData.updates.map((post, index) => {
               return (
-                <View style={styles.listItem}>
+                <View style={styles.listItem} key={index}>
                   <Chip
                     icon={() => (
                       <Icon name="clock-outline" size={16} color="#BDBDBD" />
@@ -103,7 +112,6 @@ export default function PostDetails({ route, navigation }) {
                     {returnElapsedTIme(post.timestamp.seconds)}
                   </Chip>
                   <Text
-                    key={index}
                     style={{
                       color: "white",
                       fontFamily: "Montserrat_400Regular",
