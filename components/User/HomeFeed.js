@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
 
-//import MyCommunities from "./MyCommunities";
+import MyCommunities from "./MyCommunities";
 
 import NearbyCommunities from "./NearbyCommunities";
 import {
@@ -39,6 +39,7 @@ export default function HomeFeed() {
         />
       </View>
 
+      <MyCommunities />
       <NearbyCommunities />
     </View>
   );

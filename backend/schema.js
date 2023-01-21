@@ -5,11 +5,10 @@ const communities = {
     latitude: "number",
     longitude: "number",
   },
-  memberCount: "number",
-  members: [
+  members_list: [
     {
       id: "string",
-      name: "string",
+      email: "string",
     },
   ],
   admins: [
@@ -53,7 +52,7 @@ const users = {
   userId: "string",
   full_name: "string",
   email: "string",
-  joinedCommunities: [
+  joined_communities: [
     {
       communityId: "string",
       admin: "boolean",

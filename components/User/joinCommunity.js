@@ -13,7 +13,7 @@ import {
   Montserrat_400Regular,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
-import { joinCommunity, getEmail } from "../../backend/firebase";
+import { joinCommunity, getEmail, getUser } from "../../backend/firebase";
 
 export default function JoinCommunity({ route, navigation }) {
   let [fontsLoaded] = useFonts({
@@ -46,7 +46,13 @@ export default function JoinCommunity({ route, navigation }) {
         style={styles.loginButton}
         onPress={async () => {
           let usersEmail = await getEmail();
-          let submit = await joinCommunity(usersEmail, route.params.id);
+          let usersId = await getUser(usersEmail);
+          let submit = await joinCommunity(
+            usersEmail,
+            route.params.id,
+            route.params.name,
+            usersId[0].id
+          );
           if (submit == "success") {
             navigation.navigate("CommunityFeed", {
               id: route.params.id,

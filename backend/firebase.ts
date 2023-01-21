@@ -122,13 +122,15 @@ export const getEmail = async () => {
 }
 
 
+
 // FIRESTORE // --------------------------------------------------------------
 const addNewUser = async (fName: string, email: string) => {
   try {
     const userData = {
       full_name: fName,
-      email: email,
+      email: email.toLowerCase(),
       admin: false,
+      joined_communities: [],
     };
     const docRef = await addDoc(collection(firestore, "users"), userData);
     await updateDoc(docRef, {
@@ -249,16 +251,53 @@ export const makeUpdate = async (title, usersEmail, postId, communityId ) =>  {
 }
 
 
-export const joinCommunity = async (usersEmail, communityId ) =>  {
+export const getUser = async (email) =>  {
+  let userInfo: Object[] = [];
+  try{
+    const citiesRef = collection(firestore, "users");
+    const q = query(citiesRef, where("email", "==", email));
+
+      const querySnapshot = await getDocs(q);
+      
+      querySnapshot.forEach((doc) => {
+    
+          let data = doc.data();
+          userInfo.push({
+              id: doc.id,
+              full_name: data['full_name'],
+              joined_communities: data['joined_communities'],
+              email: data['email'],
+          });
+
+      });
+      
+  } catch (e) {
+      console.log(e);
+  }
+
+  return userInfo;
+}
+
+
+
+export const joinCommunity = async (usersEmail, communityId, communityName, userId) =>  {
   try{
     const update = {
       email: usersEmail,
+      id: userId
     };
       const documentRef = doc(firestore,  "Communities", communityId);
       await updateDoc(documentRef, {
         members_list: arrayUnion(update)
       });
-      
+      const documentRef2 = doc(firestore,  "users", userId);
+      await updateDoc(documentRef2, {
+        joined_communities: arrayUnion({
+          communityId: communityId,
+          communityName: communityName,
+          admin: false
+        })
+      });
     return "success";
       
   } catch (e) {
