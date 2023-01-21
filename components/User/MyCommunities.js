@@ -4,6 +4,7 @@ import {
   useFonts,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
+  Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
 import { getUser, getEmail } from "../../backend/firebase";
 import { List } from "react-native-paper";
@@ -17,6 +18,7 @@ export default function MyCommunities() {
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
     Montserrat_600SemiBold,
+    Montserrat_400Regular,
   });
 
   useEffect(() => {
@@ -46,9 +48,7 @@ export default function MyCommunities() {
   } else if (communities.length === 0) {
     return (
       <View style={styles.errMessage}>
-        <Text style={styles.header}>
-          You are not a member of any community. Join one now!
-        </Text>
+        <Text style={styles.header2}>Join your first community now.</Text>
       </View>
     );
   } else {
@@ -74,11 +74,12 @@ export default function MyCommunities() {
                     key={community.communityId}
                     titleStyle={{
                       color: "white",
-                      fontSize: 15,
+                      fontSize: 14.5,
                       fontFamily: "Montserrat_700Bold",
                     }}
                     style={{
                       backgroundColor: "#323232",
+                      borderRadius: 80,
                       padding: 10,
                       marginBottom: 15,
                     }}
@@ -110,10 +111,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "Montserrat_600SemiBold",
   },
+  header2: {
+    color: "white",
+    marginBottom: 5,
+    fontSize: 15,
+    fontFamily: "Montserrat_400Regular",
+  },
   errMessage: {
     backgroundColor: "#323232",
-    padding: 10,
+    paddingTop: 15,
+    paddingBottom: 10,
+    paddingHorizontal: 15,
     marginBottom: 15,
-    opacity: 0.8,
+    opacity: 0.6,
   },
 });

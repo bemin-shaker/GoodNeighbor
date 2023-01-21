@@ -18,7 +18,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Startup"
           component={Startup}
           options={{
@@ -50,7 +50,7 @@ const App = () => {
             },
             headerTintColor: "#fff",
           }}
-        /> */}
+        />
         <Stack.Screen
           name="Home"
           component={Home}

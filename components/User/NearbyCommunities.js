@@ -65,11 +65,12 @@ export default function NearbyCommunities() {
                     key={community.id}
                     titleStyle={{
                       color: "white",
-                      fontSize: 15,
+                      fontSize: 14.5,
                       fontFamily: "Montserrat_700Bold",
                     }}
                     style={{
                       backgroundColor: "#323232",
+                      borderRadius: 80,
                       padding: 10,
                       marginBottom: 15,
                     }}

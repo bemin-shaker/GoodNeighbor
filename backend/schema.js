@@ -55,6 +55,7 @@ const users = {
   joined_communities: [
     {
       communityId: "string",
+      communityName: "string",
       admin: "boolean",
     },
   ],
