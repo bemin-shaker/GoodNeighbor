@@ -142,7 +142,7 @@ export default function PostDetails({ route, navigation }) {
           activeOutlineColor="#C88D36"
           outlineColor="#999CAD"
           textColor="#DADADA"
-          label="Title"
+          label="Update"
           value={title}
           onChangeText={(title) => setTitle(title)}
           left={<TextInput.Icon icon="camera" onPress={pickImage} />}

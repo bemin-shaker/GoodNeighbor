@@ -195,6 +195,15 @@ export const getPosts = async (id) =>  {
   return posts;
 }
 
+//Get the categories array within the communities collection
+export const getCategories = async (id) =>  {
+  console.log("hi", id)
+  const docRef = doc(firestore, "Communities", id);
+  const docSnap = await getDoc(docRef);
+
+  return docSnap.data().categories
+}
+
 
 export const submitPost = async (communityId, title, category, initialUpdate, usersEmail, location) => {
   try {

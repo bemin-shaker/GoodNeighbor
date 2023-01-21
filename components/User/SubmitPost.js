@@ -6,7 +6,6 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
   Pressable,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
@@ -19,13 +18,17 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import * as Location from "expo-location";
+import DropDownPicker from "react-native-dropdown-picker";
+import { getCategories } from "../../backend/firebase";
 
 export default function SubmitPost({ route, navigation }) {
   const [title, setTitle] = React.useState("");
-  const [category, setCategory] = React.useState("");
   const [initialUpdate, setInitialUpdate] = React.useState("");
   const [location, setLocation] = React.useState(null);
   const [errorMsg, setErrorMsg] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const [items, setItems] = React.useState([]);
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -35,6 +38,25 @@ export default function SubmitPost({ route, navigation }) {
   const [image, setImage] = React.useState(
     Image.resolveAssetSource(defaultImage).uri
   );
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getCategories(route.params.id);
+        data.map((item, index) => {
+          setItems((items) => [
+            ...items,
+            { key: index, label: item, value: item },
+          ]);
+        });
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   React.useEffect(() => {
     (async () => {
@@ -110,16 +132,24 @@ export default function SubmitPost({ route, navigation }) {
         onChangeText={(title) => setTitle(title)}
       />
 
-      <TextInput
-        style={styles.textInput}
-        mode={"outlined"}
-        activeOutlineColor="#C88D36"
-        outlineColor="#999CAD"
-        textColor="#DADADA"
-        label="Category"
-        value={category}
-        onChangeText={(category) => setCategory(category)}
-      />
+      <View style={{ alignItems: "center", zIndex: 1000 }}>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          theme="DARK"
+          multiple={false}
+          mode="BADGE"
+          placeholder="Select a Category"
+          style={styles.dropdown}
+          textStyle={styles.dropdownText}
+          dropDownContainerStyle={styles.dropdown}
+          listItemContainerStyle={styles.dropdownItem}
+        />
+      </View>
 
       <TextInput
         style={styles.textInput}
@@ -162,7 +192,7 @@ export default function SubmitPost({ route, navigation }) {
           let submit = await submitPost(
             route.params.id,
             title,
-            category,
+            value,
             initialUpdate,
             usersEmail,
             location
@@ -233,5 +263,27 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 17,
     textAlign: "center",
+  },
+  containerStyle: {
+    flex: 1,
+    maxHeight: Dimensions.get("screen").width * 0.15,
+    width: Dimensions.get("screen").width * 0.8,
+  },
+  dropdown: {
+    backgroundColor: "black",
+    borderWidth: 1,
+    borderColor: "#999CAD",
+    marginBottom: 15,
+    width: Dimensions.get("screen").width * 0.8,
+    borderRadius: 5,
+  },
+  dropdownItem: {
+    backgroundColor: "black",
+    borderBottomWidth: 1,
+    borderBottomColor: "#999CAD",
+  },
+  dropdownText: {
+    opacity: 0.4,
+    fontSize: 16,
   },
 });

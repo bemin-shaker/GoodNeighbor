@@ -27,7 +27,7 @@ export default function CommunityFeed({ route, navigation }) {
       try {
         const data = await getPosts(route.params.id);
         setPostsData(data);
-        console.log("Hi", postsData);
+        // console.log("Hi", postsData);
         setLoading(false);
       } catch (e) {
         console.log(e);
