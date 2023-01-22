@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -45,49 +45,72 @@ export default function NearbyCommunities() {
     return (
       <View>
         <Text style={styles.header}>Nearby Communities</Text>
-        <List.Section>
+        <List.Section style={{ display: "flex", flexDirection: "row" }}>
           {communities &&
             communities.map((community) => {
-              return (
-                <Pressable
-                  key={community.id}
-                  onPress={() =>
-                    navigation.navigate("JoinCommunity", {
-                      id: community.id,
-                      name: community.name,
-                      count: community.members_list.length,
-                      type: community.type,
-                    })
-                  }
-                >
-                  <List.Item
-                    title={community.name}
+              if (community.type === "City") {
+                return (
+                  <Pressable
                     key={community.id}
-                    titleStyle={{
-                      color: "white",
-                      fontSize: 14.5,
-                      fontFamily: "Montserrat_700Bold",
-                    }}
-                    style={{
-                      backgroundColor: "#323232",
-                      borderRadius: 80,
-                      padding: 10,
-                      marginBottom: 15,
-                    }}
-                    left={() => (
-                      <List.Icon
-                        color={"#323232"}
-                        style={{
-                          backgroundColor: "#F5F5F9",
-                          borderRadius: 50,
-                          padding: 7,
-                        }}
-                        icon="city"
-                      />
-                    )}
-                  />
-                </Pressable>
-              );
+                    onPress={() =>
+                      navigation.navigate("JoinCommunity", {
+                        id: community.id,
+                        name: community.name,
+                        count: community.members_list.length,
+                        type: community.type,
+                      })
+                    }
+                  >
+                    <List.Item
+                      title={community.name}
+                      key={community.id}
+                      titleStyle={styles.listTitle}
+                      description={community.members_list.length + " Members"}
+                      descriptionStyle={styles.listDescription}
+                      titleNumberOfLines={3}
+                      style={styles.list}
+                      right={() => (
+                        <List.Icon
+                          color={"white"}
+                          style={styles.icon}
+                          icon="city"
+                        />
+                      )}
+                    />
+                  </Pressable>
+                );
+              } else if (community.type === "University") {
+                return (
+                  <Pressable
+                    key={community.id}
+                    onPress={() =>
+                      navigation.navigate("JoinCommunity", {
+                        id: community.id,
+                        name: community.name,
+                        count: community.members_list.length,
+                        type: community.type,
+                      })
+                    }
+                  >
+                    <List.Item
+                      title={community.name}
+                      key={community.id}
+                      description={community.members_list.length + " Members"}
+                      descriptionStyle={styles.listDescription}
+                      titleStyle={styles.listTitle}
+                      titleNumberOfLines={2}
+                      style={styles.list}
+                      right={() => (
+                        <List.Icon
+                          color={"white"}
+                          style={styles.icon}
+                          icon="school"
+                        />
+                      )}
+                    />
+                  </Pressable>
+                );
+              }
             })}
         </List.Section>
       </View>
@@ -101,5 +124,37 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 15,
     fontFamily: "Montserrat_600SemiBold",
+  },
+  listTitle: {
+    color: "white",
+    fontSize: 14,
+    fontFamily: "Montserrat_700Bold",
+    wordWrap: "break-word",
+  },
+  list: {
+    backgroundColor: "#323232",
+    borderRadius: 30,
+    padding: 5,
+    marginBottom: 15,
+    marginRight: 15,
+    // borderWidth: 1,
+    // borderColor: "white",
+    width: Dimensions.get("window").width / 2.35,
+    height: Dimensions.get("window").height / 9,
+    overflow: "hidden",
+  },
+  listDescription: {
+    color: "white",
+    opacity: 0.5,
+    paddingTop: 3,
+  },
+  icon: {
+    position: "absolute",
+    borderRadius: 50,
+    bottom: 0,
+    right: 0,
+    transform: [{ scaleX: 5 }, { scaleY: 5 }, { translateY: 4 }],
+    opacity: 0.1,
+    borderRadius: 90,
   },
 });
