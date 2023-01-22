@@ -8,7 +8,14 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { List, FAB, Chip, Button, TextInput } from "react-native-paper";
+import {
+  List,
+  FAB,
+  Chip,
+  Button,
+  TextInput,
+  Divider,
+} from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import {
   useFonts,
@@ -97,42 +104,74 @@ export default function PostDetails({ route, navigation }) {
           {route.params.postData.updates &&
             route.params.postData.updates.map((post, index) => {
               return (
-                <View style={styles.listItem} key={index}>
-                  <Chip
-                    icon={() => (
-                      <Icon name="clock-outline" size={16} color="#BDBDBD" />
-                    )}
-                    style={styles.fab2}
-                    textStyle={{
-                      color: "#BDBDBD",
-                      transform: [{ translateX: -3 }],
-                    }}
-                    onPress={() => console.log("Pressed")}
-                  >
-                    {returnElapsedTIme(post.timestamp.seconds)}
-                  </Chip>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontFamily: "Montserrat_400Regular",
-                      fontSize: 16,
-                      marginBottom: 10,
-                      margin: 0,
-                      marginLeft: 20,
-                    }}
-                  >
-                    {post.title}
-                  </Text>
-                  <Image
-                    style={styles.updateImg}
-                    variant="image"
-                    source={{
-                      uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
-                    }}
-                  ></Image>
+                <View>
+                  <View style={styles.listItem} key={index}>
+                    <Chip
+                      icon={() => (
+                        <Icon name="clock-outline" size={16} color="#BDBDBD" />
+                      )}
+                      style={styles.fab2}
+                      textStyle={{
+                        color: "#BDBDBD",
+                        transform: [{ translateX: -3 }],
+                      }}
+                      onPress={() => console.log("Pressed")}
+                    >
+                      {returnElapsedTIme(post.timestamp.seconds)}
+                    </Chip>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontFamily: "Montserrat_400Regular",
+                        fontSize: 16,
+                        marginBottom: 10,
+                        margin: 0,
+                        marginLeft: 20,
+                      }}
+                    >
+                      {post.title}
+                    </Text>
+                    <Image
+                      style={styles.updateImg}
+                      variant="image"
+                      source={{
+                        uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
+                      }}
+                    ></Image>
+                  </View>
+                  <Divider style={{ opacity: 0.6 }} />
                 </View>
               );
             })}
+          <View style={styles.listItem}>
+            <Chip
+              icon={() => (
+                <Icon name="clock-outline" size={16} color="#BDBDBD" />
+              )}
+              style={styles.fab2}
+              textStyle={{
+                color: "#BDBDBD",
+                transform: [{ translateX: -3 }],
+              }}
+              onPress={() => console.log("Pressed")}
+            >
+              {returnElapsedTIme(
+                route.params.postData.initialTimestamp.seconds
+              )}
+            </Chip>
+            <Text
+              style={{
+                color: "white",
+                fontFamily: "Montserrat_400Regular",
+                fontSize: 16,
+                marginBottom: 10,
+                margin: 0,
+                marginLeft: 20,
+              }}
+            >
+              {route.params.postData.initialUpdate}
+            </Text>
+          </View>
         </ScrollView>
       </View>
       <View style={styles.bottomContainer}>
@@ -201,7 +240,7 @@ const styles = StyleSheet.create({
   subHeader: {
     color: "#C88D36",
     marginTop: 10,
-    marginBottom: 10,
+    //  marginBottom: 10,
     marginLeft: 20,
     fontSize: 18,
     fontFamily: "Montserrat_600SemiBold",
@@ -216,10 +255,11 @@ const styles = StyleSheet.create({
   },
   listItem: {
     marginBottom: 30,
-  },
-  listContainer: {
     paddingLeft: 20,
     paddingRight: 20,
+    paddingTop: 15,
+  },
+  listContainer: {
     marginTop: 10,
   },
   textInput: {

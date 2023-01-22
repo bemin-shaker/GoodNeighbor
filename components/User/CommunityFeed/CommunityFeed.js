@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { FAB } from "react-native-paper";
 
 import Map from "./map";

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { List, FAB, Chip } from "react-native-paper";
+import { List, FAB, Chip, Divider } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import {
   useFonts,
@@ -41,58 +41,79 @@ export default function ListItems({
           {posts &&
             posts.map((post, index) => {
               return (
-                <Pressable
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate("PostDetails", {
-                      postData: post,
-                      id: communityId,
-                      name: communityName,
-                    })
-                  }
-                >
-                  <List.Item
-                    key={post.id}
-                    title={post.title}
-                    titleStyle={{
-                      color: "white",
-                      fontFamily: "Montserrat_600SemiBold",
-                      fontSize: 16,
-                      marginBottom: 5,
-                    }}
-                    description={post.initialUpdate}
-                    descriptionStyle={{ color: "#DADADA" }}
-                    left={(props) => (
-                      <List.Image
-                        key={post.id}
-                        variant="image"
-                        source={{
-                          uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
-                        }}
-                        style={{
-                          borderRadius: 10,
-                        }}
-                      />
-                    )}
-                  />
-                  <View>
-                    <Chip
-                      icon={() => (
-                        <Icon
-                          name="comment-processing"
-                          size={16}
-                          color="white"
+                <View>
+                  <Pressable
+                    style={styles.listItem}
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate("PostDetails", {
+                        postData: post,
+                        id: communityId,
+                        name: communityName,
+                      })
+                    }
+                  >
+                    <List.Item
+                      key={post.id}
+                      title={post.title}
+                      titleStyle={{
+                        color: "white",
+                        fontFamily: "Montserrat_600SemiBold",
+                        fontSize: 16,
+                        marginBottom: 5,
+                      }}
+                      description={post.initialUpdate}
+                      descriptionStyle={{ color: "#DADADA" }}
+                      left={(props) => (
+                        <List.Image
+                          key={post.id}
+                          variant="image"
+                          source={{
+                            uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
+                          }}
+                          style={{
+                            borderRadius: 10,
+                          }}
                         />
                       )}
-                      title={post.updates.length}
-                      style={styles.fab}
-                      textStyle={{ color: "white" }}
-                      onPress={() => console.log("Pressed")}
-                    >
-                      {post.updates.length}
-                    </Chip>
-                  </View>
-                </Pressable>
+                    />
+                    <View style={{ display: "flex", flexDirection: "row" }}>
+                      <Chip
+                        icon={() => (
+                          <Icon
+                            name="comment-processing"
+                            size={16}
+                            color="white"
+                          />
+                        )}
+                        title={post.updates.length}
+                        style={styles.fab}
+                        textStyle={{ color: "white" }}
+                        onPress={() =>
+                          navigation.navigate("PostDetails", {
+                            postData: post,
+                            id: communityId,
+                            name: communityName,
+                          })
+                        }
+                      >
+                        {post.updates.length}
+                      </Chip>
+                      <Chip
+                        icon={() => (
+                          <Icon name="share" size={16} color="white" />
+                        )}
+                        title={post.updates.length}
+                        style={styles.fab}
+                        textStyle={{ color: "white" }}
+                        onPress={() => console.log("Pressed")}
+                      >
+                        Share
+                      </Chip>
+                    </View>
+                  </Pressable>
+                  <Divider style={{ opacity: 0.6 }} />
+                </View>
               );
             })}
           <View style={{ height: 1000 }} />
@@ -104,13 +125,16 @@ export default function ListItems({
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 20,
-    paddingRight: 25,
     paddingBottom: 400,
   },
   fab: {
     backgroundColor: "transparent",
     margin: 0,
     padding: 0,
+  },
+  listItem: {
+    paddingLeft: 20,
+    paddingRight: 25,
+    paddingBottom: 10,
   },
 });
