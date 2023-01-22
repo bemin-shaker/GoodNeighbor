@@ -41,6 +41,8 @@ export default function NearbyCommunities() {
         <Text>Loading..</Text>
       </View>
     );
+  } else if (communities.length === 0) {
+    return <View></View>;
   } else {
     return (
       <View>
