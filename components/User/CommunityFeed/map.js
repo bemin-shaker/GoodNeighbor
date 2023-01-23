@@ -184,7 +184,7 @@ const MapStyle = [
 
 export default function Map({ communityId, communityName, posts, isLoading }) {
   const navigation = useNavigation();
-  console.log(posts);
+  //  console.log(posts);
 
   if (isLoading) {
     return (

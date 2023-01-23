@@ -54,7 +54,7 @@ export default function ListItems({
                     }
                   >
                     <List.Item
-                      key={post.id}
+                      key={index}
                       title={post.title}
                       titleStyle={{
                         color: "white",

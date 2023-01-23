@@ -34,7 +34,7 @@ export default function JoinCommunity({ route, navigation }) {
         <Text style={styles.lightText}>This is</Text>
         <Text style={styles.boldText}>{route.params.name}</Text>
         <Text style={styles.count}>
-          {route.params.count} Members | {route.params.type}
+          {route.params.count} Members {" • "} {route.params.type}
         </Text>
       </View>
       <Image
