@@ -305,7 +305,8 @@ export const joinCommunity = async (usersEmail, communityId, communityName, user
   try{
     const update = {
       email: usersEmail,
-      id: userId
+      id: userId, 
+      admin: false
     };
       const documentRef = doc(firestore,  "Communities", communityId);
       await updateDoc(documentRef, {
@@ -324,4 +325,44 @@ export const joinCommunity = async (usersEmail, communityId, communityName, user
   } catch (e) {
       console.log(e);
   }
+}
+
+export const getCommunityMembers = async (id) =>  {
+  const docRef = doc(firestore, "Communities", id);
+  const docSnap = await getDoc(docRef);
+  return docSnap.data().members_list
+}
+
+
+
+export const makeAdmin = async ( communityId, userId, email ) =>  {
+  let posts: Object[] = [];
+  try{
+    const update = {
+      id: userId,
+      admin: true,
+      email: email
+   
+    };
+    
+    const documentRef = doc(firestore,  "Communities", communityId);
+
+    await updateDoc(documentRef, {
+        members_list: arrayRemove({
+          id: userId,
+          admin: false,
+          email: email
+        })
+    });
+
+    await updateDoc(documentRef, {
+      members_list: arrayUnion(update),
+    });
+      
+    return "success";
+      
+  } catch (e) {
+      console.log(e);
+  }
+  return posts;
 }

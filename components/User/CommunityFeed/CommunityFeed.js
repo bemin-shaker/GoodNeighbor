@@ -4,7 +4,7 @@ import { FAB } from "react-native-paper";
 
 import Map from "./map";
 import ListItems from "./list";
-import { getPosts } from "../../../backend/firebase";
+import { getPosts, getUser, getEmail } from "../../../backend/firebase";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -14,6 +14,8 @@ import {
 export default function CommunityFeed({ route, navigation }) {
   const [loading, setLoading] = useState(true);
   const [postsData, setPostsData] = useState([undefined]);
+  const [userData, setUserData] = useState([undefined]);
+  const [userId, setUserId] = useState("");
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -33,6 +35,27 @@ export default function CommunityFeed({ route, navigation }) {
         console.log(e);
       }
     }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect has been called");
+
+    async function fetchData() {
+      try {
+        const email = await getEmail();
+        const data = await getUser(email);
+        setUserId(data[0]["id"]);
+        const community = data[0]["joined_communities"].find(
+          (community) => community.communityId === route.params.id
+        );
+        setUserData(community);
+        setLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     fetchData();
   }, []);
 
@@ -64,6 +87,23 @@ export default function CommunityFeed({ route, navigation }) {
               })
             }
           />
+
+          {userData && userData.admin == true ? (
+            <FAB
+              icon="cog"
+              color="white"
+              style={styles.fab}
+              onPress={() =>
+                navigation.navigate("AdminFeed", {
+                  id: route.params.id,
+                  name: route.params.name,
+                  userId: userId,
+                })
+              }
+            />
+          ) : (
+            <></>
+          )}
         </View>
         <Pressable onPress={() => navigation.navigate("Home")}>
           <Text style={{ color: "white" }}>Back</Text>
@@ -114,7 +154,7 @@ const styles = StyleSheet.create({
   fab: {
     backgroundColor: "#262626",
     marginTop: 20,
-    marginRight: 20,
+    // marginRight: 20,
     borderRadius: 50,
   },
 });
