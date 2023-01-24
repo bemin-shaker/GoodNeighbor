@@ -13,7 +13,11 @@ import {
   Montserrat_700Bold,
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
-import { getCommunityMembers, makeAdmin } from "../../backend/firebase";
+import {
+  getCommunityMembers,
+  makeAdmin,
+  removeMember,
+} from "../../backend/firebase";
 import { List, Button, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -112,7 +116,25 @@ export default function AdminFeed({ route }) {
                         justifyContent: "center",
                       }}
                       left={() => (
-                        <List.Icon icon="delete-outline" color="#C88D36" />
+                        <Pressable
+                          onPress={async () => {
+                            let submit = await removeMember(
+                              route.params.id,
+                              route.params.name,
+                              member.id,
+                              member.email,
+                              member.admin
+                            );
+                            if (submit == "success") {
+                              navigation.navigate("CommunityFeed", {
+                                id: route.params.id,
+                                name: route.params.name,
+                              });
+                            }
+                          }}
+                        >
+                          <List.Icon icon="delete-outline" color="#C88D36" />
+                        </Pressable>
                       )}
                       right={() => (
                         <Chip
@@ -139,7 +161,7 @@ export default function AdminFeed({ route }) {
                       style={{
                         backgroundColor: "#323232",
                         borderRadius: 80,
-                        padding: 10,
+                        padding: 15,
                         marginBottom: 15,
                         minHeight: 70,
                         justifyContent: "center",
@@ -149,6 +171,7 @@ export default function AdminFeed({ route }) {
                           onPress={async () => {
                             let submit = await makeAdmin(
                               route.params.id,
+                              route.params.name,
                               member.id,
                               member.email
                             );
@@ -165,7 +188,29 @@ export default function AdminFeed({ route }) {
                         </Button>
                       )}
                       left={() => (
-                        <List.Icon icon="delete-outline" color="#C88D36" />
+                        <Pressable
+                          onPress={async () => {
+                            let submit = await removeMember(
+                              route.params.id,
+                              route.params.name,
+                              member.id,
+                              member.email,
+                              member.admin
+                            );
+                            if (submit == "success") {
+                              navigation.navigate("CommunityFeed", {
+                                id: route.params.id,
+                                name: route.params.name,
+                              });
+                            }
+                          }}
+                        >
+                          <List.Icon
+                            icon="delete-outline"
+                            color="#C88D36"
+                            style={{ paddingVertical: 5 }}
+                          />
+                        </Pressable>
                       )}
                     />
                   );

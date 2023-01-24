@@ -335,7 +335,7 @@ export const getCommunityMembers = async (id) =>  {
 
 
 
-export const makeAdmin = async ( communityId, userId, email ) =>  {
+export const makeAdmin = async ( communityId, communityName, userId, email ) =>  {
   let posts: Object[] = [];
   try{
     const update = {
@@ -344,9 +344,7 @@ export const makeAdmin = async ( communityId, userId, email ) =>  {
       email: email
    
     };
-    
     const documentRef = doc(firestore,  "Communities", communityId);
-
     await updateDoc(documentRef, {
         members_list: arrayRemove({
           id: userId,
@@ -354,13 +352,53 @@ export const makeAdmin = async ( communityId, userId, email ) =>  {
           email: email
         })
     });
-
     await updateDoc(documentRef, {
       members_list: arrayUnion(update),
     });
-      
+    const update2 = {
+      admin: true,
+      communityName: communityName,
+      communityId: communityId
+    };
+    const documentRef2 = doc(firestore,  "users", userId);
+    await updateDoc(documentRef2, {
+        joined_communities: arrayRemove({
+          admin: false,
+          communityName: communityName,
+          communityId: communityId
+        })
+    });
+    await updateDoc(documentRef2, {
+      joined_communities: arrayUnion(update2),
+    });
+    return "success";  
+  } catch (e) {
+      console.log(e);
+  }
+  return posts;
+}
+
+
+export const removeMember = async ( communityId, communityName, userId, email, admin ) =>  {
+  let posts: Object[] = [];
+  try{
+    const documentRef = doc(firestore,  "Communities", communityId);
+    await updateDoc(documentRef, {
+        members_list: arrayRemove({
+          id: userId,
+          admin: admin,
+          email: email
+        })
+    });
+    const documentRef2 = doc(firestore,  "users", userId);
+    await updateDoc(documentRef2, {
+        joined_communities: arrayRemove({
+          admin: admin,
+          communityName: communityName,
+          communityId: communityId
+        })
+    });
     return "success";
-      
   } catch (e) {
       console.log(e);
   }
