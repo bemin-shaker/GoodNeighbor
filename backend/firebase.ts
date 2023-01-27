@@ -129,7 +129,6 @@ const addNewUser = async (fName: string, email: string) => {
     const userData = {
       full_name: fName,
       email: email.toLowerCase(),
-      admin: false,
       joined_communities: [],
     };
     const docRef = await addDoc(collection(firestore, "users"), userData);
