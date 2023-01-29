@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { FAB } from "react-native-paper";
-
+import Icon from "react-native-vector-icons/Ionicons";
 import Map from "./map";
 import ListItems from "./list";
 import { getPosts, getUser, getEmail } from "../../../backend/firebase";
@@ -106,7 +106,7 @@ export default function CommunityFeed({ route, navigation }) {
                     )}
                 </View>
                 <Pressable onPress={() => navigation.goBack()}>
-                    <Text style={{ color: "white" }}>Back</Text>
+                    <Icon name="md-arrow-back" size={24} color="white" />
                 </Pressable>
 
                 <ListItems

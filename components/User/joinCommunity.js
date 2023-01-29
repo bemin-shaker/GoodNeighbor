@@ -8,7 +8,7 @@ import {
     Image,
 } from "react-native";
 
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import {
     useFonts,
@@ -29,8 +29,11 @@ export default function JoinCommunity({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text style={{ color: "white" }}>Back</Text>
+            <Pressable
+                styles={styles.backButton}
+                onPress={() => navigation.goBack()}
+            >
+                <Icon name="md-arrow-back" size={24} color="white" />
             </Pressable>
             <View style={styles.header}>
                 <Text style={styles.lightText}>This is</Text>
@@ -74,8 +77,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#000000",
         paddingTop: 150,
         padding: 20,
-        height: Dimensions.get("screen").height * 1,
+        display: "flex",
+        flex: 1,
         alignItems: "center",
+        width: "100%",
     },
 
     lightText: {
@@ -120,7 +125,6 @@ const styles = StyleSheet.create({
     image: {
         width: Dimensions.get("screen").width * 0.8,
         height: Dimensions.get("screen").height * 0.25,
-
         borderRadius: 400,
         opacity: 1,
         marginTop: 30,
