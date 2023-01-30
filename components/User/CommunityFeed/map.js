@@ -219,31 +219,42 @@ export default function Map({ communityId, communityName, posts, isLoading }) {
                   }}
                   image={require("../../../assets/marker.png")}
                   tappable={true}
-                  calloutAnchor={{ x: 2.8, y: 1 }}
+                  onPress={() =>
+                    navigation.navigate("PostDetails", {
+                      postData: marker,
+                      id: communityId,
+                      name: communityName,
+                    })
+                  }
                 >
-                  <Callout
-                    tooltip={true}
+                  <View
                     style={{
-                      minWidth: 100,
+                      maxWidth: 200,
+                      color: "white",
                       height: 40,
                       backgroundColor: "#333235",
                       borderRadius: 20,
                       color: "white",
                       alignItems: "center",
                       paddingVertical: 12,
-                      paddingHorizontal: 20,
-                      opacity: 0.9,
+                      zIndex: -1,
+                      textOverflow: "ellipsis",
                     }}
-                    onPress={() =>
-                      navigation.navigate("PostDetails", {
-                        postData: marker,
-                        id: communityId,
-                        name: communityName,
-                      })
-                    }
                   >
-                    <Text style={{ color: "white" }}>{marker.title}</Text>
-                  </Callout>
+                    <Text
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={{
+                        color: "white",
+                        opacity: 1,
+                        transform: [{ translateX: 12 }],
+                        marginLeft: 30,
+                        marginRight: 25,
+                      }}
+                    >
+                      {marker.title}
+                    </Text>
+                  </View>
                 </Marker>
               );
             })}
