@@ -46,7 +46,7 @@ export default function PostDetails({ route, navigation }) {
       hours = Math.floor(difference / 3600);
       if (hours > 24) {
         let days = Math.floor(hours / 24);
-        if ((days = 1)) {
+        if (days === 1) {
           return "1 day ago";
         } else {
           return days + " days ago";
