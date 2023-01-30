@@ -19,6 +19,7 @@ export default function Signin({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [visible, setVisible] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const onDismissSnackBar = () => setVisible(false);
 
@@ -36,29 +37,48 @@ export default function Signin({ navigation }) {
                 <View style={styles.container}>
                     <Text style={styles.headerText}>Login</Text>
                     <Text style={styles.headerTextSmall}>
-                        Welcome back, you’ve been missed!
+                        Welcome back, you've been missed!
                     </Text>
                     <View style={styles.curve}>
                         <View style={styles.signupForm}>
                             <TextInput
                                 style={styles.textInput}
+                                autoCapitalize="none"
                                 activeUnderlineColor="#C88D36"
+                                inputMode="email"
                                 underlineColor="#DADADA"
                                 textColor="#DADADA"
                                 label="Email"
                                 left={<TextInput.Icon icon="email-outline" />}
                                 onChangeText={(email) => setEmail(email)}
+                                placeholder="example@website.com"
                             />
-                            <TextInput
-                                style={styles.textInput}
-                                activeUnderlineColor="#C88D36"
-                                underlineColor="#DADADA"
-                                textColor="#DADADA"
-                                label="Password"
-                                secureTextEntry
-                                left={<TextInput.Icon icon="lock-outline" />}
-                                onChangeText={(text) => setPassword(text)}
-                            />
+                            <View>
+                                <TextInput
+                                    inputMode="text"
+                                    style={styles.textInput}
+                                    activeUnderlineColor="#C88D36"
+                                    underlineColor="#DADADA"
+                                    textColor="#DADADA"
+                                    label="Password"
+                                    secureTextEntry={!showPassword}
+                                    left={
+                                        <TextInput.Icon icon="lock-outline" />
+                                    }
+                                    right={
+                                        <TextInput.Icon
+                                            icon={
+                                                showPassword ? "eye" : "eye-off"
+                                            }
+                                            onPress={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                        />
+                                    }
+                                    onChangeText={(text) => setPassword(text)}
+                                    placeholder="********"
+                                />
+                            </View>
 
                             <Pressable
                                 style={styles.signupButton}
