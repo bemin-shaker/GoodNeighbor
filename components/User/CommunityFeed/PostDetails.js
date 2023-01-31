@@ -24,7 +24,7 @@ import {
 } from "@expo-google-fonts/montserrat";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { makeUpdate, getEmail } from "../../../backend/firebase";
-
+import Back from "../../Back";
 export default function PostDetails({ route, navigation }) {
   const [title, setTitle] = React.useState("");
   let [fontsLoaded] = useFonts({
@@ -72,6 +72,7 @@ export default function PostDetails({ route, navigation }) {
 
   return (
     <View>
+      <Back />
       <Image
         style={styles.img}
         variant="image"
@@ -89,16 +90,6 @@ export default function PostDetails({ route, navigation }) {
         >
           {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
         </Chip>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("CommunityFeed", {
-              id: route.params.id,
-              name: route.params.name,
-            })
-          }
-        >
-          <Text>Back</Text>
-        </Pressable>
         <Text style={styles.subHeader}>Updates</Text>
         <ScrollView style={styles.listContainer}>
           {route.params.postData.updates &&
@@ -115,7 +106,6 @@ export default function PostDetails({ route, navigation }) {
                         color: "#BDBDBD",
                         transform: [{ translateX: -3 }],
                       }}
-                      onPress={() => console.log("Pressed")}
                     >
                       {returnElapsedTIme(post.timestamp.seconds)}
                     </Chip>

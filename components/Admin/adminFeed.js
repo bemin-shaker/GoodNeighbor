@@ -20,6 +20,7 @@ import {
 } from "../../backend/firebase";
 import { List, Button, Chip } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import Back from "../Back";
 
 export default function AdminFeed({ route }) {
   const [loading, setLoading] = useState(true);
@@ -58,16 +59,7 @@ export default function AdminFeed({ route }) {
   } else if (members.length <= 1) {
     return (
       <View style={styles.container}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("CommunityFeed", {
-              id: route.params.id,
-              name: route.params.name,
-            })
-          }
-        >
-          <Text>Back</Text>
-        </Pressable>
+        <Back />
         <Text style={styles.header}>Community Members</Text>
         <View style={styles.errMessage}>
           <Text style={styles.header2}>
@@ -79,16 +71,7 @@ export default function AdminFeed({ route }) {
   } else {
     return (
       <View style={styles.container}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("CommunityFeed", {
-              id: route.params.id,
-              name: route.params.name,
-            })
-          }
-        >
-          <Text style={{ color: "white" }}>Back</Text>
-        </Pressable>
+        <Back />
         <Text style={styles.header}>Community Members</Text>
         <ScrollView>
           <List.Section>
@@ -225,7 +208,7 @@ export default function AdminFeed({ route }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
-    paddingTop: 60,
+    paddingTop: 95,
     padding: 20,
     height: Dimensions.get("screen").height * 1,
   },

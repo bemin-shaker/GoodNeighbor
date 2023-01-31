@@ -20,6 +20,7 @@ import {
 import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import { getCategories } from "../../backend/firebase";
+import Back from "../Back";
 
 export default function SubmitPost({ route, navigation }) {
   const [title, setTitle] = React.useState("");
@@ -49,7 +50,7 @@ export default function SubmitPost({ route, navigation }) {
             { key: index, label: item, value: item },
           ]);
         });
-        setLoading(false);
+        //setLoading(false);
       } catch (e) {
         console.log(e);
       }
@@ -109,16 +110,8 @@ export default function SubmitPost({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Pressable
-        onPress={() =>
-          navigation.navigate("CommunityFeed", {
-            id: route.params.id,
-            name: route.params.name,
-          })
-        }
-      >
-        <Text style={{ color: "white" }}>Back</Text>
-      </Pressable>
+      <Back />
+
       <Text style={styles.title}>Post an Incident</Text>
 
       <TextInput
@@ -148,6 +141,8 @@ export default function SubmitPost({ route, navigation }) {
           textStyle={styles.dropdownText}
           dropDownContainerStyle={styles.dropdown}
           listItemContainerStyle={styles.dropdownItem}
+          activeOutlineColor="#C88D36"
+          outlineColor="#999CAD"
         />
       </View>
 
