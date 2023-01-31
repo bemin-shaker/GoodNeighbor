@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import { FAB } from "react-native-paper";
+import { FAB, ActivityIndicator, MD2Colors } from "react-native-paper";
+import MenuComponent from "../../menu";
 import Icon from "react-native-vector-icons/Ionicons";
 import Map from "./map";
 import ListItems from "./list";
@@ -60,62 +61,76 @@ export default function CommunityFeed({ route, navigation }) {
     fetchData();
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <Back />
-      <Map
-        communityId={route.params.id}
-        communityName={route.params.name}
-        posts={postsData}
-        isLoading={loading}
+  if (loading) {
+    return (
+      <ActivityIndicator
+        style={{
+          height: "100%",
+          backgroundColor: "black",
+        }}
+        animating={true}
+        color={"#C88D36"}
+        size={"large"}
       />
-      <View style={styles.listView}>
-        <View style={styles.flexCont}>
-          <View>
-            <Text style={styles.header}>{route.params.name}</Text>
-            <Text style={styles.subHeader}>
-              {postsData.length} incidents in the past 24 hours
-            </Text>
-          </View>
-
-          <FAB
-            icon="plus"
-            color="white"
-            style={styles.fab}
-            onPress={() =>
-              navigation.navigate("SubmitPost", {
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        {userData && userData.admin == true ? (
+          <>
+            <MenuComponent
+              navigation={navigation}
+              info={{
                 id: route.params.id,
                 name: route.params.name,
-              })
-            }
-          />
-
-          {userData && userData.admin == true ? (
-            <FAB
-              icon="cog"
-              color="white"
-              style={styles.fab}
-              onPress={() =>
-                navigation.navigate("AdminFeed", {
-                  id: route.params.id,
-                  name: route.params.name,
-                  userId: userId,
-                })
-              }
+                userId: userId,
+              }}
             />
-          ) : (
-            <></>
-          )}
-        </View>
-        <ListItems
+          </>
+        ) : (
+          <></>
+        )}
+
+        <Back />
+
+        <Map
           communityId={route.params.id}
           communityName={route.params.name}
           posts={postsData}
           isLoading={loading}
         />
+
+        <View style={styles.listView}>
+          <View style={styles.flexCont}>
+            <View>
+              <Text style={styles.header}>{route.params.name}</Text>
+              <Text style={styles.subHeader}>
+                {postsData.length} incidents in the past 24 hours
+              </Text>
+            </View>
+
+            <FAB
+              icon="plus"
+              color="white"
+              style={styles.fab}
+              onPress={() =>
+                navigation.navigate("SubmitPost", {
+                  id: route.params.id,
+                  name: route.params.name,
+                })
+              }
+            />
+          </View>
+          <ListItems
+            communityId={route.params.id}
+            communityName={route.params.name}
+            posts={postsData}
+            isLoading={loading}
+          />
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -142,6 +157,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 25,
     transform: [{ translateY: -40 }],
     zIndex: 1000,
+    height: "100%",
   },
   flexCont: {
     display: "flex",
@@ -153,7 +169,7 @@ const styles = StyleSheet.create({
   fab: {
     backgroundColor: "#262626",
     marginTop: 20,
-    // marginRight: 20,
+    marginRight: 10,
     borderRadius: 50,
   },
 });

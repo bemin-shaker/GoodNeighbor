@@ -13,6 +13,7 @@ import PostDetails from "./components/User/CommunityFeed/PostDetails";
 import SubmitPost from "./components/User/SubmitPost";
 import JoinCommunity from "./components/User/joinCommunity";
 import AdminFeed from "./components/Admin/adminFeed";
+import AdminNotifications from "./components/Admin/adminNotifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -99,6 +100,13 @@ const App = () => {
           <Stack.Screen
             name="AdminFeed"
             component={AdminFeed}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="AdminNotifications"
+            component={AdminNotifications}
             options={{
               headerShown: false,
             }}
