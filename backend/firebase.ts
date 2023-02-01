@@ -28,7 +28,7 @@ import {
 } from "firebase/firestore";
 import Constants from "expo-constants";
 import "firebase/auth";
-import { getStorage, ref, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCARQ2_GiH2DVI0noABC9v-CXreTO8XHmw",
@@ -185,7 +185,6 @@ export const getPosts = async (id) =>  {
           collection(firestore, "Communities", id, "Posts")
       );
       const querySnapshot = await getDocs(q);
-      
       querySnapshot.forEach((doc) => {
           let data = doc.data();
           posts.push({
@@ -196,10 +195,11 @@ export const getPosts = async (id) =>  {
               location: data["location"],
               updates: data["updates"],
               initialTimestamp: data["initialTimestamp"],
+              imageUrl: data["imageUrl"],
           });
 
       });
-      
+
   } catch (e) {
       console.log(e);
   }
@@ -216,7 +216,8 @@ export const getCategories = async (id) =>  {
 }
 
 
-export const submitPost = async (communityId, title, category, initialUpdate, usersEmail, location) => {
+export const submitPost = async (communityId, title, category, initialUpdate, usersEmail, location, image) => {
+  
   try {
       const post = {
           title: title,
@@ -234,10 +235,13 @@ export const submitPost = async (communityId, title, category, initialUpdate, us
        
       };
       const docRef = await addDoc(collection(firestore, "Communities", communityId, "Posts"), post);
+      await uploadImage(image, docRef.id);
+      const imageUrl = await getDownloadURL(ref(storage, docRef.id))
       await updateDoc(docRef, {
           postID: docRef.id,
+          imageUrl: imageUrl
       });
-      return "success";
+      return {"success": true, "postID": docRef.id};
   } catch (e) {
       console.log(e);
   }
@@ -402,4 +406,18 @@ export const removeMember = async ( communityId, communityName, userId, email, a
       console.log(e);
   }
   return posts;
+}
+
+
+export const uploadImage = async (uri, imageName) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  const ref1 = ref(storage, imageName);
+  await uploadBytes(ref1, blob);
+  return "success";
+}
+
+export const getImage = async (imageName) => {
+  return await getDownloadURL(ref(storage, imageName));
+
 }

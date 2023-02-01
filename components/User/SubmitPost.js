@@ -190,9 +190,10 @@ export default function SubmitPost({ route, navigation }) {
             value,
             initialUpdate,
             usersEmail,
-            location
+            location,
+            image
           );
-          if (submit == "success") {
+          if (submit["success"] == true) {
             navigation.navigate("CommunityFeed", {
               id: route.params.id,
               name: route.params.name,

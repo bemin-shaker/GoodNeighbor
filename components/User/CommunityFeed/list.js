@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
 import { List, FAB, Chip, Divider } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -69,7 +68,7 @@ export default function ListItems({
                           key={post.id}
                           variant="image"
                           source={{
-                            uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
+                            uri: post.imageUrl,
                           }}
                           style={{
                             borderRadius: 10,

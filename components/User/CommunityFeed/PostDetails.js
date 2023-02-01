@@ -25,6 +25,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { makeUpdate, getEmail } from "../../../backend/firebase";
 import Back from "../../Back";
+
 export default function PostDetails({ route, navigation }) {
   const [title, setTitle] = React.useState("");
   let [fontsLoaded] = useFonts({
@@ -77,7 +78,7 @@ export default function PostDetails({ route, navigation }) {
         style={styles.img}
         variant="image"
         source={{
-          uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
+          uri: route.params.postData.imageUrl,
         }}
       ></Image>
       <View style={styles.listView}>
