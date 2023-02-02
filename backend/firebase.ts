@@ -235,8 +235,8 @@ export const submitPost = async (communityId, title, category, initialUpdate, us
        
       };
       const docRef = await addDoc(collection(firestore, "Communities", communityId, "Posts"), post);
-      await uploadImage(image, docRef.id);
-      const imageUrl = await getDownloadURL(ref(storage, docRef.id))
+      await uploadImage(image, docRef.id + "/" + "initialImage");
+      const imageUrl = await getDownloadURL(ref(storage, docRef.id + "/" + "initialImage"))
       await updateDoc(docRef, {
           postID: docRef.id,
           imageUrl: imageUrl
@@ -248,22 +248,31 @@ export const submitPost = async (communityId, title, category, initialUpdate, us
 }
 
 
-export const makeUpdate = async (title, usersEmail, postId, communityId ) =>  {
+export const makeUpdate = async (title, usersEmail, postId, communityId, image ) =>  {
   let posts: Object[] = [];
   try{
-    const update = {
-      title: title,
-      postedBy: {
-        usersEmail: usersEmail
-      },
-      timestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000)
-   
-    };
-      
+      let imageUrl = "";
       const documentRef = doc(firestore,  "Communities", communityId, "Posts", postId);
+      if (image == null) {
+        imageUrl = "Null"
+      } else {
+        let randomUpdateId = Math.floor(Math.random() * 100000)
+        await uploadImage(image, postId + "/" + randomUpdateId);
+        imageUrl = await getDownloadURL(ref(storage, postId + "/" + randomUpdateId))
+  
+      }
+     
+      const update = {
+        title: title,
+        postedBy: {
+          usersEmail: usersEmail
+        },
+        timestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000),
+        imageUrl: imageUrl
+      };
 
       await updateDoc(documentRef, {
-          updates: arrayUnion(update)
+          updates: arrayUnion(update),
       });
       
     return "success";

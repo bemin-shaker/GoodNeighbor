@@ -17,6 +17,7 @@ import {
   Divider,
 } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
+import defaultImage from "../../../assets/image-not-found.png";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -28,6 +29,8 @@ import Back from "../../Back";
 
 export default function PostDetails({ route, navigation }) {
   const [title, setTitle] = React.useState("");
+  const [image, setImage] = React.useState(null);
+
   let [fontsLoaded] = useFonts({
     Montserrat_600SemiBold,
     Montserrat_400Regular,
@@ -122,13 +125,15 @@ export default function PostDetails({ route, navigation }) {
                     >
                       {post.title}
                     </Text>
-                    <Image
-                      style={styles.updateImg}
-                      variant="image"
-                      source={{
-                        uri: "https://cdn.abcotvs.com/dip/images/12521532_120322-wabc-hamilton-heights-fire-img.jpg",
-                      }}
-                    ></Image>
+                    {post.imageUrl !== "Null" && (
+                      <Image
+                        style={styles.updateImg}
+                        variant="image"
+                        source={{
+                          uri: post.imageUrl,
+                        }}
+                      ></Image>
+                    )}
                   </View>
                   <Divider style={{ opacity: 0.6 }} />
                 </View>
@@ -185,7 +190,8 @@ export default function PostDetails({ route, navigation }) {
                   title,
                   usersEmail,
                   route.params.postData.id,
-                  route.params.id
+                  route.params.id,
+                  image
                 );
                 if (submit == "success") {
                   navigation.navigate("CommunityFeed", {
