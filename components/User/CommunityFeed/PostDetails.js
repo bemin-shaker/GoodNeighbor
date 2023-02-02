@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Pressable,
   StyleSheet,
   Text,
   View,
@@ -8,16 +7,8 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import {
-  List,
-  FAB,
-  Chip,
-  Button,
-  TextInput,
-  Divider,
-} from "react-native-paper";
+import { Chip, TextInput, Divider, Provider } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
-import defaultImage from "../../../assets/image-not-found.png";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -26,6 +17,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { makeUpdate, getEmail } from "../../../backend/firebase";
 import Back from "../../Back";
+import Popup from "../../Popup";
 
 export default function PostDetails({ route, navigation }) {
   const [title, setTitle] = React.useState("");
@@ -75,136 +67,150 @@ export default function PostDetails({ route, navigation }) {
   };
 
   return (
-    <View>
-      <Back />
-      <Image
-        style={styles.img}
-        variant="image"
-        source={{
-          uri: route.params.postData.imageUrl,
-        }}
-      ></Image>
-      <View style={styles.listView}>
-        <Text style={styles.header}>{route.params.postData.title}</Text>
-        <Chip
-          icon={() => <Icon name="clock-outline" size={16} color="#BDBDBD" />}
-          style={styles.fab}
-          textStyle={{ color: "#BDBDBD", transform: [{ translateX: -3 }] }}
-          onPress={() => console.log("Pressed")}
-        >
-          {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
-        </Chip>
-        <Text style={styles.subHeader}>Updates</Text>
-        <ScrollView style={styles.listContainer}>
-          {route.params.postData.updates &&
-            route.params.postData.updates.map((post, index) => {
-              return (
-                <View>
-                  <View style={styles.listItem} key={index}>
-                    <Chip
-                      icon={() => (
-                        <Icon name="clock-outline" size={16} color="#BDBDBD" />
-                      )}
-                      style={styles.fab2}
-                      textStyle={{
-                        color: "#BDBDBD",
-                        transform: [{ translateX: -3 }],
-                      }}
-                    >
-                      {returnElapsedTIme(post.timestamp.seconds)}
-                    </Chip>
-                    <Text
-                      style={{
-                        color: "white",
-                        fontFamily: "Montserrat_400Regular",
-                        fontSize: 16,
-                        marginBottom: 10,
-                        margin: 0,
-                        marginLeft: 20,
-                      }}
-                    >
-                      {post.title}
-                    </Text>
-                    {post.imageUrl !== "Null" && (
-                      <Image
-                        style={styles.updateImg}
-                        variant="image"
-                        source={{
-                          uri: post.imageUrl,
-                        }}
-                      ></Image>
-                    )}
-                  </View>
-                  <Divider style={{ opacity: 0.6 }} />
-                </View>
-              );
-            })}
-          <View style={styles.listItem}>
-            <Chip
-              icon={() => (
-                <Icon name="clock-outline" size={16} color="#BDBDBD" />
-              )}
-              style={styles.fab2}
-              textStyle={{
-                color: "#BDBDBD",
-                transform: [{ translateX: -3 }],
+    <Provider>
+      <View>
+        <Back />
+        <Popup
+          component={
+            <Image
+              style={styles.img}
+              variant="image"
+              source={{
+                uri: route.params.postData.imageUrl,
               }}
-              onPress={() => console.log("Pressed")}
-            >
-              {returnElapsedTIme(
-                route.params.postData.initialTimestamp.seconds
-              )}
-            </Chip>
-            <Text
-              style={{
-                color: "white",
-                fontFamily: "Montserrat_400Regular",
-                fontSize: 16,
-                marginBottom: 10,
-                margin: 0,
-                marginLeft: 20,
-              }}
-            >
-              {route.params.postData.initialUpdate}
-            </Text>
-          </View>
-        </ScrollView>
-      </View>
-      <View style={styles.bottomContainer}>
-        <TextInput
-          style={styles.textInput}
-          mode={"outlined"}
-          activeOutlineColor="#C88D36"
-          outlineColor="#999CAD"
-          textColor="#DADADA"
-          label="Update"
-          value={title}
-          onChangeText={(title) => setTitle(title)}
-          left={<TextInput.Icon icon="camera" onPress={pickImage} />}
-          right={
-            <TextInput.Icon
-              icon="send"
-              onPress={async () => {
-                let usersEmail = await getEmail();
-                let submit = await makeUpdate(
-                  title,
-                  usersEmail,
-                  route.params.postData.id,
-                  route.params.id,
-                  image
-                );
-                if (submit == "success") {
-                  navigation.navigate("CommunityFeed", {
-                    id: route.params.id,
-                    name: route.params.name,
-                  });
-                }
-              }}
-            />
+            ></Image>
           }
         />
+        <View style={styles.listView}>
+          <Text style={styles.header}>{route.params.postData.title}</Text>
+          <Chip
+            icon={() => <Icon name="clock-outline" size={16} color="#BDBDBD" />}
+            style={styles.fab}
+            textStyle={{ color: "#BDBDBD", transform: [{ translateX: -3 }] }}
+            onPress={() => console.log("Pressed")}
+          >
+            {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
+          </Chip>
+          <Text style={styles.subHeader}>Updates</Text>
+          <ScrollView style={styles.listContainer}>
+            {route.params.postData.updates &&
+              route.params.postData.updates.map((post, index) => {
+                return (
+                  <View>
+                    <View style={styles.listItem} key={index}>
+                      <Chip
+                        icon={() => (
+                          <Icon
+                            name="clock-outline"
+                            size={16}
+                            color="#BDBDBD"
+                          />
+                        )}
+                        style={styles.fab2}
+                        textStyle={{
+                          color: "#BDBDBD",
+                          transform: [{ translateX: -3 }],
+                        }}
+                      >
+                        {returnElapsedTIme(post.timestamp.seconds)}
+                      </Chip>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontFamily: "Montserrat_400Regular",
+                          fontSize: 16,
+                          marginBottom: 10,
+                          margin: 0,
+                          marginLeft: 20,
+                        }}
+                      >
+                        {post.title}
+                      </Text>
+                      {post.imageUrl !== "Null" && (
+                        <Popup
+                          component={
+                            <Image
+                              style={styles.updateImg}
+                              variant="image"
+                              source={{
+                                uri: post.imageUrl,
+                              }}
+                            ></Image>
+                          }
+                        />
+                      )}
+                    </View>
+                    <Divider style={{ opacity: 0.6 }} />
+                  </View>
+                );
+              })}
+            <View style={styles.listItem}>
+              <Chip
+                icon={() => (
+                  <Icon name="clock-outline" size={16} color="#BDBDBD" />
+                )}
+                style={styles.fab2}
+                textStyle={{
+                  color: "#BDBDBD",
+                  transform: [{ translateX: -3 }],
+                }}
+                onPress={() => console.log("Pressed")}
+              >
+                {returnElapsedTIme(
+                  route.params.postData.initialTimestamp.seconds
+                )}
+              </Chip>
+              <Text
+                style={{
+                  color: "white",
+                  fontFamily: "Montserrat_400Regular",
+                  fontSize: 16,
+                  marginBottom: 10,
+                  margin: 0,
+                  marginLeft: 20,
+                }}
+              >
+                {route.params.postData.initialUpdate}
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.bottomContainer}>
+          <TextInput
+            style={styles.textInput}
+            mode={"outlined"}
+            activeOutlineColor="#C88D36"
+            outlineColor="#999CAD"
+            textColor="#DADADA"
+            label="Update"
+            value={title}
+            onChangeText={(title) => setTitle(title)}
+            left={<TextInput.Icon icon="camera" onPress={pickImage} />}
+            right={
+              <TextInput.Icon
+                icon="send"
+                onPress={async () => {
+                  let usersEmail = await getEmail();
+                  let submit = await makeUpdate(
+                    title,
+                    usersEmail,
+                    route.params.postData.id,
+                    route.params.id,
+                    image
+                  );
+                  if (submit == "success") {
+                    navigation.navigate("CommunityFeed", {
+                      id: route.params.id,
+                      name: route.params.name,
+                    });
+                  }
+                }}
+              />
+            }
+          />
+        </View>
       </View>
-    </View>
+    </Provider>
   );
 }
 
