@@ -113,6 +113,10 @@ export default function PostDetails({ route, navigation }) {
                         }}
                       >
                         {returnElapsedTIme(post.timestamp.seconds)}
+
+                        <Text style={{ opacity: 0.7 }}>
+                          {" • "}Posted by {post.postedBy["usersEmail"]}
+                        </Text>
                       </Chip>
                       <Text
                         style={{
@@ -159,6 +163,10 @@ export default function PostDetails({ route, navigation }) {
                 {returnElapsedTIme(
                   route.params.postData.initialTimestamp.seconds
                 )}
+
+                <Text style={{ opacity: 0.7 }}>
+                  {" • "}Posted by {route.params.postData.postedBy}
+                </Text>
               </Chip>
               <Text
                 style={{
@@ -182,7 +190,7 @@ export default function PostDetails({ route, navigation }) {
             activeOutlineColor="#C88D36"
             outlineColor="#999CAD"
             textColor="#DADADA"
-            label="Update"
+            label="Add an update"
             value={title}
             onChangeText={(title) => setTitle(title)}
             left={<TextInput.Icon icon="camera" onPress={pickImage} />}

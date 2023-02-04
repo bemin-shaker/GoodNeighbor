@@ -196,6 +196,7 @@ export const getPosts = async (id) =>  {
               updates: data["updates"],
               initialTimestamp: data["initialTimestamp"],
               imageUrl: data["imageUrl"],
+              postedBy: data["postedBy"]["usersEmail"],
           });
 
       });
