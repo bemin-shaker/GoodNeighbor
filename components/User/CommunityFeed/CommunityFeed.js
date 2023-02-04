@@ -12,6 +12,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import Back from "../../Back";
+import BottomSheetComp from "../../BottomSheet";
 
 export default function CommunityFeed({ route, navigation }) {
   const [loading, setLoading] = useState(true);
@@ -99,35 +100,40 @@ export default function CommunityFeed({ route, navigation }) {
           posts={postsData}
           isLoading={loading}
         />
-
-        <View style={styles.listView}>
-          <View style={styles.flexCont}>
-            <View>
-              <Text style={styles.header}>{route.params.name}</Text>
-              <Text style={styles.subHeader}>
-                {postsData.length} incidents in the past 24 hours
-              </Text>
+        <BottomSheetComp
+          content={
+            <View style={styles.listView}>
+              <ListItems
+                communityId={route.params.id}
+                communityName={route.params.name}
+                posts={postsData}
+                isLoading={loading}
+              />
             </View>
+          }
+          header={
+            <View style={styles.flexCont}>
+              <View>
+                <Text style={styles.header}>{route.params.name}</Text>
+                <Text style={styles.subHeader}>
+                  {postsData.length} incidents in the past 24 hours
+                </Text>
+              </View>
 
-            <FAB
-              icon="plus"
-              color="white"
-              style={styles.fab}
-              onPress={() =>
-                navigation.navigate("SubmitPost", {
-                  id: route.params.id,
-                  name: route.params.name,
-                })
-              }
-            />
-          </View>
-          <ListItems
-            communityId={route.params.id}
-            communityName={route.params.name}
-            posts={postsData}
-            isLoading={loading}
-          />
-        </View>
+              <FAB
+                icon="plus"
+                color="white"
+                style={styles.fab}
+                onPress={() =>
+                  navigation.navigate("SubmitPost", {
+                    id: route.params.id,
+                    name: route.params.name,
+                  })
+                }
+              />
+            </View>
+          }
+        />
       </View>
     );
   }
@@ -152,12 +158,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   listView: {
-    backgroundColor: "#000000",
-    borderTopStartRadius: 25,
-    borderTopEndRadius: 25,
-    transform: [{ translateY: -40 }],
+    //  backgroundColor: "#000000",
+    //   transform: [{ translateY: -40 }],
     zIndex: 1000,
-    height: "100%",
+    // height: "100%",
   },
   flexCont: {
     display: "flex",

@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: "white",
     transform: [{ scaleX: 0.5 }],
+    paddingBottom: 30,
     fontFamily: "Montserrat_700Bold",
   },
   loginButton: {

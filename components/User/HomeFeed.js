@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
     paddingTop: 60,
-    padding: 20,
+    padding: 15,
     height: Dimensions.get("screen").height * 1,
   },
 

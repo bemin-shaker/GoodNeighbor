@@ -202,8 +202,8 @@ export default function Map({ communityId, communityName, posts, isLoading }) {
           style={styles.map}
           userInterfaceStyle="dark"
           initialRegion={{
-            latitude: 40.745255,
-            longitude: -74.034775,
+            latitude: 40.735255,
+            longitude: -74.032775,
             latitudeDelta: 0.00522,
             longitudeDelta: 0.02821,
           }}
@@ -270,6 +270,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: Dimensions.get("screen").height * 0.55,
+    height: Dimensions.get("screen").height * 1,
   },
 });

@@ -55,6 +55,7 @@ export default function ListItems({
                     <List.Item
                       key={index}
                       title={post.title}
+                      titleNumberOfLines={1}
                       titleStyle={{
                         color: "white",
                         fontFamily: "Montserrat_600SemiBold",
@@ -62,6 +63,7 @@ export default function ListItems({
                         marginBottom: 5,
                       }}
                       description={post.initialUpdate}
+                      descriptionNumberOfLines={2}
                       descriptionStyle={{ color: "#DADADA" }}
                       left={(props) => (
                         <List.Image
@@ -124,7 +126,7 @@ export default function ListItems({
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 400,
+    //paddingBottom: 400,
   },
   fab: {
     backgroundColor: "transparent",
