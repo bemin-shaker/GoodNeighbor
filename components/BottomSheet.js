@@ -28,6 +28,10 @@ export default function BottomSheetComp({ content, header }) {
         borderStartWidth: 0.2,
         borderEndColor: "#212121",
         borderEndWidth: 0.2,
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: -20 },
+        shadowOpacity: 0.2,
+        shadowRadius: 20,
       }}
     >
       {header}
