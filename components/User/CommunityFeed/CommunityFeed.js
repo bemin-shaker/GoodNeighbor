@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { FAB, ActivityIndicator, MD2Colors } from "react-native-paper";
 import MenuComponent from "../../menu";
-import Icon from "react-native-vector-icons/Ionicons";
 import Map from "./map";
 import ListItems from "./list";
 import { getPosts, getUser, getEmail } from "../../../backend/firebase";
@@ -19,6 +18,7 @@ export default function CommunityFeed({ route, navigation }) {
   const [postsData, setPostsData] = useState([undefined]);
   const [userData, setUserData] = useState([undefined]);
   const [userId, setUserId] = useState("");
+  const [refreshing, setRefreshing] = useState(true);
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -26,24 +26,24 @@ export default function CommunityFeed({ route, navigation }) {
   });
 
   useEffect(() => {
-    console.log("useEffect has been called");
-
-    async function fetchData() {
-      try {
-        const data = await getPosts(route.params.id);
-        setPostsData(data);
-        // console.log("Hi", postsData);
-        setLoading(false);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    fetchData();
+    fetchPostData();
   }, []);
 
-  useEffect(() => {
-    console.log("useEffect has been called");
+  async function fetchPostData() {
+    try {
+      setRefreshing(true);
+      const data = await getPosts(route.params.id);
+      setPostsData(data);
+      setLoading(false);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 800);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
+  useEffect(() => {
     async function fetchData() {
       try {
         const email = await getEmail();
@@ -108,6 +108,8 @@ export default function CommunityFeed({ route, navigation }) {
                 communityName={route.params.name}
                 posts={postsData}
                 isLoading={loading}
+                refreshing={refreshing}
+                fetchPostData={fetchPostData}
               />
             </View>
           }

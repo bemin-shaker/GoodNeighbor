@@ -4,7 +4,8 @@ import {
   Text,
   View,
   Pressable,
-  Dimensions,
+  ActivityIndicator,
+  RefreshControl,
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -20,6 +21,8 @@ export default function ListItems({
   communityName,
   posts,
   isLoading,
+  refreshing,
+  fetchPostData,
 }) {
   const navigation = useNavigation();
 
@@ -36,7 +39,22 @@ export default function ListItems({
   } else {
     return (
       <View style={styles.container}>
-        <ScrollView>
+        {refreshing ? (
+          <ActivityIndicator
+            style={{
+              backgroundColor: "black",
+              padding: 20,
+              zIndex: 10000,
+            }}
+            color="#C88D36"
+            size="small"
+          />
+        ) : null}
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchPostData} />
+          }
+        >
           {posts &&
             posts.map((post, index) => {
               return (
@@ -49,6 +67,8 @@ export default function ListItems({
                         postData: post,
                         id: communityId,
                         name: communityName,
+                        refreshing: refreshing,
+                        fetchPostData: fetchPostData,
                       })
                     }
                   >
