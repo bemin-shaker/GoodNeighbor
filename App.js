@@ -14,6 +14,7 @@ import SubmitPost from "./components/User/SubmitPost";
 import JoinCommunity from "./components/User/joinCommunity";
 import AdminFeed from "./components/Admin/adminFeed";
 import AdminNotifications from "./components/Admin/adminNotifications";
+import Settings from "./components/User/Settings";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,13 @@ const App = () => {
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
             options={{
               headerShown: false,
             }}

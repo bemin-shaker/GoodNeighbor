@@ -3,7 +3,7 @@ import { StyleSheet, StatusBar, Dimensions, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeFeed from "./User/HomeFeed";
-import SubmitPost from "./User/SubmitPost";
+import Settings from "./User/Settings";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,11 +18,10 @@ export default function Home() {
 
             if (route.name === "Feed") {
               iconName = "ios-home";
-            } else if (route.name === "Submit") {
-              iconName = "ios-add";
+            } else if (route.name === "Settings") {
+              iconName = "ios-settings";
             }
 
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: "#C88D36",
@@ -36,7 +35,7 @@ export default function Home() {
         })}
       >
         <Tab.Screen name="Feed" component={HomeFeed} />
-        {/* <Tab.Screen name="Submit" component={SubmitPost} /> */}
+        <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </View>
   );

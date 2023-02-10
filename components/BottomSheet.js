@@ -30,7 +30,7 @@ export default function BottomSheetComp({ content, header }) {
         borderEndWidth: 0.2,
         shadowColor: "black",
         shadowOffset: { width: 0, height: -20 },
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.22,
         shadowRadius: 20,
       }}
     >
