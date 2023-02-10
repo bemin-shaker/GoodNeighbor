@@ -431,3 +431,9 @@ export const getImage = async (imageName) => {
   return await getDownloadURL(ref(storage, imageName));
 
 }
+
+export const getPost = async (communityId, postId) =>  {
+  const docRef = doc(firestore, "Communities", communityId, "Posts", postId);
+  const docSnap = await getDoc(docRef);
+  return docSnap.data();
+}

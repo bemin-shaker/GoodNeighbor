@@ -184,7 +184,6 @@ const MapStyle = [
 
 export default function Map({ communityId, communityName, posts, isLoading }) {
   const navigation = useNavigation();
-  //  console.log(posts);
 
   if (isLoading) {
     return (
@@ -222,7 +221,8 @@ export default function Map({ communityId, communityName, posts, isLoading }) {
                   onPress={() =>
                     navigation.navigate("PostDetails", {
                       postData: marker,
-                      id: communityId,
+                      communityId: communityId,
+                      postId: marker.id,
                       name: communityName,
                     })
                   }

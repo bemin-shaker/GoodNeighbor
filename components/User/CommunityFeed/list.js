@@ -65,10 +65,9 @@ export default function ListItems({
                     onPress={() =>
                       navigation.navigate("PostDetails", {
                         postData: post,
-                        id: communityId,
+                        postId: post.id,
+                        communityId: communityId,
                         name: communityName,
-                        refreshing: refreshing,
-                        fetchPostData: fetchPostData,
                       })
                     }
                   >

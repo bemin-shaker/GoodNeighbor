@@ -30,7 +30,7 @@ export default function BottomSheetComp({ content, header }) {
         borderEndWidth: 0.2,
         shadowColor: "black",
         shadowOffset: { width: 0, height: -20 },
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.25,
         shadowRadius: 20,
       }}
     >
@@ -44,10 +44,10 @@ export default function BottomSheetComp({ content, header }) {
     <>
       <BottomSheet
         ref={sheetRef}
-        snapPoints={[800, 650, 450, 110]}
+        snapPoints={["85%", "50%", 110]}
         renderHeader={renderHeader}
         renderContent={renderContent}
-        initialSnap={2}
+        initialSnap={1}
       />
     </>
   );

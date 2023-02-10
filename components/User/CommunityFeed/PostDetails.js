@@ -6,6 +6,8 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { Chip, TextInput, Divider, Provider } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
@@ -15,18 +17,39 @@ import {
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { makeUpdate, getEmail } from "../../../backend/firebase";
+import { makeUpdate, getEmail, getPost } from "../../../backend/firebase";
 import Back from "../../Back";
 import Popup from "../../Popup";
 
 export default function PostDetails({ route, navigation }) {
+  const [loading, setLoading] = React.useState(true);
+  const [postsData, setPostsData] = React.useState([undefined]);
   const [title, setTitle] = React.useState("");
   const [image, setImage] = React.useState(null);
+  const [refreshing, setRefreshing] = React.useState(true);
 
   let [fontsLoaded] = useFonts({
     Montserrat_600SemiBold,
     Montserrat_400Regular,
   });
+
+  React.useEffect(() => {
+    fetchPostData();
+  }, []);
+
+  async function fetchPostData() {
+    try {
+      setRefreshing(true);
+      const data = await getPost(route.params.communityId, route.params.postId);
+      setPostsData(data);
+      setLoading(false);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 800);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   function returnElapsedTIme(postTime) {
     let hours;
@@ -62,6 +85,7 @@ export default function PostDetails({ route, navigation }) {
     });
     console.log(result);
     if (!result.canceled) {
+      setImage(null);
       setImage(result.assets[0].uri);
     }
   };
@@ -82,7 +106,9 @@ export default function PostDetails({ route, navigation }) {
           }
         />
         <View style={styles.listView}>
-          <Text style={styles.header}>{route.params.postData.title}</Text>
+          <Text style={styles.header} numberOfLines={2}>
+            {route.params.postData.title}
+          </Text>
           <Chip
             icon={() => <Icon name="clock-outline" size={16} color="#BDBDBD" />}
             style={styles.fab}
@@ -92,9 +118,28 @@ export default function PostDetails({ route, navigation }) {
             {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
           </Chip>
           <Text style={styles.subHeader}>Updates</Text>
-          <ScrollView style={styles.listContainer}>
-            {route.params.postData.updates &&
-              route.params.postData.updates.map((post, index) => {
+          {refreshing ? (
+            <ActivityIndicator
+              style={{
+                backgroundColor: "black",
+                padding: 20,
+                zIndex: 10000,
+              }}
+              color="#C88D36"
+              size="small"
+            />
+          ) : null}
+          <ScrollView
+            style={styles.listContainer}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={fetchPostData}
+              />
+            }
+          >
+            {postsData.updates &&
+              postsData.updates.map((post, index) => {
                 return (
                   <View>
                     <View style={styles.listItem} key={index}>
@@ -183,6 +228,7 @@ export default function PostDetails({ route, navigation }) {
             </View>
           </ScrollView>
         </View>
+
         <View style={styles.bottomContainer}>
           <TextInput
             style={styles.textInput}
@@ -203,14 +249,12 @@ export default function PostDetails({ route, navigation }) {
                     title,
                     usersEmail,
                     route.params.postData.id,
-                    route.params.id,
+                    route.params.communityId,
                     image
                   );
                   if (submit == "success") {
-                    navigation.navigate("CommunityFeed", {
-                      id: route.params.id,
-                      name: route.params.name,
-                    });
+                    setTitle("");
+                    setImage(null);
                   }
                 }}
               />
@@ -235,6 +279,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 20,
     marginLeft: 20,
+    paddingRight: 20,
     fontSize: 25,
     fontFamily: "Montserrat_600SemiBold",
   },
@@ -251,7 +296,6 @@ const styles = StyleSheet.create({
   subHeader: {
     color: "#C88D36",
     marginTop: 10,
-    //  marginBottom: 10,
     marginLeft: 20,
     fontSize: 18,
     fontFamily: "Montserrat_600SemiBold",
