@@ -6,6 +6,8 @@ import {
   Dimensions,
   Pressable,
   ScrollView,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import {
   useFonts,
@@ -18,13 +20,16 @@ import {
   makeAdmin,
   removeMember,
 } from "../../backend/firebase";
-import { List, Button, Chip } from "react-native-paper";
+import { List, Button, Chip, Snackbar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import Back from "../Back";
 
 export default function AdminFeed({ route }) {
   const [loading, setLoading] = useState(true);
   const [members, setMembersList] = useState([undefined]);
+  const [refreshing, setRefreshing] = useState(true);
+  const [visible, setVisible] = useState(false);
+
   const navigation = useNavigation();
 
   let [fontsLoaded] = useFonts({
@@ -34,21 +39,22 @@ export default function AdminFeed({ route }) {
   });
 
   useEffect(() => {
-    console.log("useEffect has been called");
-
-    async function fetchData() {
-      try {
-        const data = await getCommunityMembers(route.params.id);
-        setMembersList(data);
-
-        setLoading(false);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
     fetchData();
   }, []);
+
+  async function fetchData() {
+    try {
+      setRefreshing(true);
+      const data = await getCommunityMembers(route.params.id);
+      setMembersList(data);
+      setLoading(false);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 800);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   if (loading) {
     return (
@@ -73,31 +79,33 @@ export default function AdminFeed({ route }) {
       <View style={styles.container}>
         <Back />
         <Text style={styles.header}>Community Members</Text>
-        <ScrollView>
+        {refreshing ? (
+          <ActivityIndicator
+            style={{
+              backgroundColor: "black",
+              padding: 20,
+              zIndex: 10000,
+            }}
+            color="#C88D36"
+            size="small"
+          />
+        ) : null}
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          }
+        >
           <List.Section>
             {members &&
               members.map((member) => {
-                if (
-                  member.id === route.params.userId ||
-                  member.admin === true
-                ) {
+                if (member.id === route.params.userId) {
+                } else if (member.admin === true) {
                   return (
                     <List.Item
                       title={member.email}
                       key={member.id}
-                      titleStyle={{
-                        color: "white",
-                        fontSize: 14.5,
-                        fontFamily: "Montserrat_700Bold",
-                      }}
-                      style={{
-                        backgroundColor: "#323232",
-                        borderRadius: 80,
-                        padding: 15,
-                        marginBottom: 15,
-                        minHeight: 70,
-                        justifyContent: "center",
-                      }}
+                      titleStyle={styles.titleStyle}
+                      style={styles.listItem}
                       left={() => (
                         <Pressable
                           onPress={async () => {
@@ -109,14 +117,15 @@ export default function AdminFeed({ route }) {
                               member.admin
                             );
                             if (submit == "success") {
-                              navigation.navigate("CommunityFeed", {
-                                id: route.params.id,
-                                name: route.params.name,
-                              });
+                              // to do
                             }
                           }}
                         >
-                          <List.Icon icon="delete-outline" color="#C88D36" />
+                          <List.Icon
+                            icon="delete-outline"
+                            color="#C88D36"
+                            style={{ padding: 5 }}
+                          />
                         </Pressable>
                       )}
                       right={() => (
@@ -136,19 +145,8 @@ export default function AdminFeed({ route }) {
                     <List.Item
                       title={member.email}
                       key={member.id}
-                      titleStyle={{
-                        color: "white",
-                        fontSize: 14.5,
-                        fontFamily: "Montserrat_700Bold",
-                      }}
-                      style={{
-                        backgroundColor: "#323232",
-                        borderRadius: 80,
-                        padding: 15,
-                        marginBottom: 15,
-                        minHeight: 70,
-                        justifyContent: "center",
-                      }}
+                      titleStyle={styles.titleStyle}
+                      style={styles.listItem}
                       right={() => (
                         <Button
                           onPress={async () => {
@@ -159,10 +157,8 @@ export default function AdminFeed({ route }) {
                               member.email
                             );
                             if (submit == "success") {
-                              navigation.navigate("CommunityFeed", {
-                                id: route.params.id,
-                                name: route.params.name,
-                              });
+                              // to do
+                              setVisible(!visible);
                             }
                           }}
                           textColor="#C88D36"
@@ -181,17 +177,14 @@ export default function AdminFeed({ route }) {
                               member.admin
                             );
                             if (submit == "success") {
-                              navigation.navigate("CommunityFeed", {
-                                id: route.params.id,
-                                name: route.params.name,
-                              });
+                              // to do
                             }
                           }}
                         >
                           <List.Icon
                             icon="delete-outline"
                             color="#C88D36"
-                            style={{ paddingVertical: 5 }}
+                            style={{ paddingVertical: 9, paddingHorizontal: 5 }}
                           />
                         </Pressable>
                       )}
@@ -200,6 +193,19 @@ export default function AdminFeed({ route }) {
               })}
           </List.Section>
         </ScrollView>
+        <View style={{ alignItems: "center" }}>
+          <Snackbar
+            style={styles.snackbar}
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            action={{
+              label: "Dismiss",
+              labelStyle: { color: "#C88D36" },
+            }}
+          >
+            <Text style={styles.errorMsg}>Member is now an admin.</Text>
+          </Snackbar>
+        </View>
       </View>
     );
   }
@@ -215,7 +221,7 @@ const styles = StyleSheet.create({
   header: {
     color: "white",
     marginBottom: 10,
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: "Montserrat_600SemiBold",
   },
   header2: {
@@ -232,5 +238,24 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
     opacity: 0.6,
+  },
+  listItem: {
+    backgroundColor: "#323232",
+    borderRadius: 80,
+    padding: 15,
+    marginBottom: 15,
+    minHeight: 70,
+    justifyContent: "center",
+  },
+  titleStyle: {
+    color: "white",
+    fontSize: 14.5,
+    fontFamily: "Montserrat_700Bold",
+  },
+  snackbar: {
+    transform: [{ translateY: 15 }],
+  },
+  errorMsg: {
+    color: "white",
   },
 });
