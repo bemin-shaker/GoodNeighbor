@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+} from "react-native";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -9,10 +16,13 @@ import {
 import { getUser, getEmail } from "../../backend/firebase";
 import { List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function MyCommunities() {
   const [loading, setLoading] = useState(true);
   const [communities, setCommunityData] = useState([undefined]);
+  const [name, setName] = useState(" to the Neighborhood.");
+
   const navigation = useNavigation();
 
   let [fontsLoaded] = useFonts({
@@ -22,14 +32,13 @@ export default function MyCommunities() {
   });
 
   useEffect(() => {
-    console.log("useEffect has been called");
-
     async function fetchData() {
       try {
         const email = await getEmail();
         const data = await getUser(email);
         setCommunityData(data[0]["joined_communities"]);
-
+        setName(data[0]["full_name"]);
+        // console.log(name);
         setLoading(false);
       } catch (e) {
         console.log(e);
@@ -48,7 +57,12 @@ export default function MyCommunities() {
   } else if (communities.length === 0) {
     return (
       <View style={styles.errMessage}>
+        <Text style={styles.header3}>Welcome to the Neighborhood.</Text>
         <Text style={styles.header2}>Join your first community now.</Text>
+        <Image
+          style={styles.image}
+          source={require("../../assets/friends.jpg")}
+        ></Image>
       </View>
     );
   } else {
@@ -94,6 +108,16 @@ export default function MyCommunities() {
                         icon="city"
                       />
                     )}
+                    right={() => (
+                      <Icon
+                        name="chevron-forward-outline"
+                        style={{
+                          alignSelf: "center",
+                        }}
+                        size={28}
+                        color="white"
+                      />
+                    )}
                   />
                 </Pressable>
               );
@@ -114,15 +138,30 @@ const styles = StyleSheet.create({
   header2: {
     color: "white",
     marginBottom: 5,
-    fontSize: 15,
+    fontSize: 20,
+    paddingHorizontal: 15,
     fontFamily: "Montserrat_400Regular",
   },
-  errMessage: {
-    backgroundColor: "#323232",
-    paddingTop: 15,
-    paddingBottom: 10,
+  header3: {
+    color: "white",
+    fontSize: 22,
     paddingHorizontal: 15,
-    marginBottom: 15,
-    opacity: 0.6,
+    paddingTop: 5,
+    fontFamily: "Montserrat_700Bold",
+  },
+  errMessage: {
+    backgroundColor: "#a3c3f2",
+    paddingTop: 10,
+    opacity: 0.9,
+    marginBottom: 30,
+    borderRadius: 20,
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    // borderRadius: 400,
+    opacity: 1,
+    marginTop: 10,
+    borderRadius: 20,
   },
 });

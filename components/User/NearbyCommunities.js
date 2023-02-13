@@ -20,8 +20,6 @@ export default function NearbyCommunities() {
   });
 
   useEffect(() => {
-    console.log("useEffect has been called");
-
     async function fetchData() {
       try {
         const data = await getCommunities();
@@ -47,7 +45,14 @@ export default function NearbyCommunities() {
     return (
       <View>
         <Text style={styles.header}>Nearby Communities</Text>
-        <List.Section style={{ display: "flex", flexDirection: "row" }}>
+        <List.Section
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
           {communities &&
             communities.map((community) => {
               if (community.type === "City") {
@@ -137,9 +142,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#212121",
     borderRadius: 30,
     padding: 5,
-    marginBottom: 15,
-    marginRight: 12,
-    width: Dimensions.get("window").width / 2.35,
+    marginBottom: 12,
+    // marginRight: 12,
+    width: Dimensions.get("window").width / 2.22,
     height: Dimensions.get("window").height / 9,
     overflow: "hidden",
   },

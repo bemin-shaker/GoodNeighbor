@@ -19,7 +19,7 @@ export default function Home() {
             if (route.name === "Feed") {
               iconName = "ios-home";
             } else if (route.name === "Settings") {
-              iconName = "ios-settings";
+              iconName = "settings-outline";
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;

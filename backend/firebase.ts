@@ -52,7 +52,7 @@ let user = auth.currentUser;
 //check if user is logged in
 export const checkUser = () => {
   user = auth.currentUser;
-  console.log(user);
+  //console.log(user);
   return user;
 };
 
@@ -67,7 +67,7 @@ export const signUpWithEmail = async (
     await updateProfile(user, {
       displayName: fName,
     });
-    console.log(user);
+    //console.log(user);
     let userID = await addNewUser(fName, email);
     await updateProfile(user, {
       photoURL: userID,
@@ -94,7 +94,7 @@ export const logOut = async () => {
   try {
     await signOut(auth);
     user = auth.currentUser;
-    console.log(user);
+    //console.log(user);
     return "success";
   } catch (e) {
     console.log(e);
@@ -116,7 +116,7 @@ export const getEmail = async () => {
       email_one = email;
   }
 
-  console.log("EMAILLLL:" + email_one)
+  //console.log("EMAILLLL:" + email_one)
 
   return email_one;
 }
@@ -209,7 +209,7 @@ export const getPosts = async (id) =>  {
 
 //Get the categories array within the communities collection
 export const getCategories = async (id) =>  {
-  console.log("hi", id)
+  //console.log("hi", id)
   const docRef = doc(firestore, "Communities", id);
   const docSnap = await getDoc(docRef);
 
@@ -436,4 +436,12 @@ export const getPost = async (communityId, postId) =>  {
   const docRef = doc(firestore, "Communities", communityId, "Posts", postId);
   const docSnap = await getDoc(docRef);
   return docSnap.data();
+}
+
+export const getName = async (id) =>  {
+  //console.log("hi", id)
+  const docRef = doc(firestore, "users", id);
+  const docSnap = await getDoc(docRef);
+
+  return docSnap.data().name
 }

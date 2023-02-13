@@ -1,6 +1,8 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { List } from "react-native-paper";
+import { logOut } from "../../backend/firebase";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   useFonts,
@@ -15,6 +17,7 @@ export default function HomeFeed() {
     Montserrat_700Bold,
     Montserrat_600SemiBold,
   });
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     return null;
@@ -94,6 +97,24 @@ export default function HomeFeed() {
               color={"#323232"}
               style={styles.iconLeft}
               icon="eye-off-outline"
+            />
+          )}
+        />
+        <List.Item
+          title="Sign Out"
+          titleNumberOfLines={2}
+          key={2}
+          titleStyle={styles.header2}
+          style={styles.listItem}
+          onPress={async () => {
+            await logOut();
+            navigation.navigate("Startup");
+          }}
+          left={() => (
+            <List.Icon
+              color={"#323232"}
+              style={styles.iconLeft}
+              icon="logout-variant"
             />
           )}
         />
