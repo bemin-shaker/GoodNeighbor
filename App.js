@@ -2,6 +2,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "react-native-paper";
+import { LogBox } from "react-native";
 
 import Startup from "./components/Startup";
 import Signup from "./components/Signup";
@@ -15,8 +16,11 @@ import JoinCommunity from "./components/User/joinCommunity";
 import AdminFeed from "./components/Admin/adminFeed";
 import AdminNotifications from "./components/Admin/adminNotifications";
 import Settings from "./components/User/Settings";
+import Notifications from "./components/User/Notifications";
 
 const Stack = createNativeStackNavigator();
+LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 const App = () => {
   return (
@@ -115,6 +119,13 @@ const App = () => {
           <Stack.Screen
             name="AdminNotifications"
             component={AdminNotifications}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Notifications"
+            component={Notifications}
             options={{
               headerShown: false,
             }}

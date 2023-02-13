@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     width: Dimensions.get("screen").width * 0.8,
-    borderRadius: 15,
+    borderRadius: 40,
     marginBottom: 15,
     marginTop: 35,
   },
@@ -140,8 +140,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     paddingTop: 20,
     paddingBottom: 60,
-    // paddingStart: 5,
-    // paddingEnd: 5,
   },
   headerText: {
     transform: [{ scaleX: 0.5 }],

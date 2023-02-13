@@ -7,12 +7,12 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import {
   useFonts,
   Montserrat_400Regular,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { Chip } from "react-native-paper";
 import { joinCommunity, getEmail, getUser } from "../../backend/firebase";
 import Back from "../Back";
 
@@ -33,9 +33,14 @@ export default function JoinCommunity({ route, navigation }) {
         <View style={styles.header}>
           <Text style={styles.lightText}>This is</Text>
           <Text style={styles.boldText}>{route.params.name}</Text>
-          <Text style={styles.count}>
-            {route.params.count} Members {" • "} {route.params.type}
-          </Text>
+          <View style={styles.flexCont}>
+            <Chip textStyle={styles.chipText} style={styles.chip}>
+              {route.params.count} Members
+            </Chip>
+            <Chip textStyle={styles.chipText} style={styles.chip}>
+              {route.params.type}
+            </Chip>
+          </View>
         </View>
         <Image
           style={styles.image}
@@ -85,14 +90,28 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 20,
   },
-  count: {
-    fontFamily: "Montserrat_400Regular",
-    color: "#DADADA",
-    fontSize: 15,
+  chip: {
+    backgroundColor: "#323232",
+    borderRadius: 25,
+    marginHorizontal: 4,
+    color: "white",
+    opacity: 0.8,
+    maxHeight: 40,
     marginTop: 15,
   },
+  flexCont: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  chipText: {
+    color: "white",
+    fontFamily: "Montserrat_400Regular",
+    color: "#DADADA",
+    fontSize: 14,
+  },
   boldText: {
-    fontSize: 25,
+    fontSize: 26,
     marginTop: 10,
     color: "white",
     fontFamily: "Montserrat_700Bold",
@@ -109,7 +128,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     width: Dimensions.get("screen").width * 0.8,
-    borderRadius: 15,
+    borderRadius: 40,
     marginBottom: 15,
     marginTop: 65,
   },

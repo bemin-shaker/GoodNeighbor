@@ -78,14 +78,14 @@ export default function MyCommunities() {
                       fontFamily: "Montserrat_700Bold",
                     }}
                     style={{
-                      backgroundColor: "#323232",
+                      backgroundColor: "#212121",
                       borderRadius: 80,
                       padding: 10,
                       marginBottom: 15,
                     }}
                     left={() => (
                       <List.Icon
-                        color={"#323232"}
+                        color={"#212121"}
                         style={{
                           backgroundColor: "#F5F5F9",
                           borderRadius: 50,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   header: {
     color: "white",
     marginBottom: 5,
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: "Montserrat_600SemiBold",
   },
   header2: {

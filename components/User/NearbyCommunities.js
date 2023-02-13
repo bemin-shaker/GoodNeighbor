@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   header: {
     color: "white",
     marginBottom: 5,
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: "Montserrat_600SemiBold",
   },
   listTitle: {
@@ -134,13 +134,11 @@ const styles = StyleSheet.create({
     wordWrap: "break-word",
   },
   list: {
-    backgroundColor: "#323232",
+    backgroundColor: "#212121",
     borderRadius: 30,
     padding: 5,
     marginBottom: 15,
-    marginRight: 15,
-    // borderWidth: 1,
-    // borderColor: "white",
+    marginRight: 12,
     width: Dimensions.get("window").width / 2.35,
     height: Dimensions.get("window").height / 9,
     overflow: "hidden",

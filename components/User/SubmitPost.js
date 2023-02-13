@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     width: Dimensions.get("screen").width * 0.8,
-    borderRadius: 15,
+    borderRadius: 45,
     marginBottom: 15,
     marginTop: 35,
   },

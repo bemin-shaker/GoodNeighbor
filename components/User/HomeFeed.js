@@ -11,7 +11,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-export default function HomeFeed() {
+export default function HomeFeed({ navigation }) {
   let [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_700Bold,
@@ -35,7 +35,7 @@ export default function HomeFeed() {
           icon="bell-badge-outline"
           color="white"
           style={styles.fab}
-          onPress={() => console.log("Pressed")}
+          onPress={() => navigation.navigate("Notifications")}
         />
       </View>
 
@@ -69,8 +69,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   fab: {
-    backgroundColor: "#262626",
-
+    backgroundColor: "#212121",
     borderRadius: 50,
   },
 });
