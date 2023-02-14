@@ -6,7 +6,12 @@ import {
   View,
   Pressable,
   Image,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
+import NearbyCommunities from "./NearbyCommunities";
+
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -22,6 +27,7 @@ export default function MyCommunities() {
   const [loading, setLoading] = useState(true);
   const [communities, setCommunityData] = useState([undefined]);
   const [name, setName] = useState(" to the Neighborhood.");
+  const [refreshing, setRefreshing] = React.useState(true);
 
   const navigation = useNavigation();
 
@@ -31,20 +37,24 @@ export default function MyCommunities() {
     Montserrat_400Regular,
   });
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const email = await getEmail();
-        const data = await getUser(email);
-        setCommunityData(data[0]["joined_communities"]);
-        setName(data[0]["full_name"]);
-        // console.log(name);
-        setLoading(false);
-      } catch (e) {
-        console.log(e);
-      }
-    }
+  async function fetchData() {
+    try {
+      setRefreshing(true);
+      const email = await getEmail();
+      const data = await getUser(email);
+      setCommunityData(data[0]["joined_communities"]);
+      setName(data[0]["full_name"]);
 
+      setLoading(false);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 800);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -56,73 +66,112 @@ export default function MyCommunities() {
     );
   } else if (communities.length === 0) {
     return (
-      <View style={styles.errMessage}>
-        <Text style={styles.header3}>Welcome to the Neighborhood.</Text>
-        <Text style={styles.header2}>Join your first community now.</Text>
-        <Image
-          style={styles.image}
-          source={require("../../assets/friends.jpg")}
-        ></Image>
-      </View>
+      <>
+        {refreshing ? (
+          <ActivityIndicator
+            style={{
+              backgroundColor: "black",
+              padding: 20,
+              zIndex: 10000,
+            }}
+            color="#C88D36"
+            size="small"
+          />
+        ) : null}
+        <ScrollView
+          style={styles.listContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          }
+        >
+          <View style={styles.errMessage}>
+            <Text style={styles.header3}>Welcome to the Neighborhood.</Text>
+            <Text style={styles.header2}>Join your first community now.</Text>
+            <Image
+              style={styles.image}
+              source={require("../../assets/friends.jpg")}
+            ></Image>
+          </View>
+          <NearbyCommunities />
+        </ScrollView>
+      </>
     );
   } else {
     return (
       <View>
         <Text style={styles.header}>My Communities</Text>
-
-        <List.Section>
-          {communities &&
-            communities.map((community) => {
-              return (
-                <Pressable
-                  key={community.communityId}
-                  onPress={() =>
-                    navigation.navigate("CommunityFeed", {
-                      id: community.communityId,
-                      name: community.communityName,
-                    })
-                  }
-                >
-                  <List.Item
-                    title={community.communityName}
+        {refreshing ? (
+          <ActivityIndicator
+            style={{
+              backgroundColor: "black",
+              padding: 20,
+              zIndex: 10000,
+            }}
+            color="#C88D36"
+            size="small"
+          />
+        ) : null}
+        <ScrollView
+          style={styles.listContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          }
+        >
+          <List.Section>
+            {communities &&
+              communities.map((community) => {
+                return (
+                  <Pressable
                     key={community.communityId}
-                    titleStyle={{
-                      color: "white",
-                      fontSize: 14.5,
-                      fontFamily: "Montserrat_700Bold",
-                    }}
-                    style={{
-                      backgroundColor: "#212121",
-                      borderRadius: 80,
-                      padding: 10,
-                      marginBottom: 15,
-                    }}
-                    left={() => (
-                      <List.Icon
-                        color={"#212121"}
-                        style={{
-                          backgroundColor: "#F5F5F9",
-                          borderRadius: 50,
-                          padding: 7,
-                        }}
-                        icon="city"
-                      />
-                    )}
-                    right={() => (
-                      <Icon
-                        name="chevron-forward-outline"
-                        style={{
-                          alignSelf: "center",
-                        }}
-                        size={28}
-                        color="white"
-                      />
-                    )}
-                  />
-                </Pressable>
-              );
-            })}
-        </List.Section>
+                    onPress={() =>
+                      navigation.navigate("CommunityFeed", {
+                        id: community.communityId,
+                        name: community.communityName,
+                      })
+                    }
+                  >
+                    <List.Item
+                      title={community.communityName}
+                      key={community.communityId}
+                      titleStyle={{
+                        color: "white",
+                        fontSize: 14.5,
+                        fontFamily: "Montserrat_700Bold",
+                      }}
+                      style={{
+                        backgroundColor: "#212121",
+                        borderRadius: 80,
+                        padding: 10,
+                        marginBottom: 15,
+                      }}
+                      left={() => (
+                        <List.Icon
+                          color={"#212121"}
+                          style={{
+                            backgroundColor: "#F5F5F9",
+                            borderRadius: 50,
+                            padding: 7,
+                          }}
+                          icon="city"
+                        />
+                      )}
+                      right={() => (
+                        <Icon
+                          name="chevron-forward-outline"
+                          style={{
+                            alignSelf: "center",
+                          }}
+                          size={28}
+                          color="white"
+                        />
+                      )}
+                    />
+                  </Pressable>
+                );
+              })}
+          </List.Section>
+          <NearbyCommunities />
+        </ScrollView>
       </View>
     );
   }
@@ -163,5 +212,8 @@ const styles = StyleSheet.create({
     opacity: 1,
     marginTop: 10,
     borderRadius: 20,
+  },
+  listContainer: {
+    height: Dimensions.get("window").height - 200,
   },
 });

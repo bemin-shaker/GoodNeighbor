@@ -40,7 +40,6 @@ export default function HomeFeed({ navigation }) {
       </View>
 
       <MyCommunities />
-      <NearbyCommunities />
     </View>
   );
 }
