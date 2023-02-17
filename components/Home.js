@@ -6,6 +6,7 @@ import HomeFeed from "./User/HomeFeed";
 import Settings from "./User/Settings";
 import { useTheme } from "../theme/ThemeProvider";
 
+import Notifications from "./User/Notifications";
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
@@ -23,6 +24,8 @@ export default function Home() {
               iconName = "ios-home";
             } else if (route.name === "Settings") {
               iconName = "settings-outline";
+            } else if (route.name === "Notifications") {
+              iconName = "notifications-outline";
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -38,6 +41,7 @@ export default function Home() {
         })}
       >
         <Tab.Screen name="Feed" component={HomeFeed} />
+        <Tab.Screen name="Notifications" component={Notifications} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </View>

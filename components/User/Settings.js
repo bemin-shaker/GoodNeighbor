@@ -51,11 +51,6 @@ export default function HomeFeed() {
 
   return (
     <Screen>
-      <StatusBar
-        animated
-        barStyle={isDark ? "light-content" : "dark-content"}
-      />
-
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={[styles.boldText, { color: colors.text }]}>
@@ -71,8 +66,11 @@ export default function HomeFeed() {
             style={listStyle}
             left={() => (
               <List.Icon
-                color={"#323232"}
-                style={styles.iconLeft}
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
                 icon="account-outline"
               />
             )}
@@ -85,8 +83,11 @@ export default function HomeFeed() {
             style={listStyle}
             left={() => (
               <List.Icon
-                color={"#323232"}
-                style={styles.iconLeft}
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
                 icon="shield-account-outline"
               />
             )}
@@ -100,8 +101,11 @@ export default function HomeFeed() {
             style={listStyle}
             left={() => (
               <List.Icon
-                color={"#323232"}
-                style={styles.iconLeft}
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
                 icon="lock-outline"
               />
             )}
@@ -114,8 +118,11 @@ export default function HomeFeed() {
             style={listStyle}
             left={() => (
               <List.Icon
-                color={"#323232"}
-                style={styles.iconLeft}
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
                 icon="bell-outline"
               />
             )}
@@ -128,8 +135,11 @@ export default function HomeFeed() {
             style={listStyle}
             left={() => (
               <List.Icon
-                color={"#323232"}
-                style={styles.iconLeft}
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
                 icon="eye-off-outline"
               />
             )}
@@ -146,8 +156,11 @@ export default function HomeFeed() {
             }}
             left={() => (
               <List.Icon
-                color={"#323232"}
-                style={styles.iconLeft}
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
                 icon="logout-variant"
               />
             )}
@@ -190,7 +203,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   iconLeft: {
-    backgroundColor: "#F5F5F9",
     borderRadius: 50,
     padding: 10,
   },
