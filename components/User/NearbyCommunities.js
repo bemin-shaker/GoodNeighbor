@@ -8,11 +8,14 @@ import {
 import { getCommunities } from "../../backend/firebase";
 import { List } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "../../theme/ThemeProvider";
+import { Screen } from "../Screen";
 
 export default function NearbyCommunities() {
   const [loading, setLoading] = useState(true);
   const [communities, setCommunityData] = useState([undefined]);
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -43,8 +46,10 @@ export default function NearbyCommunities() {
     return <View></View>;
   } else {
     return (
-      <View>
-        <Text style={styles.header}>Nearby Communities</Text>
+      <Screen>
+        <Text style={[styles.header, { color: colors.text }]}>
+          Nearby Communities
+        </Text>
         <List.Section
           style={{
             display: "flex",
@@ -55,111 +60,63 @@ export default function NearbyCommunities() {
         >
           {communities &&
             communities.map((community) => {
-              if (community.type === "City") {
-                return (
-                  <Pressable
+              return (
+                <Pressable
+                  key={community.id}
+                  onPress={() =>
+                    navigation.navigate("JoinCommunity", {
+                      id: community.id,
+                      name: community.name,
+                      count: community.members_list.length,
+                      type: community.type,
+                    })
+                  }
+                >
+                  <List.Item
+                    title={community.name}
                     key={community.id}
-                    onPress={() =>
-                      navigation.navigate("JoinCommunity", {
-                        id: community.id,
-                        name: community.name,
-                        count: community.members_list.length,
-                        type: community.type,
-                      })
-                    }
-                  >
-                    <List.Item
-                      title={community.name}
-                      key={community.id}
-                      titleStyle={styles.listTitle}
-                      description={community.members_list.length + " Members"}
-                      descriptionStyle={styles.listDescription}
-                      titleNumberOfLines={3}
-                      style={styles.list}
-                      right={() => (
-                        <List.Icon
-                          color={"white"}
-                          style={styles.icon}
-                          icon="city"
-                        />
-                      )}
-                    />
-                  </Pressable>
-                );
-              } else if (community.type === "University") {
-                return (
-                  <Pressable
-                    key={community.id}
-                    onPress={() =>
-                      navigation.navigate("JoinCommunity", {
-                        id: community.id,
-                        name: community.name,
-                        count: community.members_list.length,
-                        type: community.type,
-                      })
-                    }
-                  >
-                    <List.Item
-                      title={community.name}
-                      key={community.id}
-                      description={community.members_list.length + " Members"}
-                      descriptionStyle={styles.listDescription}
-                      titleStyle={styles.listTitle}
-                      titleNumberOfLines={2}
-                      style={styles.list}
-                      right={() => (
-                        <List.Icon
-                          color={"white"}
-                          style={styles.icon}
-                          icon="school"
-                        />
-                      )}
-                    />
-                  </Pressable>
-                );
-              }
+                    description={community.members_list.length + " Members"}
+                    descriptionStyle={[
+                      styles.listDescription,
+                      { color: colors.text },
+                    ]}
+                    titleStyle={[styles.listTitle, { color: colors.text }]}
+                    titleNumberOfLines={2}
+                    style={[
+                      styles.list,
+                      { backgroundColor: colors.containerColor },
+                    ]}
+                  />
+                </Pressable>
+              );
             })}
         </List.Section>
-      </View>
+      </Screen>
     );
   }
 }
 
 const styles = StyleSheet.create({
   header: {
-    color: "white",
     marginBottom: 5,
     fontSize: 16,
     fontFamily: "Montserrat_600SemiBold",
   },
   listTitle: {
-    color: "white",
     fontSize: 14,
     fontFamily: "Montserrat_700Bold",
     wordWrap: "break-word",
   },
   list: {
-    backgroundColor: "#212121",
     borderRadius: 30,
     padding: 5,
     marginBottom: 12,
-    // marginRight: 12,
     width: Dimensions.get("window").width / 2.22,
     height: Dimensions.get("window").height / 9,
     overflow: "hidden",
   },
   listDescription: {
-    color: "white",
     opacity: 0.5,
     paddingTop: 3,
-  },
-  icon: {
-    position: "absolute",
-    borderRadius: 50,
-    bottom: 0,
-    right: 0,
-    transform: [{ scaleX: 5 }, { scaleY: 5 }, { translateY: 4 }],
-    opacity: 0.1,
-    borderRadius: 90,
   },
 });
