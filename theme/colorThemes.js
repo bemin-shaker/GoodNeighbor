@@ -16,6 +16,7 @@ export const lightColors = {
   fabBgColor: "#e4e6ea",
   fabColor: "black",
   headerText: "#00478d",
+  mapMarkerBgColor: "#00478d",
 };
 
 // Dark theme colors
@@ -29,12 +30,13 @@ export const darkColors = {
   listIconColor: "#212121",
   listIconBgColor: "#F5F5F9",
   chevronColor: "white",
-  activityIndicatorColor: "#C88D36",
+  activityIndicatorColor: "#212121",
   activityIndicatorBgColor: "black",
   homeHeader: "black",
   tabBarBgColor: "black",
   tabBarActiveColor: "#C88D36",
-  fabBgColor: "#212121",
+  fabBgColor: "#373737",
   fabColor: "white",
   headerText: "white",
+  mapMarkerBgColor: "#333235",
 };

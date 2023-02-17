@@ -5,6 +5,8 @@ import MenuComponent from "../../menu";
 import Map from "./map";
 import ListItems from "./list";
 import { getPosts, getUser, getEmail } from "../../../backend/firebase";
+import { useTheme } from "../../../theme/ThemeProvider";
+import { Screen } from "../../Screen";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -19,6 +21,8 @@ export default function CommunityFeed({ route, navigation }) {
   const [userData, setUserData] = useState([undefined]);
   const [userId, setUserId] = useState("");
   const [refreshing, setRefreshing] = useState(true);
+
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -67,7 +71,7 @@ export default function CommunityFeed({ route, navigation }) {
       <ActivityIndicator
         style={{
           height: "100%",
-          backgroundColor: "black",
+          backgroundColor: colors.background,
         }}
         animating={true}
         color={"#C88D36"}
@@ -76,67 +80,72 @@ export default function CommunityFeed({ route, navigation }) {
     );
   } else {
     return (
-      <View style={styles.container}>
-        {userData && userData.admin == true ? (
-          <>
-            <MenuComponent
-              navigation={navigation}
-              info={{
-                id: route.params.id,
-                name: route.params.name,
-                userId: userId,
-              }}
-            />
-          </>
-        ) : (
-          <></>
-        )}
-
-        <Back />
-
-        <Map
-          communityId={route.params.id}
-          communityName={route.params.name}
-          posts={postsData}
-          isLoading={loading}
-        />
-        <BottomSheetComp
-          content={
-            <View style={styles.listView}>
-              <ListItems
-                communityId={route.params.id}
-                communityName={route.params.name}
-                posts={postsData}
-                isLoading={loading}
-                refreshing={refreshing}
-                fetchPostData={fetchPostData}
+      <Screen>
+        <View style={styles.container}>
+          {userData && userData.admin == true ? (
+            <>
+              <MenuComponent
+                navigation={navigation}
+                info={{
+                  id: route.params.id,
+                  name: route.params.name,
+                  userId: userId,
+                }}
               />
-            </View>
-          }
-          header={
-            <View style={styles.flexCont}>
-              <View>
-                <Text style={styles.header}>{route.params.name}</Text>
-                <Text style={styles.subHeader}>
-                  {postsData.length} incidents in the past 24 hours
-                </Text>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <Back />
+
+          <Map
+            communityId={route.params.id}
+            communityName={route.params.name}
+            posts={postsData}
+            isLoading={loading}
+          />
+          <BottomSheetComp
+            content={
+              <View style={styles.listView}>
+                <ListItems
+                  communityId={route.params.id}
+                  communityName={route.params.name}
+                  posts={postsData}
+                  isLoading={loading}
+                  refreshing={refreshing}
+                  fetchPostData={fetchPostData}
+                />
               </View>
+            }
+            header={
+              <View style={styles.flexCont}>
+                <View>
+                  <Text style={[styles.header, { color: colors.text }]}>
+                    {route.params.name}
+                  </Text>
+                  <Text style={[styles.subHeader, { color: colors.text }]}>
+                    {postsData.length} incidents in the past 24 hours
+                  </Text>
+                </View>
 
-              <FAB
-                icon="plus"
-                color="white"
-                style={styles.fab}
-                onPress={() =>
-                  navigation.navigate("SubmitPost", {
-                    id: route.params.id,
-                    name: route.params.name,
-                  })
-                }
-              />
-            </View>
-          }
-        />
-      </View>
+                <FAB
+                  icon="plus"
+                  color={colors.fabColor}
+                  size={"small"}
+                  style={[styles.fab, { backgroundColor: colors.fabBgColor }]}
+                  onPress={() =>
+                    navigation.navigate("SubmitPost", {
+                      id: route.params.id,
+                      name: route.params.name,
+                    })
+                  }
+                />
+              </View>
+            }
+          />
+        </View>
+      </Screen>
     );
   }
 }
@@ -146,24 +155,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
   },
   header: {
-    color: "white",
     marginTop: 20,
     marginLeft: 20,
     fontSize: 25,
     fontFamily: "Montserrat_600SemiBold",
   },
   subHeader: {
-    color: "#FFFFFF",
     marginTop: 4,
     marginLeft: 20,
     opacity: 0.7,
     fontSize: 17,
   },
   listView: {
-    //  backgroundColor: "#000000",
-    //   transform: [{ translateY: -40 }],
     zIndex: 1000,
-    // height: "100%",
   },
   flexCont: {
     display: "flex",
@@ -173,9 +177,10 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   fab: {
-    backgroundColor: "#262626",
     marginTop: 20,
-    marginRight: 10,
+    marginRight: 20,
     borderRadius: 50,
+    padding: 2,
+    alignSelf: "center",
   },
 });

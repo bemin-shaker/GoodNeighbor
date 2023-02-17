@@ -8,6 +8,7 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  StatusBar,
 } from "react-native";
 import { Chip, TextInput, Divider, Provider } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
@@ -20,6 +21,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { makeUpdate, getEmail, getPost } from "../../../backend/firebase";
 import Back from "../../Back";
 import Popup from "../../Popup";
+import { useTheme } from "../../../theme/ThemeProvider";
+import { Screen } from "../../Screen";
 
 export default function PostDetails({ route, navigation }) {
   const [loading, setLoading] = React.useState(true);
@@ -27,6 +30,8 @@ export default function PostDetails({ route, navigation }) {
   const [title, setTitle] = React.useState("");
   const [image, setImage] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
+
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_600SemiBold,
@@ -92,8 +97,9 @@ export default function PostDetails({ route, navigation }) {
 
   return (
     <Provider>
+      <StatusBar barStyle={"light-content"} />
       <View>
-        <Back />
+        <Back light={true} />
         <Popup
           component={
             <Image
@@ -105,8 +111,13 @@ export default function PostDetails({ route, navigation }) {
             ></Image>
           }
         />
-        <View style={styles.listView}>
-          <Text style={styles.header} numberOfLines={2}>
+        <View
+          style={[styles.listView, { backgroundColor: colors.containerColor }]}
+        >
+          <Text
+            style={[styles.header, { color: colors.text }]}
+            numberOfLines={2}
+          >
             {route.params.postData.title}
           </Text>
           <Chip
@@ -117,15 +128,17 @@ export default function PostDetails({ route, navigation }) {
           >
             {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
           </Chip>
-          <Text style={styles.subHeader}>Updates</Text>
+          <Text style={[styles.subHeader, { color: colors.tabBarActiveColor }]}>
+            Updates
+          </Text>
           {refreshing ? (
             <ActivityIndicator
               style={{
-                backgroundColor: "black",
+                backgroundColor: colors.container,
                 padding: 20,
                 zIndex: 10000,
               }}
-              color="#C88D36"
+              color={colors.activityIndicatorColor}
               size="small"
             />
           ) : null}
@@ -165,7 +178,7 @@ export default function PostDetails({ route, navigation }) {
                       </Chip>
                       <Text
                         style={{
-                          color: "white",
+                          color: colors.text,
                           fontFamily: "Montserrat_400Regular",
                           fontSize: 16,
                           marginBottom: 10,
@@ -215,7 +228,7 @@ export default function PostDetails({ route, navigation }) {
               </Chip>
               <Text
                 style={{
-                  color: "white",
+                  color: colors.text,
                   fontFamily: "Montserrat_400Regular",
                   fontSize: 16,
                   marginBottom: 10,
@@ -229,7 +242,12 @@ export default function PostDetails({ route, navigation }) {
           </ScrollView>
         </View>
 
-        <View style={styles.bottomContainer}>
+        <View
+          style={[
+            styles.bottomContainer,
+            { backgroundColor: colors.containerColor },
+          ]}
+        >
           <TextInput
             style={styles.textInput}
             mode={"outlined"}
@@ -276,7 +294,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   header: {
-    color: "white",
     marginTop: 20,
     marginLeft: 20,
     paddingRight: 20,
@@ -294,14 +311,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   subHeader: {
-    color: "#C88D36",
     marginTop: 10,
     marginLeft: 20,
     fontSize: 18,
     fontFamily: "Montserrat_600SemiBold",
   },
   listView: {
-    backgroundColor: "#000000",
     borderTopStartRadius: 25,
     borderTopEndRadius: 25,
     transform: [{ translateY: -40 }],
@@ -331,6 +346,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 10,
     marginBottom: 10,
-    backgroundColor: "#000000",
   },
 });

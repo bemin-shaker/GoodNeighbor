@@ -166,12 +166,30 @@ export default function HomeFeed() {
             )}
           />
           <List.Item
-            title={text}
+            title="Appearance"
+            description={text}
             titleNumberOfLines={2}
             key={2}
+            descriptionStyle={[styles.description, { color: colors.text }]}
             titleStyle={[styles.header2, { color: colors.text }]}
             style={listStyle}
-            left={() => <Switch value={isDark} onValueChange={toggleScheme} />}
+            left={() => (
+              <List.Icon
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
+                icon="palette-outline"
+              />
+            )}
+            right={() => (
+              <Switch
+                style={{ alignSelf: "center" }}
+                value={isDark}
+                onValueChange={toggleScheme}
+              />
+            )}
           />
         </List.Section>
       </View>
@@ -185,16 +203,16 @@ const styles = StyleSheet.create({
     height: Dimensions.get("screen").height * 1,
   },
   boldText: {
-    fontSize: 24,
+    fontSize: 25,
     paddingLeft: 15,
-    marginTop: 10,
+    marginTop: 3,
     fontFamily: "Montserrat_600SemiBold",
   },
   header: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 5,
   },
   listItem: {
     borderBottomWidth: 1,
@@ -209,5 +227,9 @@ const styles = StyleSheet.create({
   header2: {
     fontSize: 16,
     fontFamily: "Montserrat_600SemiBold",
+  },
+  description: {
+    fontSize: 13,
+    fontFamily: "Montserrat_400Regular",
   },
 });

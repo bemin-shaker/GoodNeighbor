@@ -101,7 +101,7 @@ export default function MyCommunities() {
         <Text>Loading..</Text>
       </View>
     );
-  } else if (communities.length !== 0) {
+  } else if (communities.length === 0) {
     return welcomeCardComponent;
   } else {
     return (
