@@ -45,16 +45,22 @@ export default function ListItems({
           <ActivityIndicator
             style={{
               backgroundColor: colors.container,
-              padding: 20,
+              paddingTop: 40,
               zIndex: 10000,
             }}
-            color={colors.activityIndicatorColor}
+            color={colors.tabBarActiveColor}
             size="small"
           />
         ) : null}
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchPostData} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={fetchPostData}
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent" }}
+            />
           }
         >
           {posts &&
@@ -146,9 +152,7 @@ export default function ListItems({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    //paddingBottom: 400,
-  },
+  container: {},
   fab: {
     backgroundColor: "transparent",
     margin: 0,
@@ -157,6 +161,7 @@ const styles = StyleSheet.create({
   listItem: {
     paddingLeft: 20,
     paddingRight: 25,
-    paddingBottom: 10,
+    paddingBottom: 15,
+    paddingTop: 5,
   },
 });

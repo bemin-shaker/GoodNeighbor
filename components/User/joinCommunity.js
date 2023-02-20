@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("screen").width * 0.8,
     borderRadius: 40,
     marginBottom: 15,
-    marginTop: 65,
+    marginTop: 50,
   },
   loginButtonText: {
     color: "white",
@@ -151,6 +151,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get("screen").height * 0.25,
     borderRadius: 400,
     opacity: 1,
-    marginTop: 30,
+    marginTop: 45,
   },
 });

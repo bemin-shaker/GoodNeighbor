@@ -6,17 +6,17 @@ export const lightColors = {
   borderBottomColor: "lightgrey",
   containerColor: "white",
   listIconColor: "#F5F5F9",
-  listIconBgColor: "#00478d",
+  listIconBgColor: "#003366",
   chevronColor: "black",
   activityIndicatorColor: "#f0f2f5",
   activityIndicatorBgColor: "#f0f2f5",
   homeHeader: "white",
   tabBarBgColor: "white",
-  tabBarActiveColor: "#00478d",
+  tabBarActiveColor: "#003366",
   fabBgColor: "#e4e6ea",
   fabColor: "black",
-  headerText: "#00478d",
-  mapMarkerBgColor: "#00478d",
+  headerText: "#003366",
+  mapMarkerBgColor: "#003366",
 };
 
 // Dark theme colors

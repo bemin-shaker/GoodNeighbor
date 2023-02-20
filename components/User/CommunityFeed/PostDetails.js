@@ -121,9 +121,11 @@ export default function PostDetails({ route, navigation }) {
             {route.params.postData.title}
           </Text>
           <Chip
-            icon={() => <Icon name="clock-outline" size={16} color="#BDBDBD" />}
+            icon={() => (
+              <Icon name="clock-outline" size={16} color={colors.text} />
+            )}
             style={styles.fab}
-            textStyle={{ color: "#BDBDBD", transform: [{ translateX: -3 }] }}
+            textStyle={{ color: colors.text, transform: [{ translateX: -3 }] }}
             onPress={() => console.log("Pressed")}
           >
             {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
@@ -135,10 +137,10 @@ export default function PostDetails({ route, navigation }) {
             <ActivityIndicator
               style={{
                 backgroundColor: colors.container,
-                padding: 20,
+                paddingTop: 40,
                 zIndex: 10000,
               }}
-              color={colors.activityIndicatorColor}
+              color={colors.tabBarActiveColor}
               size="small"
             />
           ) : null}
@@ -148,6 +150,9 @@ export default function PostDetails({ route, navigation }) {
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={fetchPostData}
+                tintColor="transparent"
+                colors={["transparent"]}
+                style={{ backgroundColor: "transparent" }}
               />
             }
           >
@@ -161,12 +166,12 @@ export default function PostDetails({ route, navigation }) {
                           <Icon
                             name="clock-outline"
                             size={16}
-                            color="#BDBDBD"
+                            color={colors.text}
                           />
                         )}
                         style={styles.fab2}
                         textStyle={{
-                          color: "#BDBDBD",
+                          color: colors.text,
                           transform: [{ translateX: -3 }],
                         }}
                       >
@@ -209,11 +214,14 @@ export default function PostDetails({ route, navigation }) {
             <View style={styles.listItem}>
               <Chip
                 icon={() => (
-                  <Icon name="clock-outline" size={16} color="#BDBDBD" />
+                  <Icon name="clock-outline" size={16} color={colors.text} />
                 )}
-                style={styles.fab2}
+                style={[
+                  styles.fab2,
+                  { backgroundColor: colors.backgroundColor },
+                ]}
                 textStyle={{
-                  color: "#BDBDBD",
+                  color: colors.text,
                   transform: [{ translateX: -3 }],
                 }}
                 onPress={() => console.log("Pressed")}
@@ -249,11 +257,11 @@ export default function PostDetails({ route, navigation }) {
           ]}
         >
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { backgroundColor: colors.background }]}
             mode={"outlined"}
-            activeOutlineColor="#C88D36"
+            activeOutlineColor={"#C88D36"}
             outlineColor="#999CAD"
-            textColor="#DADADA"
+            textColor={colors.text}
             label="Add an update"
             value={title}
             onChangeText={(title) => setTitle(title)}
@@ -309,6 +317,7 @@ const styles = StyleSheet.create({
   fab2: {
     transform: [{ translateX: -10 }],
     backgroundColor: "transparent",
+    opacity: 0.5,
   },
   subHeader: {
     marginTop: 10,
@@ -338,7 +347,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: Dimensions.get("screen").width * 0.9,
     color: "#A32638",
-    backgroundColor: "#000000",
+    //backgroundColor: "#000000",
   },
   bottomContainer: {
     height: Dimensions.get("window").height * 0.13,
