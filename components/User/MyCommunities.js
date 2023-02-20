@@ -60,7 +60,7 @@ export default function MyCommunities() {
           />
         }
       >
-        <View style={{ paddingHorizontal: 15 }}>
+        <View>
           <View style={styles.errMessage}>
             <Text style={styles.header3}>Welcome to the Neighborhood.</Text>
             <Text style={styles.header2}>Join your first community now.</Text>
@@ -187,7 +187,7 @@ export default function MyCommunities() {
                 })}
             </List.Section>
           </View>
-          <View style={{ paddingHorizontal: 15 }}>
+          <View>
             <NearbyCommunities />
           </View>
         </ScrollView>
@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 30,
     borderRadius: 20,
+    marginHorizontal: 15,
   },
   image: {
     width: "100%",

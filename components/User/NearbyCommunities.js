@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Dimensions,
+  ScrollView,
+  Image,
+} from "react-native";
 import {
   useFonts,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import { getCommunities } from "../../backend/firebase";
-import { List } from "react-native-paper";
+import { List, Card, IconButton, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../../theme/ThemeProvider";
 import { Screen } from "../Screen";
@@ -50,13 +58,14 @@ export default function NearbyCommunities() {
         <Text style={[styles.header, { color: colors.text }]}>
           Nearby Communities
         </Text>
-        <List.Section
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-          }}
+
+        <ScrollView
+          horizontal
+          disableIntervalMomentum={true}
+          snapToInterval={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingHorizontal: 15, height: "100%" }}
         >
           {communities &&
             communities.map((community) => {
@@ -72,25 +81,61 @@ export default function NearbyCommunities() {
                     })
                   }
                 >
-                  <List.Item
-                    title={community.name}
-                    key={community.id}
-                    description={community.members_list.length + " Members"}
-                    descriptionStyle={[
-                      styles.listDescription,
-                      { color: colors.text },
-                    ]}
-                    titleStyle={[styles.listTitle, { color: colors.text }]}
-                    titleNumberOfLines={2}
+                  <Card
                     style={[
                       styles.list,
                       { backgroundColor: colors.containerColor },
                     ]}
-                  />
+                  >
+                    <Card.Cover
+                      style={{
+                        borderRadius: 0,
+                        transform: [{ scale: 1.1 }],
+                        height: Dimensions.get("window").width * 0.35,
+                      }}
+                      source={require("../../assets/friends.jpg")}
+                    />
+                    <Card.Title
+                      title={community.name}
+                      titleStyle={[styles.listTitle, { color: colors.text }]}
+                      titleNumberOfLines={1}
+                      subtitle={community.members_list.length + " Members"}
+                      subtitleStyle={[
+                        styles.listDescription,
+                        { color: colors.text },
+                      ]}
+                      style={{ paddingVertical: 10 }}
+                      right={(props) => (
+                        <Pressable
+                          style={[
+                            styles.signupButton,
+                            { borderColor: colors.tabBarActiveColor },
+                          ]}
+                          onPress={() =>
+                            navigation.navigate("JoinCommunity", {
+                              id: community.id,
+                              name: community.name,
+                              count: community.members_list.length,
+                              type: community.type,
+                            })
+                          }
+                        >
+                          <Text
+                            style={[
+                              styles.signupButtonText,
+                              { color: colors.tabBarActiveColor },
+                            ]}
+                          >
+                            Join
+                          </Text>
+                        </Pressable>
+                      )}
+                    />
+                  </Card>
                 </Pressable>
               );
             })}
-        </List.Section>
+        </ScrollView>
       </Screen>
     );
   }
@@ -101,22 +146,35 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 16,
     fontFamily: "Montserrat_600SemiBold",
+    paddingHorizontal: 15,
   },
   listTitle: {
     fontSize: 14,
     fontFamily: "Montserrat_700Bold",
     wordWrap: "break-word",
+    lineHeight: 20,
+    paddingTop: 10,
   },
   list: {
     borderRadius: 30,
     padding: 5,
-    marginBottom: 12,
-    width: Dimensions.get("window").width / 2.22,
-    height: Dimensions.get("window").height / 9,
+    marginRight: 12,
+    marginTop: 10,
+    width: Dimensions.get("window").width / 1.5,
     overflow: "hidden",
   },
   listDescription: {
     opacity: 0.5,
-    paddingTop: 3,
+  },
+  signupButton: {
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 15,
+    marginTop: 10,
+    marginRight: 5,
+  },
+  signupButtonText: {
+    fontSize: 17,
+    textAlign: "center",
   },
 });
