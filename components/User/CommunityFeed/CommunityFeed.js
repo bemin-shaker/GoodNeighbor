@@ -86,11 +86,9 @@ export default function CommunityFeed({ route, navigation }) {
             <>
               <MenuComponent
                 navigation={navigation}
-                info={{
-                  id: route.params.id,
-                  name: route.params.name,
-                  userId: userId,
-                }}
+                id={route.params.id}
+                name={route.params.name}
+                userId={userId}
               />
             </>
           ) : (
