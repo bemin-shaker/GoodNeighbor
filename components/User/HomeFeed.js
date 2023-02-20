@@ -49,7 +49,7 @@ export default function HomeFeed({ navigation }) {
   return (
     <Screen>
       <View style={[styles.container, { backgroundColor: colors.homeHeader }]}>
-        <View style={styles.header}>
+        <View style={[styles.header, { backgroundColor: colors.homeHeader }]}>
           <View>
             <Text style={[styles.boldText, { color: colors.headerText }]}>
               Good
@@ -74,8 +74,8 @@ export default function HomeFeed({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
-    height: Dimensions.get("screen").height * 1,
+    paddingTop: 55,
+    //paddingBottom: 8,
   },
   lightText: {
     fontFamily: "Montserrat_400Regular",
@@ -94,12 +94,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 10,
     alignItems: "center",
   },
   fab: {
     borderRadius: 50,
     shadowRadius: 0,
-    shadowColor: "transparent",
   },
 });

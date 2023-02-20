@@ -199,7 +199,7 @@ export default function HomeFeed() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
+    paddingTop: 55,
     height: Dimensions.get("screen").height * 1,
   },
   boldText: {

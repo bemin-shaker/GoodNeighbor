@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, StatusBar, Dimensions, View } from "react-native";
+import { StyleSheet, StatusBar, SafeAreaView, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeFeed from "./User/HomeFeed";
@@ -52,6 +52,5 @@ styles = StyleSheet.create({
   container: {
     marginBottom: 0,
     height: "100%",
-    backgroundColor: "#000000",
   },
 });

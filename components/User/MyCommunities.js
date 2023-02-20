@@ -217,12 +217,11 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 150,
-    // borderRadius: 400,
     opacity: 1,
     marginTop: 10,
     borderRadius: 20,
   },
   listContainer: {
-    height: Dimensions.get("window").height - 200,
+    height: Dimensions.get("window").height - 100,
   },
 });

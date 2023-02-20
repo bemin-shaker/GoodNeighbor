@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   container: {
-    paddingTop: 60,
+    paddingTop: 55,
     height: "100%",
   },
   listItem: {
