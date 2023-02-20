@@ -56,7 +56,7 @@ export default function JoinCommunity({ route, navigation }) {
         </View>
         <Image
           style={styles.image}
-          source={require("../../assets/city.jpg")}
+          source={{ uri: route.params.coverURL }}
         ></Image>
 
         <Pressable

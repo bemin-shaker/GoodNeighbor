@@ -76,6 +76,7 @@ export default function NearbyCommunities() {
                       name: community.name,
                       count: community.members_list.length,
                       type: community.type,
+                      coverURL: community.coverURL,
                     })
                   }
                 >
@@ -91,7 +92,7 @@ export default function NearbyCommunities() {
                         transform: [{ scale: 1.1 }],
                         height: Dimensions.get("window").width * 0.35,
                       }}
-                      source={require("../../assets/friends.jpg")}
+                      source={{ uri: community.coverURL }}
                     />
                     <Card.Title
                       title={community.name}
@@ -166,7 +167,8 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     borderWidth: 1,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
     borderRadius: 15,
     marginTop: 10,
     marginRight: 5,
