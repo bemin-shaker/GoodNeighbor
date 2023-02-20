@@ -55,9 +55,7 @@ export default function NearbyCommunities() {
   } else {
     return (
       <Screen>
-        <Text style={[styles.header, { color: colors.text }]}>
-          Nearby Communities
-        </Text>
+        <Text style={[styles.header, { color: colors.text }]}>Nearby</Text>
 
         <ScrollView
           horizontal
@@ -104,7 +102,6 @@ export default function NearbyCommunities() {
                         styles.listDescription,
                         { color: colors.text },
                       ]}
-                      style={{ paddingVertical: 10 }}
                       right={(props) => (
                         <Pressable
                           style={[
@@ -144,8 +141,8 @@ export default function NearbyCommunities() {
 const styles = StyleSheet.create({
   header: {
     marginBottom: 5,
-    fontSize: 16,
-    fontFamily: "Montserrat_600SemiBold",
+    fontSize: 18,
+    fontFamily: "Montserrat_700Bold",
     paddingHorizontal: 15,
   },
   listTitle: {
@@ -153,7 +150,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_700Bold",
     wordWrap: "break-word",
     lineHeight: 20,
-    paddingTop: 10,
+    paddingTop: 8,
   },
   list: {
     borderRadius: 30,
@@ -165,6 +162,7 @@ const styles = StyleSheet.create({
   },
   listDescription: {
     opacity: 0.5,
+    lineHeight: 0,
   },
   signupButton: {
     borderWidth: 1,
