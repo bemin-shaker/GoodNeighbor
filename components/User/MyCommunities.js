@@ -37,10 +37,10 @@ export default function MyCommunities() {
     <ActivityIndicator
       style={{
         backgroundColor: colors.activityIndicatorBgColor,
-        padding: 20,
+        paddingTop: 40,
         zIndex: 10000,
       }}
-      color={colors.activityIndicatorColor}
+      color={colors.tabBarActiveColor}
       size="small"
     />
   );
@@ -51,7 +51,13 @@ export default function MyCommunities() {
       <ScrollView
         style={styles.listContainer}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={fetchData}
+            tintColor="transparent"
+            colors={["transparent"]}
+            style={{ backgroundColor: "transparent" }}
+          />
         }
       >
         <View style={{ paddingHorizontal: 15 }}>
@@ -110,7 +116,13 @@ export default function MyCommunities() {
         <ScrollView
           style={styles.listContainer}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={fetchData}
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent" }}
+            />
           }
         >
           <View style={{ paddingHorizontal: 15 }}>
