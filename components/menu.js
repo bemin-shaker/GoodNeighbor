@@ -30,11 +30,9 @@ export default function MenuComponent({
           <Menu
             contentStyle={{
               backgroundColor: colors.containerColor,
-              borderRadius: 20,
             }}
             visible={visible}
             style={{
-              borderRadius: 20,
               zIndex: 100000,
               position: "absolute",
               minWidth: 200,
@@ -57,11 +55,7 @@ export default function MenuComponent({
                 <Menu.Item
                   style={{
                     backgroundColor: colors.containerColor,
-                    borderBottomWidth: 0.3,
-                    borderTopLeftRadius: 20,
-                    borderTopRightRadius: 20,
-                    paddingLeft: 20,
-                    borderBottomColor: "#999CAD",
+                    paddingLeft: 15,
                     paddingBottom: 5,
                   }}
                   onPress={() =>
@@ -73,12 +67,12 @@ export default function MenuComponent({
                   }
                   title="Manage Members"
                   titleStyle={{ color: colors.text }}
+                  leadingIcon="account-group"
                 />
                 <Menu.Item
                   style={{
                     backgroundColor: colors.containerColor,
-                    borderRadius: 20,
-                    paddingLeft: 20,
+                    paddingLeft: 15,
                     paddingTop: 5,
                   }}
                   onPress={() =>
@@ -90,34 +84,35 @@ export default function MenuComponent({
                   }
                   title="Notification Feed"
                   titleStyle={{ color: colors.text }}
+                  leadingIcon="bell"
                 />
               </>
             ) : (
-              <>
-                <Menu.Item
-                  style={{
-                    backgroundColor: colors.containerColor,
-                    borderRadius: 20,
-                    paddingLeft: 20,
-                    paddingTop: 5,
-                  }}
-                  onPress={async () => {
-                    let submit = await removeMember(
-                      id,
-                      name,
-                      userId,
-                      email,
-                      isAdmin
-                    );
-                    if (submit == "success") {
-                      navigation.navigate("Home");
-                    }
-                  }}
-                  title="Leave Community"
-                  titleStyle={{ color: colors.text }}
-                />
-              </>
+              <></>
             )}
+
+            <Menu.Item
+              style={{
+                backgroundColor: colors.containerColor,
+                paddingLeft: 15,
+                paddingTop: 5,
+              }}
+              onPress={async () => {
+                let submit = await removeMember(
+                  id,
+                  name,
+                  userId,
+                  email,
+                  isAdmin
+                );
+                if (submit == "success") {
+                  navigation.navigate("Home");
+                }
+              }}
+              title="Leave Community"
+              titleStyle={{ color: colors.text }}
+              leadingIcon="account-remove"
+            />
           </Menu>
         </View>
       </Provider>
