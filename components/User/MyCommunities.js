@@ -198,7 +198,7 @@ export default function MyCommunities() {
 
 const styles = StyleSheet.create({
   header: {
-    marginBottom: 5,
+    marginBottom: 7,
     marginTop: 20,
     fontSize: 18,
     fontFamily: "Montserrat_700Bold",
