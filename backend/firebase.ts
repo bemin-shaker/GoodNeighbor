@@ -67,8 +67,8 @@ export const signUpWithEmail = async (
     await updateProfile(user, {
       displayName: fName,
     });
-    //console.log(user);
-    let userID = await addNewUser(fName, email);
+    
+    let userID = await addNewUser(fName, email, result.user.uid);
     await updateProfile(user, {
       photoURL: userID,
     });
@@ -94,7 +94,6 @@ export const logOut = async () => {
   try {
     await signOut(auth);
     user = auth.currentUser;
-    //console.log(user);
     return "success";
   } catch (e) {
     console.log(e);
@@ -108,15 +107,11 @@ export const getEmail = async () => {
 
   if (email == null) {
       email_one = 'null'
-  }
-  else if (email == undefined) {
+  } else if (email == undefined) {
       email_one = 'undefined'
-  }
-  else {
+  } else {
       email_one = email;
   }
-
-  //console.log("EMAILLLL:" + email_one)
 
   return email_one;
 }
@@ -124,18 +119,16 @@ export const getEmail = async () => {
 
 
 // FIRESTORE // --------------------------------------------------------------
-const addNewUser = async (fName: string, email: string) => {
+const addNewUser = async (fName: string, email: string, uid: string) => {
   try {
     const userData = {
+      userId: uid,
       full_name: fName,
       email: email.toLowerCase(),
       joined_communities: [],
     };
-    const docRef = await addDoc(collection(firestore, "users"), userData);
-    await updateDoc(docRef, {
-      userID: docRef.id,
-    });
-    return docRef.id;
+    await setDoc(doc(firestore, "users", uid), userData);
+    return uid;
   } catch (e) {
     console.log(e);
   }
@@ -210,10 +203,8 @@ export const getPosts = async (id) =>  {
 
 //Get the categories array within the communities collection
 export const getCategories = async (id) =>  {
-  //console.log("hi", id)
   const docRef = doc(firestore, "Communities", id);
   const docSnap = await getDoc(docRef);
-
   return docSnap.data().categories
 }
 
