@@ -20,6 +20,7 @@ export default function CommunityFeed({ route, navigation }) {
   const [postsData, setPostsData] = useState([undefined]);
   const [userData, setUserData] = useState([undefined]);
   const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
   const [refreshing, setRefreshing] = useState(true);
 
   const { colors } = useTheme();
@@ -52,6 +53,7 @@ export default function CommunityFeed({ route, navigation }) {
       try {
         const email = await getEmail();
         const data = await getUser(email);
+        setEmail(email);
         setUserId(data[0]["id"]);
         const community = data[0]["joined_communities"].find(
           (community) => community.communityId === route.params.id
@@ -82,18 +84,14 @@ export default function CommunityFeed({ route, navigation }) {
     return (
       <Screen>
         <View style={styles.container}>
-          {userData && userData.admin == true ? (
-            <>
-              <MenuComponent
-                navigation={navigation}
-                id={route.params.id}
-                name={route.params.name}
-                userId={userId}
-              />
-            </>
-          ) : (
-            <></>
-          )}
+          <MenuComponent
+            navigation={navigation}
+            id={route.params.id}
+            name={route.params.name}
+            userId={userId}
+            isAdmin={userData.admin}
+            email={email}
+          />
 
           <Back />
 

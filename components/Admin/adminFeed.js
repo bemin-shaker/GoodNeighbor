@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
+import { useTheme } from "../../theme/ThemeProvider";
 import {
   useFonts,
   Montserrat_600SemiBold,
@@ -30,7 +31,7 @@ export default function AdminFeed({ route }) {
   const [refreshing, setRefreshing] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  const navigation = useNavigation();
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -64,11 +65,13 @@ export default function AdminFeed({ route }) {
     );
   } else if (members.length <= 1) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Back />
-        <Text style={styles.header}>Community Members</Text>
+        <Text style={[styles.header, { color: colors.text }]}>
+          Community Members
+        </Text>
         <View style={styles.errMessage}>
-          <Text style={styles.header2}>
+          <Text style={[styles.header2, { color: colors.text }]}>
             Looks like you're the only one in the community.
           </Text>
         </View>
@@ -76,13 +79,15 @@ export default function AdminFeed({ route }) {
     );
   } else {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Back />
-        <Text style={styles.header}>Community Members</Text>
+        <Text style={[styles.header, { color: colors.text }]}>
+          Community Members
+        </Text>
         {refreshing ? (
           <ActivityIndicator
             style={{
-              backgroundColor: "black",
+              backgroundColor: colors.activityIndicatorBgColor,
               padding: 20,
               zIndex: 10000,
             }}
@@ -92,7 +97,13 @@ export default function AdminFeed({ route }) {
         ) : null}
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={fetchData}
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent" }}
+            />
           }
         >
           <List.Section>
@@ -104,8 +115,11 @@ export default function AdminFeed({ route }) {
                     <List.Item
                       title={member.email}
                       key={member.id}
-                      titleStyle={styles.titleStyle}
-                      style={styles.listItem}
+                      titleStyle={[styles.titleStyle, { color: colors.text }]}
+                      style={[
+                        styles.listItem,
+                        { backgroundColor: colors.containerColor },
+                      ]}
                       left={() => (
                         <Pressable
                           onPress={async () => {
@@ -131,9 +145,10 @@ export default function AdminFeed({ route }) {
                       right={() => (
                         <Chip
                           style={{
-                            backgroundColor: "#C88D36",
+                            backgroundColor: colors.tabBarActiveColor,
                             borderRadius: 80,
                           }}
+                          textStyle={{ color: colors.tabBarBgColor }}
                         >
                           Admin
                         </Chip>
@@ -145,8 +160,11 @@ export default function AdminFeed({ route }) {
                     <List.Item
                       title={member.email}
                       key={member.id}
-                      titleStyle={styles.titleStyle}
-                      style={styles.listItem}
+                      titleStyle={[styles.titleStyle, { color: colors.text }]}
+                      style={[
+                        styles.listItem,
+                        { backgroundColor: colors.containerColor },
+                      ]}
                       right={() => (
                         <Button
                           onPress={async () => {
@@ -161,7 +179,7 @@ export default function AdminFeed({ route }) {
                               setVisible(!visible);
                             }
                           }}
-                          textColor="#C88D36"
+                          textColor={colors.tabBarActiveColor}
                         >
                           Make Admin
                         </Button>
@@ -213,19 +231,16 @@ export default function AdminFeed({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#000000",
-    paddingTop: 95,
+    paddingTop: 90,
     padding: 20,
     height: Dimensions.get("screen").height * 1,
   },
   header: {
-    color: "white",
-    marginBottom: 10,
-    fontSize: 16,
+    marginBottom: 15,
+    fontSize: 24,
     fontFamily: "Montserrat_600SemiBold",
   },
   header2: {
-    color: "white",
     marginBottom: 5,
     fontSize: 15,
     fontFamily: "Montserrat_400Regular",
@@ -240,7 +255,6 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   listItem: {
-    backgroundColor: "#323232",
     borderRadius: 80,
     padding: 15,
     marginBottom: 15,

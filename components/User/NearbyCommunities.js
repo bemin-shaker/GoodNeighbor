@@ -133,6 +133,8 @@ export default function NearbyCommunities() {
                 </Pressable>
               );
             })}
+
+          <Text style={{ opacity: 0 }}>Hiii</Text>
         </ScrollView>
       </Screen>
     );
@@ -141,7 +143,7 @@ export default function NearbyCommunities() {
 
 const styles = StyleSheet.create({
   header: {
-    marginBottom: 5,
+    marginBottom: 7,
     fontSize: 18,
     fontFamily: "Montserrat_700Bold",
     paddingHorizontal: 15,
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
   list: {
     borderRadius: 30,
     padding: 5,
-    marginRight: 12,
+    marginRight: 15,
     marginTop: 10,
     width: Dimensions.get("window").width / 1.5,
     overflow: "hidden",
