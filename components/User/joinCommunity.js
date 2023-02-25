@@ -15,12 +15,14 @@ import {
 import { Chip } from "react-native-paper";
 import { joinCommunity, getEmail, getUser } from "../../backend/firebase";
 import Back from "../Back";
+import { useTheme } from "../../theme/ThemeProvider";
 
 export default function JoinCommunity({ route, navigation }) {
   let [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_700Bold,
   });
+  const { colors, isDark } = useTheme();
 
   if (!fontsLoaded) {
     return null;
@@ -29,22 +31,32 @@ export default function JoinCommunity({ route, navigation }) {
   return (
     <>
       <Back />
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.header}>
-          <Text style={styles.lightText}>This is</Text>
-          <Text style={styles.boldText}>{route.params.name}</Text>
+          <Text style={[styles.lightText, { color: colors.text }]}>
+            This is
+          </Text>
+          <Text style={[styles.boldText, { color: colors.text }]}>
+            {route.params.name}
+          </Text>
           <View style={styles.flexCont}>
-            <Chip textStyle={styles.chipText} style={styles.chip}>
+            <Chip
+              textStyle={[styles.chipText, { color: colors.fabColor }]}
+              style={[styles.chip, { backgroundColor: colors.fabBgColor }]}
+            >
               {route.params.count} Members
             </Chip>
-            <Chip textStyle={styles.chipText} style={styles.chip}>
+            <Chip
+              textStyle={[styles.chipText, { color: colors.fabColor }]}
+              style={[styles.chip, { backgroundColor: colors.fabBgColor }]}
+            >
               {route.params.type}
             </Chip>
           </View>
         </View>
         <Image
           style={styles.image}
-          source={require("../../assets/city.jpg")}
+          source={{ uri: route.params.coverURL }}
         ></Image>
 
         <Pressable
@@ -75,7 +87,6 @@ export default function JoinCommunity({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#000000",
     paddingTop: 150,
     padding: 20,
     display: "flex",
@@ -86,7 +97,6 @@ const styles = StyleSheet.create({
 
   lightText: {
     fontFamily: "Montserrat_400Regular",
-    color: "#DADADA",
     fontSize: 20,
     marginTop: 20,
   },
@@ -113,7 +123,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontSize: 26,
     marginTop: 10,
-    color: "white",
     fontFamily: "Montserrat_700Bold",
     textAlign: "center",
   },
@@ -130,7 +139,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("screen").width * 0.8,
     borderRadius: 40,
     marginBottom: 15,
-    marginTop: 65,
+    marginTop: 50,
   },
   loginButtonText: {
     color: "white",
@@ -142,6 +151,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get("screen").height * 0.25,
     borderRadius: 400,
     opacity: 1,
-    marginTop: 30,
+    marginTop: 45,
   },
 });

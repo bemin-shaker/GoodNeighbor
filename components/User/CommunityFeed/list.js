@@ -15,6 +15,7 @@ import {
   useFonts,
   Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
+import { useTheme } from "../../../theme/ThemeProvider";
 
 export default function ListItems({
   communityId,
@@ -25,6 +26,7 @@ export default function ListItems({
   fetchPostData,
 }) {
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_600SemiBold,
@@ -42,17 +44,23 @@ export default function ListItems({
         {refreshing ? (
           <ActivityIndicator
             style={{
-              backgroundColor: "black",
-              padding: 20,
+              backgroundColor: colors.container,
+              paddingTop: 40,
               zIndex: 10000,
             }}
-            color="#C88D36"
+            color={colors.tabBarActiveColor}
             size="small"
           />
         ) : null}
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchPostData} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={fetchPostData}
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent" }}
+            />
           }
         >
           {posts &&
@@ -76,14 +84,14 @@ export default function ListItems({
                       title={post.title}
                       titleNumberOfLines={1}
                       titleStyle={{
-                        color: "white",
+                        color: colors.text,
                         fontFamily: "Montserrat_600SemiBold",
                         fontSize: 16,
                         marginBottom: 5,
                       }}
                       description={post.initialUpdate}
                       descriptionNumberOfLines={2}
-                      descriptionStyle={{ color: "#DADADA" }}
+                      descriptionStyle={{ color: colors.text }}
                       left={(props) => (
                         <List.Image
                           key={post.id}
@@ -103,12 +111,12 @@ export default function ListItems({
                           <Icon
                             name="comment-processing"
                             size={16}
-                            color="white"
+                            color={colors.text}
                           />
                         )}
                         title={post.updates.length}
                         style={styles.fab}
-                        textStyle={{ color: "white" }}
+                        textStyle={{ color: colors.text }}
                         onPress={() =>
                           navigation.navigate("PostDetails", {
                             postData: post,
@@ -121,11 +129,11 @@ export default function ListItems({
                       </Chip>
                       <Chip
                         icon={() => (
-                          <Icon name="share" size={16} color="white" />
+                          <Icon name="share" size={16} color={colors.text} />
                         )}
                         title={post.updates.length}
                         style={styles.fab}
-                        textStyle={{ color: "white" }}
+                        textStyle={{ color: colors.text }}
                         onPress={() => console.log("Pressed")}
                       >
                         Share
@@ -144,9 +152,7 @@ export default function ListItems({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    //paddingBottom: 400,
-  },
+  container: {},
   fab: {
     backgroundColor: "transparent",
     margin: 0,
@@ -155,6 +161,7 @@ const styles = StyleSheet.create({
   listItem: {
     paddingLeft: 20,
     paddingRight: 25,
-    paddingBottom: 10,
+    paddingBottom: 15,
+    paddingTop: 5,
   },
 });

@@ -1,98 +1,91 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, FAB, Menu, Divider, Provider } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { FAB, Menu, Provider } from "react-native-paper";
+import { useTheme } from "../theme/ThemeProvider";
 
-export default class MyComponent extends React.Component {
-  state = {
-    visible: false,
-  };
+export default function MenuComponent({ navigation, id, name, userId }) {
+  const [visible, setVisible] = React.useState(false);
+  const { colors } = useTheme();
 
-  _openMenu = () => this.setState({ visible: true });
-
-  _closeMenu = () => this.setState({ visible: false });
-
-  render() {
-    return (
-      <View
-        style={{
-          zIndex: 100000,
-          position: "absolute",
-          width: 60,
-          top: 40,
-          right: 0,
-        }}
-      >
-        <Provider>
-          <View>
-            <Menu
-              contentStyle={{
-                backgroundColor: "black",
-                borderRadius: 20,
-              }}
-              visible={this.state.visible}
+  return (
+    <View
+      style={{
+        zIndex: 100000,
+        position: "absolute",
+        width: 60,
+        top: 40,
+        right: 0,
+      }}
+    >
+      <Provider>
+        <View style={styles.container}>
+          <Menu
+            contentStyle={{
+              backgroundColor: colors.containerColor,
+              borderRadius: 20,
+            }}
+            visible={visible}
+            style={{
+              borderRadius: 20,
+              zIndex: 100000,
+              position: "absolute",
+              minWidth: 200,
+              top: 60,
+              backgroundColor: colors.containerColor,
+              left: -160,
+            }}
+            onDismiss={() => setVisible(false)}
+            anchor={
+              <FAB
+                icon="dots-vertical"
+                color={colors.text}
+                style={styles.fab}
+                onPress={() => setVisible(true)}
+              />
+            }
+          >
+            <Menu.Item
               style={{
-                borderRadius: 20,
-                zIndex: 100000,
-                position: "absolute",
-                minWidth: 200,
-                top: 60,
-                backgroundColor: "black",
-
-                // right: 10,
-                left: -160,
+                backgroundColor: colors.containerColor,
+                borderBottomWidth: 0.3,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                paddingLeft: 20,
+                borderBottomColor: "#999CAD",
+                paddingBottom: 5,
               }}
-              onDismiss={this._closeMenu}
-              anchor={
-                <FAB
-                  icon="dots-vertical"
-                  color="white"
-                  style={styles.fab}
-                  onPress={this._openMenu}
-                />
+              onPress={() =>
+                navigation.navigate("AdminFeed", {
+                  id: id,
+                  name: name,
+                  userId: userId,
+                })
               }
-            >
-              <Menu.Item
-                style={{
-                  backgroundColor: "black",
-                  borderBottomWidth: 0.3,
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                  paddingLeft: 20,
-                  borderBottomColor: "#999CAD",
-                }}
-                onPress={() =>
-                  this.props.navigation.navigate("AdminFeed", {
-                    id: this.props.info.id,
-                    name: this.props.info.name,
-                    userId: this.props.info.userId,
-                  })
-                }
-                title="Manage Members"
-                titleStyle={{ color: "white" }}
-              />
-              <Menu.Item
-                style={{
-                  backgroundColor: "black",
-                  borderRadius: 20,
-                  paddingLeft: 20,
-                }}
-                onPress={() =>
-                  this.props.navigation.navigate("AdminNotifications", {
-                    id: this.props.info.id,
-                    name: this.props.info.name,
-                    userId: this.props.info.userId,
-                  })
-                }
-                title="Notification Feed"
-                titleStyle={{ color: "white" }}
-              />
-            </Menu>
-          </View>
-        </Provider>
-      </View>
-    );
-  }
+              title="Manage Members"
+              titleStyle={{ color: colors.text }}
+            />
+            <Menu.Item
+              style={{
+                backgroundColor: colors.containerColor,
+                borderRadius: 20,
+                paddingLeft: 20,
+                paddingTop: 5,
+              }}
+              onPress={() =>
+                navigation.navigate("AdminNotifications", {
+                  id: id,
+                  name: name,
+                  userId: userId,
+                })
+              }
+              title="Notification Feed"
+              titleStyle={{ color: colors.text }}
+            />
+          </Menu>
+        </View>
+      </Provider>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

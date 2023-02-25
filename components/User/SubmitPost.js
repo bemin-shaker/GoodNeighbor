@@ -21,6 +21,7 @@ import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import { getCategories } from "../../backend/firebase";
 import Back from "../Back";
+import { useTheme } from "../../theme/ThemeProvider";
 
 export default function SubmitPost({ route, navigation }) {
   const [title, setTitle] = React.useState("");
@@ -30,6 +31,8 @@ export default function SubmitPost({ route, navigation }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(null);
   const [items, setItems] = React.useState([]);
+
+  const { colors, isDark } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -109,17 +112,19 @@ export default function SubmitPost({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Back />
 
-      <Text style={styles.title}>Post an Incident</Text>
+      <Text style={[styles.title, { color: colors.text }]}>
+        Post an Incident
+      </Text>
 
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { backgroundColor: colors.containerColor }]}
         mode={"outlined"}
         activeOutlineColor="#C88D36"
         outlineColor="#999CAD"
-        textColor="#DADADA"
+        textColor="white"
         label="Title"
         value={title}
         onChangeText={(title) => setTitle(title)}
@@ -133,25 +138,32 @@ export default function SubmitPost({ route, navigation }) {
           setOpen={setOpen}
           setValue={setValue}
           setItems={setItems}
-          theme="DARK"
+          theme={isDark ? "DARK" : "LIGHT"}
           multiple={false}
           mode="BADGE"
           placeholder="Select a Category"
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropDownContainerStyle={styles.dropdown}
-          listItemContainerStyle={styles.dropdownItem}
+          placeholderStyle={{ opacity: isDark ? 0.2 : 1 }}
+          style={[styles.dropdown, { backgroundColor: colors.containerColor }]}
+          textStyle={[styles.dropdownText, { color: colors.text }]}
+          dropDownContainerStyle={[
+            styles.dropdown,
+            { backgroundColor: colors.containerColor },
+          ]}
+          listItemContainerStyle={[
+            styles.dropdownItem,
+            { backgroundColor: colors.containerColor },
+          ]}
           activeOutlineColor="#C88D36"
           outlineColor="#999CAD"
         />
       </View>
 
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { backgroundColor: colors.containerColor }]}
         mode={"outlined"}
         activeOutlineColor="#C88D36"
         outlineColor="#999CAD"
-        textColor="#DADADA"
+        textColor="white"
         label="Initial Update"
         value={initialUpdate}
         multiline={true}
@@ -210,7 +222,6 @@ export default function SubmitPost({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: "#000000",
     padding: 20,
     paddingTop: 40,
     height: Dimensions.get("screen").height * 1,
@@ -219,12 +230,11 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: Dimensions.get("screen").width * 0.8,
-    color: "#A32638",
+
     marginBottom: 20,
-    backgroundColor: "#000000",
+    //backgroundColor: "#000000",
   },
   title: {
-    color: "white",
     marginBottom: 20,
     fontSize: 25,
     fontFamily: "Montserrat_600SemiBold",
@@ -266,7 +276,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("screen").width * 0.8,
   },
   dropdown: {
-    backgroundColor: "black",
     borderWidth: 1,
     borderColor: "#999CAD",
     marginBottom: 15,
@@ -274,12 +283,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   dropdownItem: {
-    backgroundColor: "black",
     borderBottomWidth: 1,
     borderBottomColor: "#999CAD",
   },
   dropdownText: {
-    opacity: 0.4,
     fontSize: 16,
   },
 });

@@ -8,6 +8,7 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  StatusBar,
 } from "react-native";
 import { Chip, TextInput, Divider, Provider } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
@@ -20,6 +21,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { makeUpdate, getEmail, getPost } from "../../../backend/firebase";
 import Back from "../../Back";
 import Popup from "../../Popup";
+import { useTheme } from "../../../theme/ThemeProvider";
+import { Screen } from "../../Screen";
 
 export default function PostDetails({ route, navigation }) {
   const [loading, setLoading] = React.useState(true);
@@ -27,6 +30,8 @@ export default function PostDetails({ route, navigation }) {
   const [title, setTitle] = React.useState("");
   const [image, setImage] = React.useState(null);
   const [refreshing, setRefreshing] = React.useState(true);
+
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_600SemiBold,
@@ -92,8 +97,9 @@ export default function PostDetails({ route, navigation }) {
 
   return (
     <Provider>
+      <StatusBar barStyle={"light-content"} />
       <View>
-        <Back />
+        <Back light={true} />
         <Popup
           component={
             <Image
@@ -105,27 +111,36 @@ export default function PostDetails({ route, navigation }) {
             ></Image>
           }
         />
-        <View style={styles.listView}>
-          <Text style={styles.header} numberOfLines={2}>
+        <View
+          style={[styles.listView, { backgroundColor: colors.containerColor }]}
+        >
+          <Text
+            style={[styles.header, { color: colors.text }]}
+            numberOfLines={2}
+          >
             {route.params.postData.title}
           </Text>
           <Chip
-            icon={() => <Icon name="clock-outline" size={16} color="#BDBDBD" />}
+            icon={() => (
+              <Icon name="clock-outline" size={16} color={colors.text} />
+            )}
             style={styles.fab}
-            textStyle={{ color: "#BDBDBD", transform: [{ translateX: -3 }] }}
+            textStyle={{ color: colors.text, transform: [{ translateX: -3 }] }}
             onPress={() => console.log("Pressed")}
           >
             {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
           </Chip>
-          <Text style={styles.subHeader}>Updates</Text>
+          <Text style={[styles.subHeader, { color: colors.tabBarActiveColor }]}>
+            Updates
+          </Text>
           {refreshing ? (
             <ActivityIndicator
               style={{
-                backgroundColor: "black",
-                padding: 20,
+                backgroundColor: colors.container,
+                paddingTop: 40,
                 zIndex: 10000,
               }}
-              color="#C88D36"
+              color={colors.tabBarActiveColor}
               size="small"
             />
           ) : null}
@@ -135,6 +150,9 @@ export default function PostDetails({ route, navigation }) {
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={fetchPostData}
+                tintColor="transparent"
+                colors={["transparent"]}
+                style={{ backgroundColor: "transparent" }}
               />
             }
           >
@@ -148,12 +166,12 @@ export default function PostDetails({ route, navigation }) {
                           <Icon
                             name="clock-outline"
                             size={16}
-                            color="#BDBDBD"
+                            color={colors.text}
                           />
                         )}
                         style={styles.fab2}
                         textStyle={{
-                          color: "#BDBDBD",
+                          color: colors.text,
                           transform: [{ translateX: -3 }],
                         }}
                       >
@@ -165,7 +183,7 @@ export default function PostDetails({ route, navigation }) {
                       </Chip>
                       <Text
                         style={{
-                          color: "white",
+                          color: colors.text,
                           fontFamily: "Montserrat_400Regular",
                           fontSize: 16,
                           marginBottom: 10,
@@ -196,11 +214,14 @@ export default function PostDetails({ route, navigation }) {
             <View style={styles.listItem}>
               <Chip
                 icon={() => (
-                  <Icon name="clock-outline" size={16} color="#BDBDBD" />
+                  <Icon name="clock-outline" size={16} color={colors.text} />
                 )}
-                style={styles.fab2}
+                style={[
+                  styles.fab2,
+                  { backgroundColor: colors.backgroundColor },
+                ]}
                 textStyle={{
-                  color: "#BDBDBD",
+                  color: colors.text,
                   transform: [{ translateX: -3 }],
                 }}
                 onPress={() => console.log("Pressed")}
@@ -215,7 +236,7 @@ export default function PostDetails({ route, navigation }) {
               </Chip>
               <Text
                 style={{
-                  color: "white",
+                  color: colors.text,
                   fontFamily: "Montserrat_400Regular",
                   fontSize: 16,
                   marginBottom: 10,
@@ -229,13 +250,18 @@ export default function PostDetails({ route, navigation }) {
           </ScrollView>
         </View>
 
-        <View style={styles.bottomContainer}>
+        <View
+          style={[
+            styles.bottomContainer,
+            { backgroundColor: colors.containerColor },
+          ]}
+        >
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { backgroundColor: colors.background }]}
             mode={"outlined"}
-            activeOutlineColor="#C88D36"
+            activeOutlineColor={"#C88D36"}
             outlineColor="#999CAD"
-            textColor="#DADADA"
+            textColor={colors.text}
             label="Add an update"
             value={title}
             onChangeText={(title) => setTitle(title)}
@@ -276,7 +302,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   header: {
-    color: "white",
     marginTop: 20,
     marginLeft: 20,
     paddingRight: 20,
@@ -292,16 +317,15 @@ const styles = StyleSheet.create({
   fab2: {
     transform: [{ translateX: -10 }],
     backgroundColor: "transparent",
+    opacity: 0.5,
   },
   subHeader: {
-    color: "#C88D36",
     marginTop: 10,
     marginLeft: 20,
     fontSize: 18,
     fontFamily: "Montserrat_600SemiBold",
   },
   listView: {
-    backgroundColor: "#000000",
     borderTopStartRadius: 25,
     borderTopEndRadius: 25,
     transform: [{ translateY: -40 }],
@@ -323,7 +347,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: Dimensions.get("screen").width * 0.9,
     color: "#A32638",
-    backgroundColor: "#000000",
+    //backgroundColor: "#000000",
   },
   bottomContainer: {
     height: Dimensions.get("window").height * 0.13,
@@ -331,6 +355,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 10,
     marginBottom: 10,
-    backgroundColor: "#000000",
   },
 });

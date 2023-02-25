@@ -166,6 +166,7 @@ export const getCommunities = async () =>  {
               name: data['name'],
               members_list: data['members_list'],
               type: data['type'],
+              coverURL: data['coverURL'],
           });
         }
       })

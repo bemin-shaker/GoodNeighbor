@@ -11,6 +11,8 @@ import {
   RefreshControl,
 } from "react-native";
 import NearbyCommunities from "./NearbyCommunities";
+import { useTheme } from "../../theme/ThemeProvider";
+import { Screen } from "../Screen";
 
 import {
   useFonts,
@@ -26,10 +28,52 @@ import Icon from "react-native-vector-icons/Ionicons";
 export default function MyCommunities() {
   const [loading, setLoading] = useState(true);
   const [communities, setCommunityData] = useState([undefined]);
-  const [name, setName] = useState(" to the Neighborhood.");
   const [refreshing, setRefreshing] = React.useState(true);
 
+  const { colors } = useTheme();
   const navigation = useNavigation();
+
+  const activityIndicatorComponent = (
+    <ActivityIndicator
+      style={{
+        backgroundColor: colors.activityIndicatorBgColor,
+        paddingTop: 40,
+        zIndex: 10000,
+      }}
+      color={colors.tabBarActiveColor}
+      size="small"
+    />
+  );
+
+  const welcomeCardComponent = (
+    <Screen>
+      {refreshing ? activityIndicatorComponent : null}
+      <ScrollView
+        style={styles.listContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={fetchData}
+            tintColor="transparent"
+            colors={["transparent"]}
+            style={{ backgroundColor: "transparent" }}
+          />
+        }
+      >
+        <View>
+          <View style={styles.errMessage}>
+            <Text style={styles.header3}>Welcome to the Neighborhood.</Text>
+            <Text style={styles.header2}>Join your first community now.</Text>
+            <Image
+              style={styles.image}
+              source={require("../../assets/friends.jpg")}
+            ></Image>
+          </View>
+          <NearbyCommunities />
+        </View>
+      </ScrollView>
+    </Screen>
+  );
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -43,7 +87,6 @@ export default function MyCommunities() {
       const email = await getEmail();
       const data = await getUser(email);
       setCommunityData(data[0]["joined_communities"]);
-      setName(data[0]["full_name"]);
 
       setLoading(false);
       setTimeout(() => {
@@ -65,124 +108,100 @@ export default function MyCommunities() {
       </View>
     );
   } else if (communities.length === 0) {
-    return (
-      <>
-        {refreshing ? (
-          <ActivityIndicator
-            style={{
-              backgroundColor: "black",
-              padding: 20,
-              zIndex: 10000,
-            }}
-            color="#C88D36"
-            size="small"
-          />
-        ) : null}
-        <ScrollView
-          style={styles.listContainer}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
-          }
-        >
-          <View style={styles.errMessage}>
-            <Text style={styles.header3}>Welcome to the Neighborhood.</Text>
-            <Text style={styles.header2}>Join your first community now.</Text>
-            <Image
-              style={styles.image}
-              source={require("../../assets/friends.jpg")}
-            ></Image>
-          </View>
-          <NearbyCommunities />
-        </ScrollView>
-      </>
-    );
+    return welcomeCardComponent;
   } else {
     return (
-      <View>
-        <Text style={styles.header}>My Communities</Text>
-        {refreshing ? (
-          <ActivityIndicator
-            style={{
-              backgroundColor: "black",
-              padding: 20,
-              zIndex: 10000,
-            }}
-            color="#C88D36"
-            size="small"
-          />
-        ) : null}
+      <Screen>
+        {refreshing ? activityIndicatorComponent : null}
         <ScrollView
           style={styles.listContainer}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={fetchData}
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent" }}
+            />
           }
         >
-          <List.Section>
-            {communities &&
-              communities.map((community) => {
-                return (
-                  <Pressable
-                    key={community.communityId}
-                    onPress={() =>
-                      navigation.navigate("CommunityFeed", {
-                        id: community.communityId,
-                        name: community.communityName,
-                      })
-                    }
-                  >
-                    <List.Item
-                      title={community.communityName}
+          <View style={{ paddingHorizontal: 15 }}>
+            <Text style={[styles.header, { color: colors.text }]}>
+              My Communities
+            </Text>
+            <List.Section>
+              {communities &&
+                communities.map((community) => {
+                  return (
+                    <Pressable
                       key={community.communityId}
-                      titleStyle={{
-                        color: "white",
-                        fontSize: 14.5,
-                        fontFamily: "Montserrat_700Bold",
-                      }}
-                      style={{
-                        backgroundColor: "#212121",
-                        borderRadius: 80,
-                        padding: 10,
-                        marginBottom: 15,
-                      }}
-                      left={() => (
-                        <List.Icon
-                          color={"#212121"}
-                          style={{
-                            backgroundColor: "#F5F5F9",
-                            borderRadius: 50,
-                            padding: 7,
-                          }}
-                          icon="city"
-                        />
-                      )}
-                      right={() => (
-                        <Icon
-                          name="chevron-forward-outline"
-                          style={{
-                            alignSelf: "center",
-                          }}
-                          size={28}
-                          color="white"
-                        />
-                      )}
-                    />
-                  </Pressable>
-                );
-              })}
-          </List.Section>
-          <NearbyCommunities />
+                      onPress={() =>
+                        navigation.navigate("CommunityFeed", {
+                          id: community.communityId,
+                          name: community.communityName,
+                        })
+                      }
+                    >
+                      <List.Item
+                        title={community.communityName}
+                        key={community.communityId}
+                        titleStyle={[
+                          {
+                            fontSize: 14.5,
+                            fontFamily: "Montserrat_700Bold",
+                          },
+                          { color: colors.text },
+                        ]}
+                        style={[
+                          {
+                            borderRadius: 80,
+                            padding: 10,
+                            marginBottom: 15,
+                          },
+                          { backgroundColor: colors.containerColor },
+                        ]}
+                        left={() => (
+                          <List.Icon
+                            color={colors.listIconColor}
+                            style={{
+                              backgroundColor: colors.listIconBgColor,
+                              borderRadius: 50,
+                              padding: 7,
+                            }}
+                            icon="city"
+                          />
+                        )}
+                        right={() => (
+                          <Icon
+                            name="chevron-forward-outline"
+                            style={{
+                              alignSelf: "center",
+                            }}
+                            size={28}
+                            color={colors.chevronColor}
+                          />
+                        )}
+                      />
+                    </Pressable>
+                  );
+                })}
+            </List.Section>
+          </View>
+          <View>
+            <NearbyCommunities />
+          </View>
         </ScrollView>
-      </View>
+      </Screen>
     );
   }
 }
 
 const styles = StyleSheet.create({
   header: {
-    color: "white",
     marginBottom: 5,
-    fontSize: 16,
-    fontFamily: "Montserrat_600SemiBold",
+    marginTop: 20,
+    fontSize: 18,
+    fontFamily: "Montserrat_700Bold",
   },
   header2: {
     color: "white",
@@ -202,18 +221,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#a3c3f2",
     paddingTop: 10,
     opacity: 0.9,
+    marginTop: 20,
     marginBottom: 30,
     borderRadius: 20,
+    marginHorizontal: 15,
   },
   image: {
     width: "100%",
     height: 150,
-    // borderRadius: 400,
     opacity: 1,
     marginTop: 10,
     borderRadius: 20,
   },
   listContainer: {
-    height: Dimensions.get("window").height - 200,
+    height: Dimensions.get("window").height - 100,
   },
 });

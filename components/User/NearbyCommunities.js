@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Dimensions,
+  ScrollView,
+  Image,
+} from "react-native";
 import {
   useFonts,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import { getCommunities } from "../../backend/firebase";
-import { List } from "react-native-paper";
+import { List, Card, IconButton, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "../../theme/ThemeProvider";
+import { Screen } from "../Screen";
 
 export default function NearbyCommunities() {
   const [loading, setLoading] = useState(true);
   const [communities, setCommunityData] = useState([undefined]);
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -43,123 +54,127 @@ export default function NearbyCommunities() {
     return <View></View>;
   } else {
     return (
-      <View>
-        <Text style={styles.header}>Nearby Communities</Text>
-        <List.Section
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-          }}
+      <Screen>
+        <Text style={[styles.header, { color: colors.text }]}>Nearby</Text>
+
+        <ScrollView
+          horizontal
+          disableIntervalMomentum={true}
+          snapToInterval={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingHorizontal: 15, height: "100%" }}
         >
           {communities &&
             communities.map((community) => {
-              if (community.type === "City") {
-                return (
-                  <Pressable
-                    key={community.id}
-                    onPress={() =>
-                      navigation.navigate("JoinCommunity", {
-                        id: community.id,
-                        name: community.name,
-                        count: community.members_list.length,
-                        type: community.type,
-                      })
-                    }
+              return (
+                <Pressable
+                  key={community.id}
+                  onPress={() =>
+                    navigation.navigate("JoinCommunity", {
+                      id: community.id,
+                      name: community.name,
+                      count: community.members_list.length,
+                      type: community.type,
+                      coverURL: community.coverURL,
+                    })
+                  }
+                >
+                  <Card
+                    style={[
+                      styles.list,
+                      { backgroundColor: colors.containerColor },
+                    ]}
                   >
-                    <List.Item
+                    <Card.Cover
+                      style={{
+                        borderRadius: 0,
+                        transform: [{ scale: 1.1 }],
+                        height: Dimensions.get("window").width * 0.35,
+                      }}
+                      source={{ uri: community.coverURL }}
+                    />
+                    <Card.Title
                       title={community.name}
-                      key={community.id}
-                      titleStyle={styles.listTitle}
-                      description={community.members_list.length + " Members"}
-                      descriptionStyle={styles.listDescription}
-                      titleNumberOfLines={3}
-                      style={styles.list}
-                      right={() => (
-                        <List.Icon
-                          color={"white"}
-                          style={styles.icon}
-                          icon="city"
-                        />
+                      titleStyle={[styles.listTitle, { color: colors.text }]}
+                      titleNumberOfLines={1}
+                      subtitle={community.members_list.length + " Members"}
+                      subtitleStyle={[
+                        styles.listDescription,
+                        { color: colors.text },
+                      ]}
+                      right={(props) => (
+                        <Pressable
+                          style={[
+                            styles.signupButton,
+                            { borderColor: colors.tabBarActiveColor },
+                          ]}
+                          onPress={() =>
+                            navigation.navigate("JoinCommunity", {
+                              id: community.id,
+                              name: community.name,
+                              count: community.members_list.length,
+                              type: community.type,
+                            })
+                          }
+                        >
+                          <Text
+                            style={[
+                              styles.signupButtonText,
+                              { color: colors.tabBarActiveColor },
+                            ]}
+                          >
+                            Join
+                          </Text>
+                        </Pressable>
                       )}
                     />
-                  </Pressable>
-                );
-              } else if (community.type === "University") {
-                return (
-                  <Pressable
-                    key={community.id}
-                    onPress={() =>
-                      navigation.navigate("JoinCommunity", {
-                        id: community.id,
-                        name: community.name,
-                        count: community.members_list.length,
-                        type: community.type,
-                      })
-                    }
-                  >
-                    <List.Item
-                      title={community.name}
-                      key={community.id}
-                      description={community.members_list.length + " Members"}
-                      descriptionStyle={styles.listDescription}
-                      titleStyle={styles.listTitle}
-                      titleNumberOfLines={2}
-                      style={styles.list}
-                      right={() => (
-                        <List.Icon
-                          color={"white"}
-                          style={styles.icon}
-                          icon="school"
-                        />
-                      )}
-                    />
-                  </Pressable>
-                );
-              }
+                  </Card>
+                </Pressable>
+              );
             })}
-        </List.Section>
-      </View>
+        </ScrollView>
+      </Screen>
     );
   }
 }
 
 const styles = StyleSheet.create({
   header: {
-    color: "white",
     marginBottom: 5,
-    fontSize: 16,
-    fontFamily: "Montserrat_600SemiBold",
+    fontSize: 18,
+    fontFamily: "Montserrat_700Bold",
+    paddingHorizontal: 15,
   },
   listTitle: {
-    color: "white",
     fontSize: 14,
     fontFamily: "Montserrat_700Bold",
     wordWrap: "break-word",
+    lineHeight: 20,
+    paddingTop: 8,
   },
   list: {
-    backgroundColor: "#212121",
     borderRadius: 30,
     padding: 5,
-    marginBottom: 12,
-    // marginRight: 12,
-    width: Dimensions.get("window").width / 2.22,
-    height: Dimensions.get("window").height / 9,
+    marginRight: 12,
+    marginTop: 10,
+    width: Dimensions.get("window").width / 1.5,
     overflow: "hidden",
   },
   listDescription: {
-    color: "white",
     opacity: 0.5,
-    paddingTop: 3,
+    lineHeight: 0,
   },
-  icon: {
-    position: "absolute",
-    borderRadius: 50,
-    bottom: 0,
-    right: 0,
-    transform: [{ scaleX: 5 }, { scaleY: 5 }, { translateY: 4 }],
-    opacity: 0.1,
-    borderRadius: 90,
+  signupButton: {
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderRadius: 15,
+    marginTop: 10,
+    marginRight: 5,
+  },
+  signupButtonText: {
+    fontSize: 17,
+    textAlign: "center",
   },
 });

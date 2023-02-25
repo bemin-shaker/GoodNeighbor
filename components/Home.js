@@ -1,13 +1,17 @@
 import * as React from "react";
-import { StyleSheet, StatusBar, Dimensions, View } from "react-native";
+import { StyleSheet, StatusBar, SafeAreaView, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeFeed from "./User/HomeFeed";
 import Settings from "./User/Settings";
+import { useTheme } from "../theme/ThemeProvider";
 
+import Notifications from "./User/Notifications";
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
@@ -20,21 +24,24 @@ export default function Home() {
               iconName = "ios-home";
             } else if (route.name === "Settings") {
               iconName = "settings-outline";
+            } else if (route.name === "Notifications") {
+              iconName = "notifications-outline";
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "#C88D36",
+          tabBarActiveTintColor: colors.tabBarActiveColor,
           tabBarInactiveTintColor: "gray",
-          tabBarActiveBackgroundColor: "black",
-          tabBarInactiveBackgroundColor: "black",
+          tabBarActiveBackgroundColor: colors.tabBarBgColor,
+          tabBarInactiveBackgroundColor: colors.tabBarBgColor,
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: "black",
+            backgroundColor: colors.tabBarBgColor,
           },
         })}
       >
         <Tab.Screen name="Feed" component={HomeFeed} />
+        <Tab.Screen name="Notifications" component={Notifications} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </View>
@@ -44,7 +51,6 @@ export default function Home() {
 styles = StyleSheet.create({
   container: {
     marginBottom: 0,
-    height: Dimensions.get("screen").height * 1,
-    backgroundColor: "#000000",
+    height: "100%",
   },
 });
