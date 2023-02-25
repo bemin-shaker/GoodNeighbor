@@ -7,19 +7,19 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { TextInput } from "react-native-paper";
+import { TextInput, Snackbar } from "react-native-paper";
 import { useFonts, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { signUpWithEmail } from "../backend/firebase";
-
-/* TO DO
-1. Add input validation for name, email, password and display error message just like signin screen
-1.1 Email should be valid meaning it contains '@' and '.com' etc 
-*/
+import { lightColors, darkColors } from "../theme/colorThemes";
 
 export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fName, setfName] = useState("");
+  const [visible, setVisible] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   let [fontsLoaded] = useFonts({
     Montserrat_700Bold,
@@ -31,7 +31,7 @@ export default function Signup({ navigation }) {
 
   return (
     <>
-      <ScrollView>
+      <>
         <View style={styles.container}>
           <View style={styles.curve}>
             <Text style={styles.headerText}>Sign Up</Text>
@@ -43,8 +43,8 @@ export default function Signup({ navigation }) {
             <TextInput
               style={styles.textInput}
               activeUnderlineColor="#C88D36"
-              underlineColor="#DADADA"
-              textColor="#DADADA"
+              underlineColor={lightColors.tabBarActiveColor}
+              textColor="black"
               label="Your Name"
               left={<TextInput.Icon icon="account-outline" />}
               onChangeText={setfName}
@@ -52,8 +52,8 @@ export default function Signup({ navigation }) {
             <TextInput
               style={styles.textInput}
               activeUnderlineColor="#C88D36"
-              underlineColor="#DADADA"
-              textColor="#DADADA"
+              underlineColor={lightColors.tabBarActiveColor}
+              textColor="black"
               label="Email"
               left={<TextInput.Icon icon="email-outline" />}
               onChangeText={setEmail}
@@ -61,12 +61,19 @@ export default function Signup({ navigation }) {
             <TextInput
               style={styles.textInput}
               activeUnderlineColor="#C88D36"
-              underlineColor="#DADADA"
-              textColor="#DADADA"
+              underlineColor={lightColors.tabBarActiveColor}
+              textColor="black"
               label="Password"
-              secureTextEntry
+              secureTextEntry={!showPassword}
+              right={
+                <TextInput.Icon
+                  icon={showPassword ? "eye" : "eye-off"}
+                  onPress={() => setShowPassword(!showPassword)}
+                />
+              }
               left={<TextInput.Icon icon="lock-outline" />}
               onChangeText={setPassword}
+              placeholder="********"
             />
 
             <Pressable
@@ -75,6 +82,10 @@ export default function Signup({ navigation }) {
                 let result = await signUpWithEmail(fName, email, password);
                 if (result === "success") {
                   navigation.navigate("Home");
+                } else {
+                  {
+                    setVisible(!visible);
+                  }
                 }
               }}
             >
@@ -86,16 +97,32 @@ export default function Signup({ navigation }) {
                 <Text style={styles.loginButtonHighlight}>Login</Text>
               </Text>
             </Pressable>
+
+            <Snackbar
+              style={styles.snackbar}
+              visible={visible}
+              onDismiss={onDismissSnackBar}
+              action={{
+                label: "Dismiss",
+                labelStyle: { color: "#C88D36" },
+                onPress: () => {
+                  // Do something
+                },
+              }}
+            >
+              <Text style={styles.errorMsg}>Invalid Credentials</Text>
+            </Snackbar>
           </View>
         </View>
-      </ScrollView>
+      </>
     </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#000000",
+    backgroundColor: lightColors.background,
+    height: Dimensions.get("screen").height,
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 40,
@@ -106,7 +133,9 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   signupButton: {
-    backgroundColor: "#C88D36",
+    borderColor: lightColors.tabBarActiveColor,
+    borderWidth: 1.5,
+    backgroundColor: lightColors.tabBarActiveColor,
     paddingTop: 15,
     paddingBottom: 15,
     paddingLeft: 30,
@@ -122,23 +151,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loginButton: {
-    color: "white",
+    color: lightColors.tabBarActiveColor,
     fontSize: 17,
     marginTop: 7,
   },
   loginButtonHighlight: {
-    color: "#C88D36",
+    color: lightColors.tabBarActiveColor,
+    fontWeight: "bold",
   },
   curve: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#212121",
+    backgroundColor: lightColors.tabBarActiveColor,
     borderBottomStartRadius: 200,
     borderBottomEndRadius: 200,
     transform: [{ scaleX: 2 }],
     overflow: "hidden",
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 60,
   },
   headerText: {
@@ -158,5 +188,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 40,
     height: Dimensions.get("screen").height * 0.7,
+  },
+  errorMsg: {
+    color: "white",
+  },
+  snackbar: {
+    marginBottom: 60,
+    backgroundColor: lightColors.tabBarActiveColor,
   },
 });

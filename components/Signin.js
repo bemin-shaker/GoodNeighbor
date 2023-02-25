@@ -10,10 +10,7 @@ import {
 import { TextInput, Snackbar, Button } from "react-native-paper";
 import { useFonts, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { logInWithEmail } from "../backend/firebase";
-
-/* TO DO:
-1. DISPLAY ERROR MESSAGE IF LOGIN FAILS
- */
+import { lightColors, darkColors } from "../theme/colorThemes";
 
 export default function Signin({ navigation }) {
   const [email, setEmail] = useState("");
@@ -33,7 +30,7 @@ export default function Signin({ navigation }) {
 
   return (
     <>
-      <ScrollView>
+      <>
         <View style={styles.container}>
           <Text style={styles.headerText}>Login</Text>
           <Text style={styles.headerTextSmall}>
@@ -46,8 +43,8 @@ export default function Signin({ navigation }) {
                 autoCapitalize="none"
                 activeUnderlineColor="#C88D36"
                 inputMode="email"
-                underlineColor="#DADADA"
-                textColor="#DADADA"
+                underlineColor={lightColors.tabBarActiveColor}
+                textColor="black"
                 label="Email"
                 left={<TextInput.Icon icon="email-outline" />}
                 onChangeText={(email) => setEmail(email)}
@@ -58,8 +55,8 @@ export default function Signin({ navigation }) {
                   inputMode="text"
                   style={styles.textInput}
                   activeUnderlineColor="#C88D36"
-                  underlineColor="#DADADA"
-                  textColor="#DADADA"
+                  underlineColor={lightColors.tabBarActiveColor}
+                  textColor="black"
                   label="Password"
                   secureTextEntry={!showPassword}
                   left={<TextInput.Icon icon="lock-outline" />}
@@ -112,14 +109,15 @@ export default function Signin({ navigation }) {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </>
     </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#000000",
+    backgroundColor: lightColors.tabBarActiveColor,
+    height: Dimensions.get("screen").height,
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 40,
@@ -127,12 +125,14 @@ const styles = StyleSheet.create({
   textInput: {
     width: Dimensions.get("screen").width * 0.8,
     marginBottom: 10,
-    color: "white",
+    color: "black",
     backgroundColor: "transparent",
     opacity: 1,
   },
   signupButton: {
-    backgroundColor: "#C88D36",
+    borderColor: lightColors.tabBarActiveColor,
+    borderWidth: 1.5,
+    backgroundColor: lightColors.tabBarActiveColor,
     paddingTop: 15,
     paddingBottom: 15,
     paddingLeft: 30,
@@ -148,25 +148,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loginButton: {
-    color: "white",
+    color: lightColors.tabBarActiveColor,
     fontSize: 17,
     marginTop: 7,
   },
   loginButtonHighlight: {
-    color: "#C88D36",
+    color: lightColors.tabBarActiveColor,
+    fontWeight: "bold",
   },
   curve: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#212121",
+    backgroundColor: lightColors.background,
     width: Dimensions.get("screen").width * 1,
     borderTopStartRadius: 45,
     borderTopEndRadius: 45,
     overflow: "hidden",
     marginTop: 80,
     paddingTop: 10,
-    paddingBottom: 60,
   },
   headerText: {
     fontFamily: "Montserrat_700Bold",
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   snackbar: {
-    marginBottom: 40,
+    marginBottom: 60,
+    backgroundColor: lightColors.tabBarActiveColor,
   },
 });

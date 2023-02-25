@@ -35,9 +35,10 @@ const App = () => {
               options={{
                 title: "",
                 headerStyle: {
-                  backgroundColor: "#212121",
+                  backgroundColor: "#003366",
                 },
                 headerTintColor: "#fff",
+                headerShadowVisible: false,
               }}
             />
             <Stack.Screen
@@ -46,9 +47,10 @@ const App = () => {
               options={{
                 title: "",
                 headerStyle: {
-                  backgroundColor: "#212121",
+                  backgroundColor: "#003366",
                 },
                 headerTintColor: "#fff",
+                headerShadowVisible: false,
               }}
             />
             <Stack.Screen
@@ -57,9 +59,10 @@ const App = () => {
               options={{
                 title: "",
                 headerStyle: {
-                  backgroundColor: "#000000",
+                  backgroundColor: "#003366",
                 },
                 headerTintColor: "#fff",
+                headerShadowVisible: false,
               }}
             />
             <Stack.Screen

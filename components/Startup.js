@@ -12,6 +12,7 @@ import {
   Montserrat_400Regular,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { lightColors, darkColors } from "../theme/colorThemes";
 
 export default function Startup({ navigation }) {
   let [fontsLoaded] = useFonts({
@@ -54,7 +55,7 @@ export default function Startup({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: lightColors.background,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#212121",
+    backgroundColor: lightColors.tabBarActiveColor,
     borderBottomStartRadius: 200,
     borderBottomEndRadius: 200,
     transform: [{ scaleX: 2 }],
@@ -72,20 +73,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#000000",
+    backgroundColor: lightColors.background,
   },
   lightText: {
     fontFamily: "Montserrat_400Regular",
   },
   boldText: {
-    fontSize: 40,
-    color: "white",
+    fontSize: 42,
+    color: lightColors.background,
     transform: [{ scaleX: 0.5 }],
-    paddingBottom: 30,
+    paddingBottom: 60,
     fontFamily: "Montserrat_700Bold",
   },
   loginButton: {
-    backgroundColor: "#C88D36",
+    borderColor: lightColors.tabBarActiveColor,
+    borderWidth: 2,
+    backgroundColor: "#003366",
     paddingTop: 15,
     paddingBottom: 15,
     paddingLeft: 30,
@@ -101,7 +104,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   signupButton: {
-    backgroundColor: "#262626",
+    borderColor: lightColors.tabBarActiveColor,
+    borderWidth: 1.5,
     paddingTop: 15,
     paddingBottom: 15,
     paddingLeft: 30,
@@ -111,7 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 70,
   },
   signupButtonText: {
-    color: "white",
+    color: "#003366",
     fontSize: 17,
     textAlign: "center",
   },
