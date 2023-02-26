@@ -24,7 +24,8 @@ import {
   DocumentReference,
   setDoc,
   arrayRemove,
-  Timestamp
+  Timestamp,
+  deleteDoc
 } from "firebase/firestore";
 import Constants from "expo-constants";
 import "firebase/auth";
@@ -201,6 +202,71 @@ export const getPosts = async (id) =>  {
   return posts;
 }
 
+
+export const getReportedPosts = async (id) =>  {
+  let posts: Object[] = [];
+  try{
+    const citiesRef = collection(firestore, "Communities", id, "Posts");
+    const q = query(citiesRef, where("reported", "==", true));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          posts.push({
+              id: doc.id,
+              title: data['title'],
+              category: data['category'],
+              initialUpdate: data['initialUpdate'],
+              location: data["location"],
+              updates: data["updates"],
+              initialTimestamp: data["initialTimestamp"],
+              imageUrl: data["imageUrl"],
+              postedBy: data["postedBy"]["usersEmail"],
+          });
+
+      });
+
+  } catch (e) {
+      console.log(e);
+  }
+  return posts;
+}
+
+
+//Remove Post from Posts subcollection in Communities collection
+export const removePost = async (communityId, postId) => {
+  try {
+      const docRef = doc(firestore, "Communities", communityId, "Posts", postId);
+      await deleteDoc(docRef);
+  } catch (e) {
+      console.log(e);
+  }
+}
+
+
+//Change reported status of post to false
+export const keepPost = async (communityId, postId) => {
+  try {
+      const docRef = doc(firestore, "Communities", communityId, "Posts", postId);
+      await updateDoc(docRef, {
+          reported: false
+      });
+  } catch (e) {
+      console.log(e);
+  }
+}
+
+export const reportPost = async (communityId, postId) => {
+  try {
+      const docRef = doc(firestore, "Communities", communityId, "Posts", postId);
+      await updateDoc(docRef, {
+          reported: true
+      });
+  } catch (e) {
+      console.log(e);
+  }
+}
+
+
 //Get the categories array within the communities collection
 export const getCategories = async (id) =>  {
   const docRef = doc(firestore, "Communities", id);
@@ -224,6 +290,7 @@ export const submitPost = async (communityId, title, category, initialUpdate, us
               longitude: location.coords.longitude,
           },
           updates: [],
+          reported: false,
           initialTimestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000)
        
       };

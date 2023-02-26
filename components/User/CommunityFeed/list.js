@@ -24,6 +24,7 @@ export default function ListItems({
   isLoading,
   refreshing,
   fetchPostData,
+  isAdmin,
 }) {
   const navigation = useNavigation();
   const { colors } = useTheme();
@@ -76,6 +77,7 @@ export default function ListItems({
                         postId: post.id,
                         communityId: communityId,
                         name: communityName,
+                        admin: isAdmin,
                       })
                     }
                   >

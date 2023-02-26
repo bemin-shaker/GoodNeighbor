@@ -485,7 +485,13 @@ const LightMapStyle = [
   },
 ];
 
-export default function Map({ communityId, communityName, posts, isLoading }) {
+export default function Map({
+  communityId,
+  communityName,
+  posts,
+  isLoading,
+  isAdmin,
+}) {
   const navigation = useNavigation();
   const { colors, isDark } = useTheme();
 
@@ -527,6 +533,7 @@ export default function Map({ communityId, communityName, posts, isLoading }) {
                       communityId: communityId,
                       postId: marker.id,
                       name: communityName,
+                      admin: isAdmin,
                     })
                   }
                 >

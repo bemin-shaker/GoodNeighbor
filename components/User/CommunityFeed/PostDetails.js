@@ -22,7 +22,8 @@ import { makeUpdate, getEmail, getPost } from "../../../backend/firebase";
 import Back from "../../Back";
 import Popup from "../../Popup";
 import { useTheme } from "../../../theme/ThemeProvider";
-import { Screen } from "../../Screen";
+
+import PostMenu from "./PostMenu";
 
 export default function PostDetails({ route, navigation }) {
   const [loading, setLoading] = React.useState(true);
@@ -100,6 +101,16 @@ export default function PostDetails({ route, navigation }) {
       <StatusBar barStyle={"light-content"} />
       <View>
         <Back light={true} />
+        <PostMenu
+          navigation={navigation}
+          postId={route.params.postId}
+          communityId={route.params.communityId}
+          name={route.params.name}
+          userId={route.params.communityId}
+          isAdmin={route.params.admin}
+          email="hi"
+        />
+
         <Popup
           component={
             <Image

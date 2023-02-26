@@ -100,6 +100,7 @@ export default function CommunityFeed({ route, navigation }) {
             communityName={route.params.name}
             posts={postsData}
             isLoading={loading}
+            isAdmin={userData.admin}
           />
           <BottomSheetComp
             content={
@@ -111,6 +112,7 @@ export default function CommunityFeed({ route, navigation }) {
                   isLoading={loading}
                   refreshing={refreshing}
                   fetchPostData={fetchPostData}
+                  isAdmin={userData.admin}
                 />
               </View>
             }
