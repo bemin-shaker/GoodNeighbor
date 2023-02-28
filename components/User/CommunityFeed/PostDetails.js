@@ -18,7 +18,7 @@ import {
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { makeUpdate, getEmail, getPost } from "../../../backend/firebase";
+import { getEmail, postUpdate, getUpdates } from "../../../backend/firebase";
 import Back from "../../Back";
 import Popup from "../../Popup";
 import { useTheme } from "../../../theme/ThemeProvider";
@@ -46,7 +46,10 @@ export default function PostDetails({ route, navigation }) {
   async function fetchPostData() {
     try {
       setRefreshing(true);
-      const data = await getPost(route.params.communityId, route.params.postId);
+      const data = await getUpdates(
+        route.params.communityId,
+        route.params.postId
+      );
       setPostsData(data);
       setLoading(false);
       setTimeout(() => {
@@ -96,211 +99,232 @@ export default function PostDetails({ route, navigation }) {
     }
   };
 
-  return (
-    <Provider>
-      <StatusBar barStyle={"light-content"} />
+  if (loading) {
+    return (
       <View>
-        <Back light={true} />
-        <PostMenu
-          navigation={navigation}
-          postId={route.params.postId}
-          communityId={route.params.communityId}
-          name={route.params.name}
-          userId={route.params.communityId}
-          isAdmin={route.params.admin}
-          email="hi"
-        />
+        <Text>Loading..</Text>
+      </View>
+    );
+  } else {
+    return (
+      <Provider>
+        <StatusBar barStyle={"light-content"} />
+        <View>
+          <Back light={true} />
+          <PostMenu
+            navigation={navigation}
+            postId={route.params.postId}
+            communityId={route.params.communityId}
+            name={route.params.name}
+            userId={route.params.communityId}
+            isAdmin={route.params.admin}
+            email="hi"
+          />
 
-        <Popup
-          component={
-            <Image
-              style={styles.img}
-              variant="image"
-              source={{
-                uri: route.params.postData.imageUrl,
-              }}
-            ></Image>
-          }
-        />
-        <View
-          style={[styles.listView, { backgroundColor: colors.containerColor }]}
-        >
-          <Text
-            style={[styles.header, { color: colors.text }]}
-            numberOfLines={2}
-          >
-            {route.params.postData.title}
-          </Text>
-          <Chip
-            icon={() => (
-              <Icon name="clock-outline" size={16} color={colors.text} />
-            )}
-            style={styles.fab}
-            textStyle={{ color: colors.text, transform: [{ translateX: -3 }] }}
-            onPress={() => console.log("Pressed")}
-          >
-            {returnElapsedTIme(route.params.postData.initialTimestamp.seconds)}
-          </Chip>
-          <Text style={[styles.subHeader, { color: colors.tabBarActiveColor }]}>
-            Updates
-          </Text>
-          {refreshing ? (
-            <ActivityIndicator
-              style={{
-                backgroundColor: colors.container,
-                paddingTop: 40,
-                zIndex: 10000,
-              }}
-              color={colors.tabBarActiveColor}
-              size="small"
-            />
-          ) : null}
-          <ScrollView
-            style={styles.listContainer}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={fetchPostData}
-                tintColor="transparent"
-                colors={["transparent"]}
-                style={{ backgroundColor: "transparent" }}
-              />
-            }
-          >
-            {postsData.updates &&
-              postsData.updates.map((post, index) => {
-                return (
-                  <View>
-                    <View style={styles.listItem} key={index}>
-                      <Chip
-                        icon={() => (
-                          <Icon
-                            name="clock-outline"
-                            size={16}
-                            color={colors.text}
-                          />
-                        )}
-                        style={styles.fab2}
-                        textStyle={{
-                          color: colors.text,
-                          transform: [{ translateX: -3 }],
-                        }}
-                      >
-                        {returnElapsedTIme(post.timestamp.seconds)}
-
-                        <Text style={{ opacity: 0.7 }}>
-                          {" • "}Posted by {post.postedBy["usersEmail"]}
-                        </Text>
-                      </Chip>
-                      <Text
-                        style={{
-                          color: colors.text,
-                          fontFamily: "Montserrat_400Regular",
-                          fontSize: 16,
-                          marginBottom: 10,
-                          margin: 0,
-                          marginLeft: 20,
-                        }}
-                      >
-                        {post.title}
-                      </Text>
-                      {post.imageUrl !== "Null" && (
-                        <Popup
-                          component={
-                            <Image
-                              style={styles.updateImg}
-                              variant="image"
-                              source={{
-                                uri: post.imageUrl,
-                              }}
-                            ></Image>
-                          }
-                        />
-                      )}
-                    </View>
-                    <Divider style={{ opacity: 0.6 }} />
-                  </View>
-                );
-              })}
-            <View style={styles.listItem}>
-              <Chip
-                icon={() => (
-                  <Icon name="clock-outline" size={16} color={colors.text} />
-                )}
-                style={[
-                  styles.fab2,
-                  { backgroundColor: colors.backgroundColor },
-                ]}
-                textStyle={{
-                  color: colors.text,
-                  transform: [{ translateX: -3 }],
+          <Popup
+            component={
+              <Image
+                style={styles.img}
+                variant="image"
+                source={{
+                  uri: route.params.postData.imageUrl,
                 }}
-                onPress={() => console.log("Pressed")}
-              >
-                {returnElapsedTIme(
-                  route.params.postData.initialTimestamp.seconds
-                )}
-
-                <Text style={{ opacity: 0.7 }}>
-                  {" • "}Posted by {route.params.postData.postedBy}
-                </Text>
-              </Chip>
-              <Text
-                style={{
-                  color: colors.text,
-                  fontFamily: "Montserrat_400Regular",
-                  fontSize: 16,
-                  marginBottom: 10,
-                  margin: 0,
-                  marginLeft: 20,
-                }}
-              >
-                {route.params.postData.initialUpdate}
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-
-        <View
-          style={[
-            styles.bottomContainer,
-            { backgroundColor: colors.containerColor },
-          ]}
-        >
-          <TextInput
-            style={[styles.textInput, { backgroundColor: colors.background }]}
-            mode={"outlined"}
-            activeOutlineColor={"#C88D36"}
-            outlineColor="#999CAD"
-            textColor={colors.text}
-            label="Add an update"
-            value={title}
-            onChangeText={(title) => setTitle(title)}
-            left={<TextInput.Icon icon="camera" onPress={pickImage} />}
-            right={
-              <TextInput.Icon
-                icon="send"
-                onPress={async () => {
-                  let usersEmail = await getEmail();
-                  let submit = await makeUpdate(
-                    title,
-                    usersEmail,
-                    route.params.postData.id,
-                    route.params.communityId,
-                    image
-                  );
-                  if (submit == "success") {
-                    setTitle("");
-                    setImage(null);
-                  }
-                }}
-              />
+              ></Image>
             }
           />
+          <View
+            style={[
+              styles.listView,
+              { backgroundColor: colors.containerColor },
+            ]}
+          >
+            <Text
+              style={[styles.header, { color: colors.text }]}
+              numberOfLines={2}
+            >
+              {route.params.postData.title}
+            </Text>
+            <Chip
+              icon={() => (
+                <Icon name="clock-outline" size={16} color={colors.text} />
+              )}
+              style={styles.fab}
+              textStyle={{
+                color: colors.text,
+                transform: [{ translateX: -3 }],
+              }}
+              onPress={() => console.log("Pressed")}
+            >
+              {returnElapsedTIme(
+                route.params.postData.initialTimestamp.seconds
+              )}
+            </Chip>
+            <Text
+              style={[styles.subHeader, { color: colors.tabBarActiveColor }]}
+            >
+              Updates
+            </Text>
+            {refreshing ? (
+              <ActivityIndicator
+                style={{
+                  backgroundColor: colors.container,
+                  paddingTop: 40,
+                  zIndex: 10000,
+                }}
+                color={colors.tabBarActiveColor}
+                size="small"
+              />
+            ) : null}
+            <ScrollView
+              style={styles.listContainer}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={fetchPostData}
+                  tintColor="transparent"
+                  colors={["transparent"]}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              }
+            >
+              {postsData &&
+                postsData.length > 0 &&
+                postsData.map((post, index) => {
+                  return (
+                    <View>
+                      <View style={styles.listItem} key={index}>
+                        <Chip
+                          icon={() => (
+                            <Icon
+                              name="clock-outline"
+                              size={16}
+                              color={colors.text}
+                            />
+                          )}
+                          style={styles.fab2}
+                          textStyle={{
+                            color: colors.text,
+                            transform: [{ translateX: -3 }],
+                          }}
+                        >
+                          {returnElapsedTIme(post.timestamp.seconds)}
+
+                          <Text style={{ opacity: 0.7 }}>
+                            {" • "}Posted by {post.postedBy["usersEmail"]}
+                          </Text>
+                        </Chip>
+                        <Text
+                          style={{
+                            color: colors.text,
+                            fontFamily: "Montserrat_400Regular",
+                            fontSize: 16,
+                            marginBottom: 10,
+                            margin: 0,
+                            marginLeft: 20,
+                          }}
+                        >
+                          {post.title}
+                        </Text>
+                        {post.imageUrl !== undefined &&
+                          post.imageUrl !== "" && (
+                            <Popup
+                              component={
+                                <Image
+                                  style={styles.updateImg}
+                                  variant="image"
+                                  source={{
+                                    uri: post.imageUrl,
+                                  }}
+                                ></Image>
+                              }
+                            />
+                          )}
+                      </View>
+                      <Divider style={{ opacity: 0.6 }} />
+                    </View>
+                  );
+                })}
+              <View style={styles.listItem}>
+                <Chip
+                  icon={() => (
+                    <Icon name="clock-outline" size={16} color={colors.text} />
+                  )}
+                  style={[
+                    styles.fab2,
+                    { backgroundColor: colors.backgroundColor },
+                  ]}
+                  textStyle={{
+                    color: colors.text,
+                    transform: [{ translateX: -3 }],
+                  }}
+                  onPress={() => console.log("Pressed")}
+                >
+                  {returnElapsedTIme(
+                    route.params.postData.initialTimestamp.seconds
+                  )}
+
+                  <Text style={{ opacity: 0.7 }}>
+                    {" • "}Posted by {route.params.postData.postedBy}
+                  </Text>
+                </Chip>
+                <Text
+                  style={{
+                    color: colors.text,
+                    fontFamily: "Montserrat_400Regular",
+                    fontSize: 16,
+                    marginBottom: 10,
+                    margin: 0,
+                    marginLeft: 20,
+                  }}
+                >
+                  {route.params.postData.initialUpdate}
+                </Text>
+              </View>
+            </ScrollView>
+          </View>
+
+          <View
+            style={[
+              styles.bottomContainer,
+              { backgroundColor: colors.containerColor },
+            ]}
+          >
+            <TextInput
+              style={[styles.textInput, { backgroundColor: colors.background }]}
+              mode={"outlined"}
+              activeOutlineColor={"#C88D36"}
+              outlineColor="#999CAD"
+              textColor={colors.text}
+              label="Add an update"
+              value={title}
+              onChangeText={(title) => setTitle(title)}
+              left={<TextInput.Icon icon="camera" onPress={pickImage} />}
+              right={
+                <TextInput.Icon
+                  icon="send"
+                  onPress={async () => {
+                    let usersEmail = await getEmail();
+                    let submit = await postUpdate(
+                      title,
+                      usersEmail,
+                      route.params.postData.id,
+                      route.params.communityId,
+                      image
+                    );
+                    console.log(submit);
+                    if (submit.success == true) {
+                      setTitle("");
+                      setImage(null);
+                    }
+                  }}
+                />
+              }
+            />
+          </View>
         </View>
-      </View>
-    </Provider>
-  );
+      </Provider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -357,8 +381,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: Dimensions.get("screen").width * 0.9,
-    color: "#A32638",
-    //backgroundColor: "#000000",
   },
   bottomContainer: {
     height: Dimensions.get("window").height * 0.13,

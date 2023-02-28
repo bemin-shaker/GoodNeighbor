@@ -124,7 +124,7 @@ export default function SubmitPost({ route, navigation }) {
         mode={"outlined"}
         activeOutlineColor="#C88D36"
         outlineColor="#999CAD"
-        textColor="white"
+        textColor={colors.text}
         label="Title"
         value={title}
         onChangeText={(title) => setTitle(title)}
@@ -163,7 +163,7 @@ export default function SubmitPost({ route, navigation }) {
         mode={"outlined"}
         activeOutlineColor="#C88D36"
         outlineColor="#999CAD"
-        textColor="white"
+        textColor={colors.text}
         label="Initial Update"
         value={initialUpdate}
         multiline={true}
@@ -230,9 +230,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: Dimensions.get("screen").width * 0.8,
-
     marginBottom: 20,
-    //backgroundColor: "#000000",
   },
   title: {
     marginBottom: 20,

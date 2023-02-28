@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { FAB, ActivityIndicator, MD2Colors } from "react-native-paper";
+import { StyleSheet, Text, View } from "react-native";
+import { FAB, ActivityIndicator } from "react-native-paper";
 import MenuComponent from "../../menu";
 import Map from "./map";
 import ListItems from "./list";

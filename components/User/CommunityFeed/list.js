@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { List, FAB, Chip, Divider } from "react-native-paper";
+import { List, Chip, Divider } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import {
   useFonts,
@@ -116,7 +116,7 @@ export default function ListItems({
                             color={colors.text}
                           />
                         )}
-                        title={post.updates.length}
+                        title={post.updateCount}
                         style={styles.fab}
                         textStyle={{ color: colors.text }}
                         onPress={() =>
@@ -127,13 +127,13 @@ export default function ListItems({
                           })
                         }
                       >
-                        {post.updates.length}
+                        {post.updateCount}
                       </Chip>
                       <Chip
                         icon={() => (
                           <Icon name="share" size={16} color={colors.text} />
                         )}
-                        title={post.updates.length}
+                        title={post.updateCount}
                         style={styles.fab}
                         textStyle={{ color: colors.text }}
                         onPress={() => console.log("Pressed")}

@@ -25,7 +25,9 @@ import {
   setDoc,
   arrayRemove,
   Timestamp,
-  deleteDoc
+  deleteDoc,
+  orderBy,
+  getCountFromServer
 } from "firebase/firestore";
 import Constants from "expo-constants";
 import "firebase/auth";
@@ -177,11 +179,14 @@ export const getPosts = async (id) =>  {
   let posts: Object[] = [];
   try{
       const q = query(
-          collection(firestore, "Communities", id, "Posts")
+          collection(firestore, "Communities", id, "Posts"), orderBy("initialTimestamp", "desc")
       );
+
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(async (doc) => {
+          const snapshot = await getCountFromServer( collection(firestore, "Communities", id, "Posts", doc.id, "Updates"));
           let data = doc.data();
+          console.log(snapshot.data().count)
           posts.push({
               id: doc.id,
               title: data['title'],
@@ -189,11 +194,11 @@ export const getPosts = async (id) =>  {
               initialUpdate: data['initialUpdate'],
               location: data["location"],
               updates: data["updates"],
+              updateCount: snapshot.data().count,
               initialTimestamp: data["initialTimestamp"],
               imageUrl: data["imageUrl"],
               postedBy: data["postedBy"]["usersEmail"],
           });
-
       });
 
   } catch (e) {
@@ -202,6 +207,73 @@ export const getPosts = async (id) =>  {
   return posts;
 }
 
+export const getUpdates = async (id, postId) =>  {
+  let updates: Object[] = [];
+  try{
+      const q = query(
+          collection(firestore, "Communities", id, "Posts", postId, "Updates"), orderBy("timestamp", "desc")
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          updates.push({
+              id: doc.id,
+              title: data['title'],
+              timestamp: data["timestamp"],
+              imageUrl: data["imageUrl"],
+              postedBy: data["postedBy"]["usersEmail"],
+              reported: data["reported"],
+          });
+
+      });
+
+  } catch (e) {
+      console.log(e);
+  }
+  return updates;
+}
+
+export const getUpdatesCount = async (id, postId) =>  {
+  let updates: Object[] = [];
+  try{
+      const querySnapshot = await getDocs(query(
+        collection(firestore, "Communities", id, "Posts", postId, "Updates")
+    ));
+      querySnapshot.forEach((doc) => {
+          updates.push(doc.data());
+      });
+
+  } catch (e) {
+      console.log(e);
+  }
+  return updates.length;
+}
+
+export const postUpdate = async (title, usersEmail, postId, communityId, image ) =>  {
+  try {
+    const post = {
+        title: title,
+        postedBy: {
+          usersEmail: usersEmail
+        },
+        reported: false,
+        timestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000)
+    };
+    const docRef = await addDoc(collection(firestore, "Communities", communityId, "Posts", postId, "Updates"), post);
+
+    if (image != null && image != undefined && image != "") {
+      let randomNum = Math.floor(Math.random() * 100000);
+      await uploadImage(image, communityId + "/" + postId + "/" + randomNum);
+      const imageUrl = await getDownloadURL(ref(storage, communityId + "/" + postId + "/" + randomNum))
+      await updateDoc(docRef, {
+          imageUrl: imageUrl
+      });
+    }
+    return {"success": true, "postID": docRef.id};
+} catch (e) {
+    console.log(e);
+}
+}
 
 export const getReportedPosts = async (id) =>  {
   let posts: Object[] = [];
@@ -295,8 +367,8 @@ export const submitPost = async (communityId, title, category, initialUpdate, us
        
       };
       const docRef = await addDoc(collection(firestore, "Communities", communityId, "Posts"), post);
-      await uploadImage(image, docRef.id + "/" + "initialImage");
-      const imageUrl = await getDownloadURL(ref(storage, docRef.id + "/" + "initialImage"))
+      await uploadImage(image, communityId + "/"+ docRef.id + "/" + "initialImage");
+      const imageUrl = await getDownloadURL(ref(storage, communityId + "/" + docRef.id + "/" + "initialImage"))
       await updateDoc(docRef, {
           postID: docRef.id,
           imageUrl: imageUrl
@@ -305,42 +377,6 @@ export const submitPost = async (communityId, title, category, initialUpdate, us
   } catch (e) {
       console.log(e);
   }
-}
-
-
-export const makeUpdate = async (title, usersEmail, postId, communityId, image ) =>  {
-  let posts: Object[] = [];
-  try{
-      let imageUrl = "";
-      const documentRef = doc(firestore,  "Communities", communityId, "Posts", postId);
-      if (image == null) {
-        imageUrl = "Null"
-      } else {
-        let randomUpdateId = Math.floor(Math.random() * 100000)
-        await uploadImage(image, postId + "/" + randomUpdateId);
-        imageUrl = await getDownloadURL(ref(storage, postId + "/" + randomUpdateId))
-  
-      }
-     
-      const update = {
-        title: title,
-        postedBy: {
-          usersEmail: usersEmail
-        },
-        timestamp: new Timestamp(new Date().getTime() / 1000, new Date().getMilliseconds() * 100000),
-        imageUrl: imageUrl
-      };
-
-      await updateDoc(documentRef, {
-          updates: arrayUnion(update),
-      });
-      
-    return "success";
-      
-  } catch (e) {
-      console.log(e);
-  }
-  return posts;
 }
 
 
