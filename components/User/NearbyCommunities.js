@@ -115,6 +115,7 @@ export default function NearbyCommunities() {
                               name: community.name,
                               count: community.members_list.length,
                               type: community.type,
+                              coverURL: community.coverURL,
                             })
                           }
                         >
