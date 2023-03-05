@@ -18,6 +18,7 @@ import AdminFeed from "./components/Admin/adminFeed";
 import AdminNotifications from "./components/Admin/adminNotifications";
 import Settings from "./components/User/Settings";
 import Notifications from "./components/User/Notifications";
+import NotifSettings from "./components/User/NotifSettings";
 
 const Stack = createNativeStackNavigator();
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
@@ -132,6 +133,13 @@ const App = () => {
             <Stack.Screen
               name="Notifications"
               component={Notifications}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="NotifSettings"
+              component={NotifSettings}
               options={{
                 headerShown: false,
               }}

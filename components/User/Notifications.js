@@ -1,9 +1,16 @@
-import * as React from "react";
-import { StyleSheet, View, Pressable, Text, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { List, Chip, FAB } from "react-native-paper";
-import Back from "../Back";
+import { IconButton, List, Chip, FAB } from "react-native-paper";
 import { Screen } from "../Screen";
 import { useTheme } from "../../theme/ThemeProvider";
 import {
@@ -12,8 +19,13 @@ import {
   Montserrat_700Bold,
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
+import { getSubscribedNotifications } from "../../backend/firebase";
 
 export default function Notifications() {
+  const [loading, setLoading] = useState(true);
+  const [notif, setNotifList] = useState([undefined]);
+  const [refreshing, setRefreshing] = useState(true);
+
   const navigation = useNavigation();
   const { colors } = useTheme();
   let [fontsLoaded] = useFonts({
@@ -22,97 +34,144 @@ export default function Notifications() {
     Montserrat_400Regular,
   });
 
-  const Footer = (
-    <View
-      style={[
-        styles.listFooter,
-        { borderBottomColor: colors.borderBottomColor },
-      ]}
-    >
-      <Chip
-        icon={() => <Icon name="clock" size={16} color={colors.text} />}
-        textStyle={{ color: colors.text }}
-        style={styles.chip}
-        onPress={() => console.log("Pressed")}
-      >
-        Feb 6, 2022
-      </Chip>
-      <Chip
-        textStyle={{ color: colors.text }}
-        onPress={() => console.log("Pressed")}
-        style={styles.chip}
-      >
-        Hoboken, NJ
-      </Chip>
-    </View>
-  );
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  return (
-    <Screen>
-      <View style={styles.container}>
-        <View style={styles.headerFlex}>
-          <View>
-            <Text style={[styles.header, { color: colors.text }]}>
-              Notifications
-            </Text>
-          </View>
+  async function fetchData() {
+    try {
+      setRefreshing(true);
+      const data = await getSubscribedNotifications();
+      setNotifList(data);
+      setLoading(false);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 800);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-          <FAB
-            icon="cog-outline"
-            size="small"
-            color={colors.fabColor}
-            style={[styles.fab, { backgroundColor: colors.fabBgColor }]}
-            onPress={() => navigation.navigate("HomeFeed")}
-          />
-        </View>
-        <ScrollView>
-          <List.Section>
-            <List.Item
-              title="Water is out in the UCC"
-              titleNumberOfLines={1}
-              key={1}
-              titleStyle={[styles.header2, { color: colors.text }]}
-              description="Water service in the University Center Complex is shut off."
-              descriptionStyle={[styles.header3, { color: colors.text }]}
-              style={styles.listItem}
-            />
-            <View
-              style={[
-                styles.listFooter,
-                { borderBottomColor: colors.borderBottomColor },
-              ]}
-            >
-              <Chip
-                icon={() => <Icon name="clock" size={16} color={colors.text} />}
-                textStyle={{ color: colors.text }}
-                style={styles.chip}
-                onPress={() => console.log("Pressed")}
-              >
-                Feb 13, 2022
-              </Chip>
-              <Chip
-                textStyle={{ color: colors.text }}
-                onPress={() => console.log("Pressed")}
-                style={styles.chip}
-              >
-                Stevens Institute of Technology
-              </Chip>
-            </View>
-            <List.Item
-              title="Building Fire"
-              titleNumberOfLines={1}
-              key={1}
-              titleStyle={[styles.header2, { color: colors.text }]}
-              description="Crews are on the scene of a two-alarm fire on Monroe Street."
-              descriptionStyle={[styles.header3, { color: colors.text }]}
-              style={styles.listItem}
-            />
-            {Footer}
-          </List.Section>
-        </ScrollView>
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading..</Text>
       </View>
-    </Screen>
-  );
+    );
+  } else {
+    return (
+      <Screen>
+        <View style={styles.container}>
+          <View style={styles.headerFlex}>
+            <View>
+              <Text style={[styles.header, { color: colors.text }]}>
+                Notifications
+              </Text>
+            </View>
+
+            <FAB
+              icon="cog-outline"
+              size="small"
+              color={colors.fabColor}
+              style={[styles.fab, { backgroundColor: colors.fabBgColor }]}
+              onPress={() => navigation.navigate("HomeFeed")}
+            />
+          </View>
+          {refreshing ? (
+            <ActivityIndicator
+              style={{
+                backgroundColor: colors.activityIndicatorBgColor,
+                padding: 20,
+                zIndex: 10000,
+              }}
+              color="#C88D36"
+              size="small"
+            />
+          ) : null}
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={fetchData}
+                tintColor="transparent"
+                colors={["transparent"]}
+                style={{ backgroundColor: "transparent" }}
+              />
+            }
+          >
+            {notif.length == 0 ? (
+              <View
+                style={[
+                  styles.errMessage,
+                  { backgroundColor: colors.containerColor },
+                ]}
+              >
+                <IconButton icon="bell-off" size={50} />
+                <Text style={[styles.errText, { color: colors.text }]}>
+                  There are no new notifications at this time.
+                </Text>
+              </View>
+            ) : (
+              <List.Section>
+                {notif &&
+                  notif.map((post, index) => {
+                    if (post.title && post.body) {
+                      return (
+                        <>
+                          <List.Item
+                            title={post.title}
+                            titleNumberOfLines={1}
+                            key={1}
+                            titleStyle={[
+                              styles.header2,
+                              { color: colors.text },
+                            ]}
+                            description={post.body}
+                            descriptionStyle={[
+                              styles.header3,
+                              { color: colors.text },
+                            ]}
+                            style={styles.listItem}
+                          />
+                          <View
+                            style={[
+                              styles.listFooter,
+                              { borderBottomColor: colors.borderBottomColor },
+                            ]}
+                          >
+                            <Chip
+                              icon={() => (
+                                <Icon
+                                  name="clock"
+                                  size={16}
+                                  color={colors.text}
+                                />
+                              )}
+                              textStyle={{ color: colors.text }}
+                              style={styles.chip}
+                              onPress={() => console.log("Pressed")}
+                            >
+                              Feb 13, 2022
+                            </Chip>
+                            <Chip
+                              textStyle={{ color: colors.text }}
+                              onPress={() => console.log("Pressed")}
+                              style={styles.chip}
+                            >
+                              Hoboken
+                            </Chip>
+                          </View>
+                        </>
+                      );
+                    }
+                  })}
+              </List.Section>
+            )}
+          </ScrollView>
+        </View>
+      </Screen>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -165,5 +224,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#212121",
     borderRadius: 50,
     marginRight: 15,
+  },
+  errMessage: {
+    display: "flex",
+    alignItems: "center",
+    opacity: 0.7,
+    borderRadius: 5,
+    marginHorizontal: 15,
+    padding: 20,
+    marginTop: 10,
+    paddingBottom: 40,
+  },
+  errText: {
+    fontSize: 16,
+    fontFamily: "Montserrat_600SemiBold",
   },
 });

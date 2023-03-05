@@ -90,7 +90,23 @@ export default function MenuComponent({
             ) : (
               <></>
             )}
-
+            <Menu.Item
+              style={{
+                backgroundColor: colors.containerColor,
+                paddingLeft: 15,
+                paddingTop: 5,
+              }}
+              onPress={async () => {
+                navigation.navigate("NotifSettings", {
+                  id: id,
+                  name: name,
+                  userId: userId,
+                });
+              }}
+              title="Preferences"
+              titleStyle={{ color: colors.text }}
+              leadingIcon="bell"
+            />
             <Menu.Item
               style={{
                 backgroundColor: colors.containerColor,
