@@ -117,6 +117,38 @@ export const getSubscribedNotifications = async () =>  {
   return docSnap.data().notifications
 }
 
+export const updateSubscribedCategories = async (communityId: string, userId: string, categoryList: string[]) => {
+  const communityRef = doc(firestore, "Communities", communityId);
+  const communityDoc = await getDoc(communityRef);
+  const members = communityDoc.data().members_list;
+  members.forEach(async user => {
+    if(user.id == userId){
+      await updateDoc(doc(firestore, "Communities", communityId), {
+        members_list: arrayRemove(user),
+      });
+      await updateDoc(doc(firestore, "Communities", communityId), {
+        members_list: arrayUnion({
+          id: userId,
+          expoToken: user.expoToken,
+          admin: user.admin,
+          email: user.email,
+          subscribedCategories: categoryList,
+        }),
+      });
+    }
+  });
+}
+
+
+export const getSubscribedCategories = async (communityId: string, userId: string) => {
+  const communityRef = doc(firestore, "Communities", communityId);
+  const communityDoc = await getDoc(communityRef);
+  const members = communityDoc.data().members_list;
+  const user = members.find((element) => element.id == userId);
+  console.log(user.subscribedCategories)
+  return user.subscribedCategories;
+
+}
 // AUTHENTICATION // ---------------------------------------------------------
 let user = auth.currentUser;
 

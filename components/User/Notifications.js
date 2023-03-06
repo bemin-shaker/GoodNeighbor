@@ -131,6 +131,7 @@ export default function Notifications() {
                               styles.header3,
                               { color: colors.text },
                             ]}
+                            descriptionNumberOfLines={2}
                             style={styles.listItem}
                           />
                           <View
