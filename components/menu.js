@@ -105,7 +105,7 @@ export default function MenuComponent({
               }}
               title="Preferences"
               titleStyle={{ color: colors.text }}
-              leadingIcon="bell"
+              leadingIcon="cog"
             />
             <Menu.Item
               style={{

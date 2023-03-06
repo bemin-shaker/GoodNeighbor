@@ -137,6 +137,8 @@ export const updateSubscribedCategories = async (communityId: string, userId: st
       });
     }
   });
+
+  return "success";
 }
 
 

@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { Switch, List } from "react-native-paper";
+import { Switch, List, Snackbar } from "react-native-paper";
 import { useTheme } from "../../theme/ThemeProvider";
 import Back from "../Back";
 import {
@@ -19,6 +19,7 @@ import {
 } from "../../backend/firebase";
 
 const NotifSettings = ({ route }) => {
+  const [visible, setVisible] = React.useState(false);
   const [subscribed, setSubscribed] = React.useState([undefined]);
   const [isSwitchOnFire, setIsSwitchOnFIre] = React.useState(false);
   const [isSwitchOnCarCrash, setIsSwitchOnCarCrash] = React.useState(false);
@@ -129,6 +130,34 @@ const NotifSettings = ({ route }) => {
                   style={{ alignSelf: "center" }}
                   value={isSwitchOnFire}
                   onValueChange={() => setIsSwitchOnFIre(!isSwitchOnFire)}
+                />
+              )}
+            />
+            <View
+              style={[
+                styles.listFooter,
+                { borderBottomColor: colors.borderBottomColor },
+              ]}
+            ></View>
+
+            {/* Water Main Break */}
+            <List.Item
+              title={"Water Main Break"}
+              titleNumberOfLines={2}
+              key={2}
+              titleStyle={[styles.header2, { color: colors.text }]}
+              style={[
+                styles.listItem,
+                { borderBottomColor: colors.borderBottomColor },
+              ]}
+              right={() => (
+                <Switch
+                  color={colors.tabBarActiveColor}
+                  style={{ alignSelf: "center" }}
+                  value={isSwitchOnWaterMainBreak}
+                  onValueChange={() =>
+                    setIsSwitchOnWaterMainBreak(!isSwitchOnWaterMainBreak)
+                  }
                 />
               )}
             />
@@ -252,33 +281,6 @@ const NotifSettings = ({ route }) => {
               ]}
             ></View>
 
-            {/* Water Main Break */}
-            <List.Item
-              title={"Missing Person"}
-              titleNumberOfLines={2}
-              key={2}
-              titleStyle={[styles.header2, { color: colors.text }]}
-              style={[
-                styles.listItem,
-                { borderBottomColor: colors.borderBottomColor },
-              ]}
-              right={() => (
-                <Switch
-                  color={colors.tabBarActiveColor}
-                  style={{ alignSelf: "center" }}
-                  value={isSwitchOnWaterMainBreak}
-                  onValueChange={() =>
-                    setIsSwitchOnWaterMainBreak(!isSwitchOnWaterMainBreak)
-                  }
-                />
-              )}
-            />
-            <View
-              style={[
-                styles.listFooter,
-                { borderBottomColor: colors.borderBottomColor },
-              ]}
-            ></View>
             <Pressable
               style={styles.loginButton}
               onPress={async () => {
@@ -302,17 +304,37 @@ const NotifSettings = ({ route }) => {
                   subscribedCategories.push("Water Main Break");
                 }
 
-                await updateSubscribedCategories(
+                let submit = await updateSubscribedCategories(
                   route.params.id,
                   route.params.userId,
                   subscribedCategories
                 );
+                if (submit == "success") {
+                  // to do
+                  setVisible(!visible);
+                }
               }}
             >
               <Text style={styles.loginButtonText}>Save Changes</Text>
             </Pressable>
           </List.Section>
         </ScrollView>
+        <View style={{ alignItems: "center" }}>
+          <Snackbar
+            style={[
+              styles.snackbar,
+              { backgroundColor: colors.tabBarActiveColor },
+            ]}
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            action={{
+              label: "Dismiss",
+              labelStyle: { color: "white" },
+            }}
+          >
+            <Text style={styles.errorMsg}>Changes updated successfully.</Text>
+          </Snackbar>
+        </View>
       </View>
     );
   }
@@ -358,5 +380,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 17,
     textAlign: "center",
+  },
+  snackbar: {
+    transform: [{ translateY: 15 }],
+  },
+  errorMsg: {
+    color: "white",
   },
 });
