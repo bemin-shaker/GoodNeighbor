@@ -80,6 +80,7 @@ export default function MenuComponent({
                       id: id,
                       name: name,
                       userId: userId,
+                      admin: isAdmin,
                     })
                   }
                   title="Notification Feed"

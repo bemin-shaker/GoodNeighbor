@@ -113,6 +113,7 @@ export default function AdminNotifications({ route }) {
                               postId: post.id,
                               communityId: route.params.id,
                               name: route.params.name,
+                              admin: route.params.admin,
                             })
                           }
                         >
