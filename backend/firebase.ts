@@ -117,6 +117,15 @@ export const getSubscribedNotifications = async () =>  {
   return docSnap.data().notifications
 }
 
+//delete notification from user's notifications list
+export const deleteNotification = async (post: object) => {
+  const docRef = doc(firestore, "users", auth.currentUser.uid);
+  await updateDoc(docRef, {
+    notifications: arrayRemove(post),
+  });
+  return "success";
+}
+
 export const updateSubscribedCategories = async (communityId: string, userId: string, categoryList: string[]) => {
   const communityRef = doc(firestore, "Communities", communityId);
   const communityDoc = await getDoc(communityRef);

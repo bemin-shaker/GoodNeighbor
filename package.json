@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@burstware/expo-plaid-link": "^1.0.7",
     "@expo-google-fonts/montserrat": "^0.2.2",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-firebase/app": "^16.5.0",

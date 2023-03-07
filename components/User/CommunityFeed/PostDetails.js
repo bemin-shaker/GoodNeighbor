@@ -190,6 +190,7 @@ export default function PostDetails({ route, navigation }) {
               {postsData &&
                 postsData.length > 0 &&
                 postsData.map((post, index) => {
+                  console.log(post);
                   return (
                     <View>
                       <View style={styles.listItem} key={index}>
@@ -210,7 +211,7 @@ export default function PostDetails({ route, navigation }) {
                           {returnElapsedTIme(post.timestamp.seconds)}
 
                           <Text style={{ opacity: 0.7 }}>
-                            {" • "}Posted by {post.postedBy["usersEmail"]}
+                            {" • "}Posted by {post["postedBy"]}
                           </Text>
                         </Chip>
                         <Text

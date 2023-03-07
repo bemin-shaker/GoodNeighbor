@@ -19,7 +19,10 @@ import {
   Montserrat_700Bold,
   Montserrat_400Regular,
 } from "@expo-google-fonts/montserrat";
-import { getSubscribedNotifications } from "../../backend/firebase";
+import {
+  getSubscribedNotifications,
+  deleteNotification,
+} from "../../backend/firebase";
 
 export default function Notifications() {
   const [loading, setLoading] = useState(true);
@@ -133,7 +136,17 @@ export default function Notifications() {
                             ]}
                             descriptionNumberOfLines={2}
                             style={styles.listItem}
-                          />
+                            right={() => (
+                              <IconButton
+                                icon="delete-outline"
+                                size={25}
+                                color={colors.text}
+                                onPress={async () =>
+                                  await deleteNotification(post)
+                                }
+                              />
+                            )}
+                          ></List.Item>
                           <View
                             style={[
                               styles.listFooter,
