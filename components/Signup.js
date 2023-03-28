@@ -81,7 +81,7 @@ export default function Signup({ navigation }) {
               onPress={async () => {
                 let result = await signUpWithEmail(fName, email, password);
                 if (result === "success") {
-                  navigation.navigate("Home");
+                  navigation.navigate("VerifyIntro");
                 } else {
                   {
                     setVisible(!visible);

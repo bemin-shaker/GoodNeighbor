@@ -8,6 +8,8 @@ import { ThemeProvider } from "./theme/ThemeProvider";
 import Startup from "./components/Startup";
 import Signup from "./components/Signup";
 import Signin from "./components/Signin";
+import Verify from "./components/User/Verify";
+import VerifyIntro from "./components/User/VerifyIntro";
 import Home from "./components/Home";
 import CommunityFeed from "./components/User/CommunityFeed/CommunityFeed";
 import ListItems from "./components/User/CommunityFeed/list";
@@ -66,6 +68,31 @@ const App = () => {
                 headerShadowVisible: false,
               }}
             />
+            <Stack.Screen
+              name="VerifyIntro"
+              component={VerifyIntro}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "white",
+                },
+                headerTintColor: "#003366",
+                headerShadowVisible: false,
+              }}
+            />
+            <Stack.Screen
+              name="Verify"
+              component={Verify}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "white",
+                },
+                headerTintColor: "#003366",
+                headerShadowVisible: false,
+              }}
+            />
+
             <Stack.Screen
               name="Home"
               component={Home}

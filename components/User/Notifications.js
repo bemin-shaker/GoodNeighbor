@@ -54,7 +54,6 @@ export default function Notifications() {
       console.log(e);
     }
   }
-
   if (loading) {
     return (
       <View>
@@ -102,7 +101,7 @@ export default function Notifications() {
               />
             }
           >
-            {notif.length == 0 ? (
+            {notif.length === 0 ? (
               <View
                 style={[
                   styles.errMessage,
@@ -118,7 +117,7 @@ export default function Notifications() {
               <List.Section>
                 {notif &&
                   notif.map((post, index) => {
-                    if (post.title && post.body) {
+                    if (post.title) {
                       return (
                         <>
                           <List.Item
