@@ -1,7 +1,13 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Pressable,
+  Image,
+} from "react-native";
 import { useTheme } from "../../theme/ThemeProvider";
-import { WebView } from "react-native-webview";
 import { lightColors, darkColors } from "../../theme/colorThemes";
 
 import { Screen } from "../Screen";
@@ -69,6 +75,10 @@ export default function VerifyIntro({ navigation }) {
             <Text style={[styles.boldText, { color: colors.headerText }]}>
               Verify Your Identity To Continue
             </Text>
+            <Image
+              style={styles.image}
+              source={require("../../assets/identityVerificationSVG.png")}
+            ></Image>
             <Pressable
               style={styles.signupButton}
               onPress={async () => {
@@ -100,15 +110,15 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: "Montserrat_700Bold",
     textAlign: "center",
+    maxWidth: 340,
   },
   header: {
     paddingHorizontal: 15,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    height: "100%",
+    height: "90%",
   },
-
   signupButton: {
     borderColor: lightColors.tabBarActiveColor,
     borderWidth: 1.5,
@@ -119,11 +129,16 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: 15,
     marginTop: 35,
-    marginLeft: 10,
   },
   signupButtonText: {
     color: "white",
     fontSize: 17,
     textAlign: "center",
+  },
+  image: {
+    width: 300,
+    height: 300,
+    alignSelf: "center",
+    marginTop: 10,
   },
 });

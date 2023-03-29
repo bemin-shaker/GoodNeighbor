@@ -266,7 +266,8 @@ const addNewUser = async (fName: string, email: string, uid: string) => {
       full_name: fName,
       email: email.toLowerCase(),
       joined_communities: [],
-      notifications: []
+      notifications: [],
+      isVerified: false,
     };
     await setDoc(doc(firestore, "users", uid), userData);
     return uid;

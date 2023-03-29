@@ -92,7 +92,6 @@ const App = () => {
                 headerShadowVisible: false,
               }}
             />
-
             <Stack.Screen
               name="Home"
               component={Home}

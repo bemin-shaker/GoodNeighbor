@@ -145,6 +145,27 @@ export default function HomeFeed() {
             )}
           />
           <List.Item
+            title="Identity Verification"
+            titleNumberOfLines={2}
+            key={2}
+            titleStyle={[styles.header2, { color: colors.text }]}
+            style={listStyle}
+            onPress={async () => {
+              await logOut();
+              navigation.navigate("VerifyIntro");
+            }}
+            left={() => (
+              <List.Icon
+                color={colors.fabColor}
+                style={[
+                  styles.iconLeft,
+                  { backgroundColor: colors.fabBgColor },
+                ]}
+                icon="account-check-outline"
+              />
+            )}
+          />
+          <List.Item
             title="Sign Out"
             titleNumberOfLines={2}
             key={2}
