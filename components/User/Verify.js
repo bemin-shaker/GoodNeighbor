@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     height: "100%",
     display: "flex",
     alignItems: "center",
+    paddingBottom: 70,
   },
   subText: {
     fontFamily: "Montserrat_400Regular",
