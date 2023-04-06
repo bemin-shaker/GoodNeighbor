@@ -187,15 +187,14 @@ export const signUpWithEmail = async (
       photoURL: userID,
     });
 
-    const token = await registerForPushNotificationsAsync()
-    await updateDoc(doc(firestore, "users", userID), {
-      expoToken: token
-    })
+    // const token = await registerForPushNotificationsAsync()
+    // await updateDoc(doc(firestore, "users", userID), {
+    //   expoToken: token
+    // })
     
     return "success";
   } catch (e) {
-    console.log(e);
-    return e;
+    return "Error"
   }
 };
 
