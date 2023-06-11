@@ -34,13 +34,13 @@ import "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCARQ2_GiH2DVI0noABC9v-CXreTO8XHmw",
-  authDomain: "goodneighbor-d078e.firebaseapp.com",
-  projectId: "goodneighbor-d078e",
-  storageBucket: "goodneighbor-d078e.appspot.com",
-  messagingSenderId: "632494012296",
-  appId: "1:632494012296:web:8c72ca91c108851b6c6c3d",
-  measurementId: "G-F7FG2ZXV04"
+  apiKey: "AIzaSyCmCZ_yfhNquGaJVx59B1B3hvgDFfZ7g_o",
+  authDomain: "gn-2-9cab5.firebaseapp.com",
+  projectId: "gn-2-9cab5",
+  storageBucket: "gn-2-9cab5.appspot.com",
+  messagingSenderId: "833247459427",
+  appId: "1:833247459427:web:1fb7169ed5fb6c074ee056",
+  measurementId: "G-0TC1M69G0N"
 };
 
 const app = initializeApp(firebaseConfig);
